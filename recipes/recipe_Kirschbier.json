@@ -1,0 +1,85 @@
+{
+    "name": "Kirschbier",
+    "comment": "https://www.maischemalzundmehr.de/index.php?id=284&inhaltmitte=recipe&suche_begriff=kirsch",
+    "steps": [
+        {
+            "id": 1,
+            "step": "Mit 20l einmaischen",
+            "temperature": 55,
+            "heating": "one_time",
+            "stirring": "full",
+            "duration": "wait",
+            "alarm": [ { "time": 0, "text": "Einmaischen starten!" } ]
+        },
+        {
+            "id": 2,
+            "step": "Eiweißrast",
+            "temperature": 55,
+            "heating": "control",
+            "stirring": "full",
+            "duration": 10,
+            "hysteresis": 0.5
+        },
+        {
+            "id": 3,
+            "step": "Maltoserast",
+            "temperature": 62,
+            "heating": "control",
+            "stirring": "control",
+            "duration": 45,
+            "hysteresis": 0.5
+        },
+        {
+            "id": 4,
+            "step": "Verzuckerung",
+            "temperature": 71,
+            "heating": "control",
+            "stirring": "control",
+            "duration": 30,
+            "hysteresis": 0.5
+        },
+        {
+            "id": 5,
+            "step": "Abmaischen",
+            "temperature": 78,
+            "heating": "control",
+            "stirring": "control",
+            "duration": "wait",
+            "hysteresis": 0.5,
+            "alarm": [ { "time": 0, "text": "Abmaischen starten!" } ]
+        },
+        {
+            "id": 6,
+            "step": "Läuterruhe",
+            "temperature": 1,
+            "heating": "off",
+            "stirring": "off",
+            "duration": 20,
+            "alarm": [ { "time": 20, "text": "Die Läuterung kann beginnen!" } ]
+        },
+        {
+            "id": 7,
+            "step": "Mit 12l Nachguss läutern",
+            "temperature": 1,
+            "heating": "off",
+            "stirring": "off",
+            "duration": "wait",
+            "alarm": [ { "time": 0, "text": "Hopfengabe 1: Bitte 10g Cascade zur Vorderwürze geben!" } ]
+        },
+        {
+            "id": 8,
+            "step": "Kochen und Hopfengaben",
+            "temperature": 97,
+            "heating": "full",
+            "stirring": "off",
+            "duration": 70,
+            "hysteresis": 0.1,
+            "alarm": [
+                { "time": 10, "text": "Hopfengabe 2: Bitte 10g Cascade zugeben!" },
+                { "time": 60, "text": "Hopfengabe 3: Bitte 10g Cascade zugeben!" },
+                { "time": 70, "text": "Hopfengabe 4: Bitte 10g Cascade zum Whirlpool geben!" }  
+            ]
+        }
+    ]
+}
+

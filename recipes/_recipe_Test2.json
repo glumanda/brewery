@@ -1,0 +1,33 @@
+{
+    "name": "Test",
+    "comment": "Schneller Durchlauf",
+    "steps": [
+        {
+            "id": 1,
+            "step": "Aufheizen ohne Rühren",
+            "temperature": 35,
+            "heating": "one_time",
+            "stirring": "off",
+            "duration": 1,
+            "alarm": [0]
+        },
+        {
+            "id": 2,
+            "step": "Halten mit Rühren (immer)",
+            "temperature": 35,
+            "heating": "control",
+            "stirring": "full",
+            "duration": 2,
+            "hysteresis": 0.5
+        },
+        {
+            "id": 3,
+            "step": "Halten mit Rühren (nur beim Heizen)",
+            "temperature": 35,
+            "heating": "control",
+            "stirring": "control",
+            "duration": 2,
+            "hysteresis": 0.5
+        }
+   ]
+}

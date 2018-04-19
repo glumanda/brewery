@@ -1,0 +1,61 @@
+{
+    "name": "Pale Ale",
+    "comment": "www.hobbybrauserversand.de",
+    "steps": [
+        {
+            "id": 1,
+            "step": "Einmaischen",
+            "temperature": 61,
+            "heating": "one_time",
+            "duration": 10,
+            "alarm": [0]
+        },
+        {
+            "id": 2,
+            "step": "Maltoserast",
+            "temperature": 62,
+            "heating": "control",
+            "duration": 45,
+            "hysteresis": 0.5
+        },
+        {
+            "id": 3,
+            "step": "Verzuckerung",
+            "temperature": 71,
+            "heating": "control",
+            "duration": 30,
+            "hysteresis": 0.5
+        },
+        {
+            "id": 4,
+            "step": "Abmaischen",
+            "temperature": 78,
+            "heating": "one_time",
+            "duration": "wait"
+        },
+        {
+            "id": 5,
+            "step": "Läuterruhe",
+            "temperature": 1,
+            "heating": "no",
+            "duration": 20,
+            "alarm": [20]
+        },
+        {
+            "id": 6,
+            "step": "Läutern",
+            "temperature": 1,
+            "heating": "no",
+            "duration": "wait"
+        },
+        {
+            "id": 7,
+            "step": "Kochen",
+            "temperature": 100,
+            "heating": "full",
+            "duration": 90,
+            "hysteresis": 0.1,
+            "alarm": [20, 85]
+        }
+    ]
+}
