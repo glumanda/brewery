@@ -1,10 +1,10 @@
 {
-    "name": "Kirschbier",
-    "comment": "https://www.maischemalzundmehr.de/index.php?id=284&inhaltmitte=recipe&suche_begriff=kirsch",
+    "name": "New England IPA",
+    "comment": "http://www.beerstorevienna.at/wp-content/uploads/2017/11/11-Hobby-BrauRezept-November-NEIPA.pdf",
     "steps": [
         {
             "id": 1,
-            "step": "Mit 20l einmaischen",
+            "step": "Mit 21l einmaischen",
             "temperature": 55,
             "heating": "one_time",
             "stirring": "full",
@@ -26,7 +26,7 @@
             "temperature": 62,
             "heating": "control",
             "stirring": "control",
-            "duration": 45,
+            "duration": 35,
             "hysteresis": 0.5
         },
         {
@@ -35,7 +35,7 @@
             "temperature": 71,
             "heating": "control",
             "stirring": "control",
-            "duration": 30,
+            "duration": 25,
             "hysteresis": 0.5
         },
         {
@@ -43,10 +43,10 @@
             "step": "Abmaischen",
             "temperature": 78,
             "heating": "one_time",
-            "stirring": "full",
+            "stirring": "control",
             "duration": "wait",
             "hysteresis": 0.5,
-            "alarm": [ { "time": 0, "text": "Abmaischen starten!" } ]
+            "alarm": [ { "time": 5, "text": "Abmaischen starten!" } ]
         },
         {
             "id": 6,
@@ -59,12 +59,12 @@
         },
         {
             "id": 7,
-            "step": "Mit 12l Nachguss läutern",
+            "step": "Mit 9l Nachguss läutern",
             "temperature": 1,
             "heating": "off",
             "stirring": "off",
             "duration": "wait",
-            "alarm": [ { "time": 0, "text": "Hopfengabe 1: Bitte 10g Cascade zur Vorderwürze geben!" } ]
+            "alarm": [ { "time": 0, "text": "Hopfengabe 1: Bitte 5g Mosaic zur Vorderwürze geben!" } ]
         },
         {
             "id": 8,
@@ -75,9 +75,32 @@
             "duration": 70,
             "hysteresis": 0.1,
             "alarm": [
-                { "time": 10, "text": "Hopfengabe 2: Bitte 10g Cascade zugeben!" },
-                { "time": 60, "text": "Hopfengabe 3: Bitte 10g Cascade zugeben!" },
-                { "time": 70, "text": "Hopfengabe 4: Bitte 10g Cascade zum Whirlpool geben!" }  
+                { "time": 70, "text": "Hopfengabe 2: Bitte 20g Mosaic und 20g VicSecret zum Whirlpool geben!" }  
+            ]
+        },
+        {
+            "id": 9,
+            "step": "Nachisomerisierung",
+            "temperature": 1,
+            "heating": "off",
+            "stirring": "off",
+            "duration": 10,
+            "hysteresis": 0.1,
+            "alarm": [
+                { "time": 10, "text": "Mit Kühlen beginnen!" }  
+            ]
+        },
+        {
+            "id": 10,
+            "step": "Kühlung",
+            "temperature": 1,
+            "heating": "off",
+            "stirring": "off",
+            "duration": 20,
+            "hysteresis": 0.1,
+            "alarm": [
+                { "time": 0, "text": "Wasser an!" },
+                { "time": 20, "text": "Wasser aus!" }  
             ]
         }
     ]
