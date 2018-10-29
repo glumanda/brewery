@@ -1,0 +1,101 @@
+{
+    "name": "Dog Days 3.0",
+    "comment": "eigene Rezept (clone)",
+    "steps": [
+        {
+            "id": 1,
+            "step": "Mit 18l einmaischen",
+            "temperature": 55,
+            "heating": "one_time",
+            "stirring": "full",
+            "duration": "wait",
+            "alarm": [ 
+				{ "time": 0, "text": "Einmaischen starten!" } 
+			]
+        },
+        {
+            "id": 2,
+            "step": "Eiweißrast",
+            "temperature": 55,
+            "heating": "control",
+            "stirring": "full",
+            "duration": 10,
+            "hysteresis": 0.5
+        },
+        {
+            "id": 3,
+            "step": "Maltoserast",
+            "temperature": 62,
+            "heating": "control",
+            "stirring": "control",
+            "duration": 45,
+            "hysteresis": 0.5
+        },
+        {
+            "id": 4,
+            "step": "Verzuckerung",
+            "temperature": 71,
+            "heating": "control",
+            "stirring": "control",
+            "duration": 30,
+            "hysteresis": 0.5
+        },
+        {
+            "id": 5,
+            "step": "Abmaischen",
+            "temperature": 78,
+            "heating": "one_time",
+            "stirring": "control",
+            "duration": "wait",
+            "hysteresis": 0.5,
+            "alarm": [ 
+				{ "time": 5, "text": "Abmaischen starten!" } 
+			]
+        },
+        {
+            "id": 6,
+            "step": "Läuterruhe",
+            "temperature": 1,
+            "heating": "off",
+            "stirring": "off",
+            "duration": 20,
+            "alarm": [ 
+				{ "time": 20, "text": "Die Läuterung kann beginnen!" } 
+			]
+        },
+        {
+            "id": 7,
+            "step": "Mit 12l Nachguss läutern",
+            "temperature": 1,
+            "heating": "off",
+            "stirring": "off",
+            "duration": "wait"
+        },
+        {
+            "id": 8,
+            "step": "Kochen und Hopfengaben",
+            "temperature": 97,
+            "heating": "full",
+            "stirring": "off",
+            "duration": 70,
+            "hysteresis": 0.1,
+            "alarm": [
+                { "time": 60, "text": "Hopfengabe: Je 10g Cascade, Summit, Mosaic dazu geben!" }
+            ]
+        },
+        {
+            "id": 9,
+            "step": "Kühlung",
+            "temperature": 25,
+            "heating": "off",
+            "stirring": "off",
+            "duration": "wait",
+            "hysteresis": 0.1,
+            "alarm": [
+                { "time": 0, "text": "Wasser an und auf 25°C runter kühlen!" },
+                { "time": 30, "text": "Wasser aus bei 25°C!" }  
+            ]
+        }
+    ]
+}
+
