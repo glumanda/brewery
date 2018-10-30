@@ -16,7 +16,7 @@
             "step": "Eiweißrast",
             "temperature": 55,
             "heating": "control",
-            "stirring": "control",
+            "stirring": "full",
             "duration": 10,
             "hysteresis": 0.5
         },
@@ -25,7 +25,7 @@
             "step": "Maltoserast",
             "temperature": 62,
             "heating": "control",
-            "stirring": "control",
+            "stirring": "full",
             "duration": 45,
             "hysteresis": 0.5
         },
@@ -34,7 +34,7 @@
             "step": "Verzuckerung",
             "temperature": 71,
             "heating": "control",
-            "stirring": "control",
+            "stirring": "full",
             "duration": 30,
             "hysteresis": 0.5
         },
@@ -43,7 +43,7 @@
             "step": "Abmaischen",
             "temperature": 78,
             "heating": "control",
-            "stirring": "control",
+            "stirring": "full",
             "duration": 10,
             "hysteresis": 0.5,
             "alarm": [10] 
