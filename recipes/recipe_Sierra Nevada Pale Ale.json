@@ -35,11 +35,15 @@
         },
         {
             "id": 5,
-            "step": "Abmaischen",
+            "step": "Abmaischen nach 10 min",
             "temperature": 78,
             "heating": "control",
-            "duration": 10,
-            "alarm": [10] 
+            "stirring": "full",
+            "duration": "wait",
+            "hysteresis": 0.5,
+            "alarm": [ 
+				{ "time": 10, "text": "Abmaischen starten!" } 
+			]
         },
         {
             "id": 6,

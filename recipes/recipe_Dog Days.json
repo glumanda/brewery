@@ -54,9 +54,9 @@
         },
         {
             "id": 6,
-            "step": "Abmaischen nach 10min",
+            "step": "Abmaischen nach 10 min",
             "temperature": 78,
-            "heating": "one_time",
+            "heating": "control",
             "stirring": "full",
             "duration": "wait",
             "hysteresis": 0.5,
