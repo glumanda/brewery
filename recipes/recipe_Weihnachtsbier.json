@@ -1,17 +1,17 @@
-{
+    {
     "name": "Weihnachtsbier",
     "comment": "http://meinsudhaus.de/bier-rezepte/obergaerige-biere/weihnachtsbier",
     "steps": [
         {
             "id": 1,
-            "step": "Mit 12l einmaischen",
+            "step": "Mit 21l einmaischen",
             "temperature": 45,
             "heating": "one_time",
             "stirring": "full",
             "duration": "wait",
             "alarm": [ 
-				{ "time": 0, "text": "Einmaischen starten!" } 
-			]
+                { "time": 0, "text": "Einmaischen starten!" } 
+            ]
         },
         {
             "id": 2,
@@ -47,7 +47,10 @@
             "heating": "control",
             "stirring": "full",
             "duration": "wait",
-            "hysteresis": 0.5
+            "hysteresis": 0.5,
+            "alarm": [ 
+                { "time": 0, "text": "Jodprüfung vornehmen!" } 
+            ]
         },
         {
             "id": 6,
@@ -58,8 +61,8 @@
             "duration": "wait",
             "hysteresis": 0.5,
             "alarm": [ 
-				{ "time": 10, "text": "Abmaischen starten!" } 
-			]
+                { "time": 10, "text": "Abmaischen starten!" } 
+            ]
         },
         {
             "id": 7,
@@ -69,12 +72,12 @@
             "stirring": "off",
             "duration": 20,
             "alarm": [ 
-				{ "time": 20, "text": "Die Läuterung kann beginnen!" } 
-			]
+                { "time": 20, "text": "Die Läuterung kann beginnen!" } 
+            ]
         },
         {
             "id": 8,
-            "step": "Mit 6l Nachguss läutern",
+            "step": "Mit 13l Nachguss läutern",
             "temperature": 1,
             "heating": "off",
             "stirring": "off",
@@ -89,8 +92,8 @@
             "duration": 75,
             "hysteresis": 0.1,
             "alarm": [
-                { "time": 10, "text": "Hopfengabe 1: Bitte 8g Perle dazu geben!" },
-                { "time": 70, "text": "Hopfengabe 1: Bitte 6g Mittelfrüh dazu geben!" }
+                { "time": 10, "text": "Hopfengabe 1: Bitte 15g Perle dazu geben!" },
+                { "time": 70, "text": "Hopfengabe 1: Bitte 12g Mittelfrüh dazu geben!" }
             ]
         },
         {
@@ -108,4 +111,3 @@
         }
     ]
 }
-
