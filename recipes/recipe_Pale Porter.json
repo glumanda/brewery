@@ -1,0 +1,95 @@
+    {
+    "name": "Pale Porter",
+    "comment": "http://meinsudhaus.de/bier-rezepte/obergaerige-biere/pale-porter/",
+    "steps": [
+        {
+            "id": 1,
+            "step": "Mit 21l einmaischen",
+            "temperature": 40,
+            "heating": "one_time",
+            "stirring": "full",
+            "duration": "wait",
+            "alarm": [ 
+                { "time": 0, "text": "Einmaischen starten!" } 
+            ]
+        },
+        {
+            "id": 2,
+            "step": "Maischerast",
+            "temperature": 66,
+            "heating": "control",
+            "stirring": "full",
+            "duration": 90,
+            "hysteresis": 0.5
+        },
+        {
+            "id": 3,
+            "step": "Jod Prüfung",
+            "temperature": 66,
+            "heating": "control",
+            "stirring": "full",
+            "duration": "wait",
+            "hysteresis": 0.5,
+            "alarm": [ 
+                { "time": 0, "text": "Jodprüfung vornehmen!" } 
+            ]
+        },
+        {
+            "id": 4,
+            "step": "Abmaischen nach 10 min",
+            "temperature": 78,
+            "heating": "control",
+            "stirring": "full",
+            "duration": "wait",
+            "hysteresis": 0.5,
+            "alarm": [ 
+                { "time": 10, "text": "Abmaischen starten!" } 
+            ]
+        },
+        {
+            "id": 5,
+            "step": "Läuterruhe",
+            "temperature": 1,
+            "heating": "off",
+            "stirring": "off",
+            "duration": 20,
+            "alarm": [ 
+                { "time": 20, "text": "Die Läuterung kann beginnen!" } 
+            ]
+        },
+        {
+            "id": 6,
+            "step": "Mit 13l Nachguss läutern",
+            "temperature": 1,
+            "heating": "off",
+            "stirring": "off",
+            "duration": "wait"
+        },
+        {
+            "id": 7,
+            "step": "Kochen und Hopfengaben",
+            "temperature": 97,
+            "heating": "full",
+            "stirring": "off",
+            "duration": 75,
+            "hysteresis": 0.1,
+            "alarm": [
+                { "time": 5, "text": "Hopfengabe 1: 48g Fuggle dazugeben!" },
+                { "time": 70, "text": "Hopfengabe 2: 20g East Kent Golding dazugeben!" }
+            ]
+        },
+        {
+            "id": 8,
+            "step": "Kühlung",
+            "temperature": 25,
+            "heating": "off",
+            "stirring": "off",
+            "duration": "wait",
+            "hysteresis": 0.1,
+            "alarm": [
+                { "time": 0, "text": "Wasser an und auf 25°C runter kühlen!" },
+                { "time": 30, "text": "Wasser aus bei 25°C!" }  
+            ]
+        }
+    ]
+}
