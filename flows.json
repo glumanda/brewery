@@ -87,8 +87,8 @@
         "protocol": "http",
         "database": "brewery",
         "name": "",
-        "usetls": false,
-        "tls": ""
+        "usetls": true,
+        "tls": "5c6624c5.d9c1fc"
     },
     {
         "id": "cbad4bec.ed7c88",
@@ -253,6 +253,20 @@
         "disp": false,
         "width": "6",
         "collapse": false
+    },
+    {
+        "id": "5c6624c5.d9c1fc",
+        "type": "tls-config",
+        "z": "",
+        "name": "nodesathome",
+        "cert": "",
+        "key": "",
+        "ca": ".node-red/ssl/ca-root-nodesathome.pem",
+        "certname": "",
+        "keyname": "",
+        "caname": "",
+        "servername": "",
+        "verifyservercert": true
     },
     {
         "id": "e9c6e592.9bfc78",
@@ -456,7 +470,7 @@
         "order": 4,
         "width": 0,
         "height": 0,
-        "passthru": false,
+        "passthru": true,
         "label": "Start",
         "tooltip": "",
         "color": "green",
@@ -571,7 +585,7 @@
         "name": "",
         "pretty": false,
         "x": 1030,
-        "y": 860,
+        "y": 920,
         "wires": [
             [
                 "ab315bed.9c0268",
@@ -1330,7 +1344,7 @@
         "repair": false,
         "outputs": 1,
         "x": 230,
-        "y": 720,
+        "y": 760,
         "wires": [
             [
                 "de7cf0b2.2f5e1"
@@ -1360,7 +1374,7 @@
         "seg1": "0",
         "seg2": "78",
         "x": 610,
-        "y": 1280,
+        "y": 1340,
         "wires": []
     },
     {
@@ -1390,7 +1404,7 @@
         "to": "",
         "reg": false,
         "x": 420,
-        "y": 1280,
+        "y": 1340,
         "wires": [
             [
                 "9c95505d.7daed",
@@ -1407,7 +1421,7 @@
         "action": "obj",
         "pretty": false,
         "x": 250,
-        "y": 1280,
+        "y": 1340,
         "wires": [
             [
                 "6cb67117.59fcd",
@@ -1425,7 +1439,7 @@
         "qos": "0",
         "broker": "faf25434.0c0ff8",
         "x": 110,
-        "y": 1280,
+        "y": 1340,
         "wires": [
             [
                 "b3413c87.118a4"
@@ -1439,7 +1453,7 @@
         "name": "Temperatur Nachguss",
         "info": "",
         "x": 160,
-        "y": 1240,
+        "y": 1300,
         "wires": []
     },
     {
@@ -1479,7 +1493,7 @@
         "useOldStyle": false,
         "outputs": 1,
         "x": 590,
-        "y": 1240,
+        "y": 1300,
         "wires": [
             []
         ]
@@ -1504,7 +1518,7 @@
         "to": "",
         "reg": false,
         "x": 290,
-        "y": 1160,
+        "y": 1220,
         "wires": [
             [
                 "78150771.b64318",
@@ -1533,7 +1547,7 @@
         "to": "",
         "reg": false,
         "x": 300,
-        "y": 1200,
+        "y": 1260,
         "wires": [
             [
                 "9c95505d.7daed",
@@ -1612,7 +1626,7 @@
         "oldrc": false,
         "name": "ls",
         "x": 410,
-        "y": 860,
+        "y": 920,
         "wires": [
             [
                 "3c92176.446fbe8"
@@ -1639,7 +1653,7 @@
         "payloadType": "str",
         "topic": "",
         "x": 120,
-        "y": 860,
+        "y": 920,
         "wires": [
             [
                 "54f7cd25.95ea64"
@@ -1668,7 +1682,7 @@
         "payload": "",
         "topic": "",
         "x": 670,
-        "y": 860,
+        "y": 920,
         "wires": [
             [
                 "76c067b2.5c93c8"
@@ -1684,7 +1698,7 @@
         "outputs": 1,
         "noerr": 0,
         "x": 540,
-        "y": 860,
+        "y": 920,
         "wires": [
             [
                 "5dd2bfc7.a568f"
@@ -1701,7 +1715,7 @@
         "chunk": false,
         "sendError": false,
         "x": 910,
-        "y": 860,
+        "y": 920,
         "wires": [
             [
                 "bf6dda35.f9bd58"
@@ -1735,7 +1749,7 @@
         "to": "",
         "reg": false,
         "x": 790,
-        "y": 860,
+        "y": 920,
         "wires": [
             [
                 "ade0bbe8.4833f8"
@@ -1765,7 +1779,7 @@
         "name": "Rezeptauswahl",
         "info": "",
         "x": 140,
-        "y": 820,
+        "y": 880,
         "wires": []
     },
     {
@@ -1813,7 +1827,7 @@
         "name": "Akkuüberwachung",
         "info": "",
         "x": 150,
-        "y": 1480,
+        "y": 1540,
         "wires": []
     },
     {
@@ -2083,7 +2097,7 @@
             "4591e583.8d859c"
         ],
         "x": 175,
-        "y": 900,
+        "y": 960,
         "wires": [
             [
                 "54f7cd25.95ea64"
@@ -2207,7 +2221,7 @@
         "format": "{{msg.payload}}",
         "layout": "col-center",
         "x": 130,
-        "y": 1000,
+        "y": 1060,
         "wires": []
     },
     {
@@ -2369,7 +2383,7 @@
         "to": "",
         "reg": false,
         "x": 420,
-        "y": 1360,
+        "y": 1420,
         "wires": [
             [
                 "f1a8370f.ff8078",
@@ -2414,7 +2428,7 @@
         "useOldStyle": false,
         "outputs": 2,
         "x": 590,
-        "y": 1320,
+        "y": 1380,
         "wires": [
             [],
             []
@@ -2443,7 +2457,7 @@
         "seg1": "0",
         "seg2": "78",
         "x": 610,
-        "y": 1360,
+        "y": 1420,
         "wires": []
     },
     {
@@ -2483,7 +2497,7 @@
         "useOldStyle": false,
         "outputs": 2,
         "x": 590,
-        "y": 1480,
+        "y": 1540,
         "wires": [
             [],
             []
@@ -2512,7 +2526,7 @@
         "seg1": "3.6",
         "seg2": "3.8",
         "x": 600,
-        "y": 1520,
+        "y": 1580,
         "wires": []
     },
     {
@@ -2542,7 +2556,7 @@
         "to": "",
         "reg": false,
         "x": 420,
-        "y": 1520,
+        "y": 1580,
         "wires": [
             [
                 "bdf8e81f.e29908",
@@ -2557,7 +2571,7 @@
         "name": "",
         "pretty": false,
         "x": 290,
-        "y": 1520,
+        "y": 1580,
         "wires": [
             [
                 "b9ce488f.b25488"
@@ -2573,7 +2587,7 @@
         "qos": "0",
         "broker": "faf25434.0c0ff8",
         "x": 107,
-        "y": 1520,
+        "y": 1580,
         "wires": [
             [
                 "a846db59.38ad18"
@@ -2620,7 +2634,7 @@
         "format": "{{msg.payload}}",
         "layout": "col-center",
         "x": 130,
-        "y": 1040,
+        "y": 1100,
         "wires": []
     },
     {
@@ -2630,7 +2644,7 @@
         "name": "Platzhalter für Steuerung und Temperatur",
         "info": "",
         "x": 220,
-        "y": 960,
+        "y": 1020,
         "wires": []
     },
     {
@@ -2640,7 +2654,7 @@
         "name": "Nachguss",
         "info": "",
         "x": 126,
-        "y": 1120,
+        "y": 1180,
         "wires": []
     },
     {
@@ -2662,7 +2676,7 @@
         "payloadType": "str",
         "topic": "",
         "x": 116,
-        "y": 1160,
+        "y": 1220,
         "wires": [
             [
                 "de32406.7ae35c",
@@ -2679,7 +2693,7 @@
         "outputs": 2,
         "noerr": 0,
         "x": 650,
-        "y": 1420,
+        "y": 1480,
         "wires": [
             [
                 "835f9cba.217cd"
@@ -2704,7 +2718,7 @@
             "c838fc7e.25bbd"
         ],
         "x": 755,
-        "y": 1500,
+        "y": 1560,
         "wires": []
     },
     {
@@ -2729,7 +2743,7 @@
         "type": "inject",
         "z": "4018cef4.755f3",
         "name": "id",
-        "topic": "FF0115231704",
+        "topic": "",
         "payload": "",
         "payloadType": "date",
         "repeat": "5",
@@ -2772,7 +2786,7 @@
         "name": "stirrer",
         "pin": "16",
         "set": true,
-        "level": "1",
+        "level": "0",
         "freq": "",
         "out": "out",
         "x": 1370,
@@ -2786,8 +2800,8 @@
         "name": "heater",
         "pin": "18",
         "set": true,
-        "level": "1",
-        "freq": "",
+        "level": "0",
+        "freq": "100",
         "out": "out",
         "x": 1370,
         "y": 440,
@@ -2803,7 +2817,7 @@
                 "t": "set",
                 "p": "payload",
                 "pt": "msg",
-                "to": "msg.payload = \"ON\" ? false : (msg.payload = \"OFF\" ? true : null )",
+                "to": "msg.payload = \"ON\" ? true: (msg.payload = \"OFF\" ? false : null )",
                 "tot": "jsonata"
             }
         ],
@@ -2830,7 +2844,7 @@
                 "t": "set",
                 "p": "payload",
                 "pt": "msg",
-                "to": "msg.payload = \"ON\" ? false : (msg.payload = \"OFF\" ? true : null )",
+                "to": "msg.payload = \"ON\" ? true: (msg.payload = \"OFF\" ? false : null )",
                 "tot": "jsonata"
             }
         ],
@@ -2867,7 +2881,7 @@
         "debounce": "25",
         "read": true,
         "x": 110,
-        "y": 720,
+        "y": 760,
         "wires": [
             [
                 "7b400b22.c1ba24"
@@ -2884,7 +2898,7 @@
         "debounce": "25",
         "read": true,
         "x": 110,
-        "y": 760,
+        "y": 800,
         "wires": [
             [
                 "91979a18.ea1018"
@@ -2909,7 +2923,7 @@
         "repair": false,
         "outputs": 1,
         "x": 230,
-        "y": 760,
+        "y": 800,
         "wires": [
             [
                 "e2d3c53e.006678"
@@ -3073,7 +3087,7 @@
             "fadd3ed.9095bc"
         ],
         "x": 755,
-        "y": 1540,
+        "y": 1600,
         "wires": []
     },
     {
@@ -3193,7 +3207,7 @@
             "a29cbec4.2d747"
         ],
         "x": 1135,
-        "y": 860,
+        "y": 920,
         "wires": []
     },
     {
@@ -3329,7 +3343,7 @@
             }
         ],
         "active": true,
-        "x": 1260,
+        "x": 1259,
         "y": 60,
         "wires": []
     },
@@ -3353,7 +3367,7 @@
         "to": "",
         "reg": false,
         "x": 280,
-        "y": 860,
+        "y": 920,
         "wires": [
             [
                 "5aeca36a.ec81dc"
@@ -3403,6 +3417,48 @@
             [],
             [],
             []
+        ]
+    },
+    {
+        "id": "21311059.8eabe",
+        "type": "rpi-gpio in",
+        "z": "4018cef4.755f3",
+        "name": "start",
+        "pin": "32",
+        "intype": "up",
+        "debounce": "25",
+        "read": true,
+        "x": 110,
+        "y": 720,
+        "wires": [
+            [
+                "d0933ee6.154fa"
+            ]
+        ]
+    },
+    {
+        "id": "d0933ee6.154fa",
+        "type": "switch",
+        "z": "4018cef4.755f3",
+        "name": "?on",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "0",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 230,
+        "y": 720,
+        "wires": [
+            [
+                "b61f3237.8e837"
+            ]
         ]
     }
 ]
