@@ -122,7 +122,7 @@
         "id": "cbad4bec.ed7c88",
         "type": "ui_group",
         "z": "",
-        "name": "Temperatur 1 (weiß)",
+        "name": "Temperatur 1 (blau)",
         "tab": "fdf6c30b.7cd49",
         "order": 1,
         "disp": true,
@@ -1438,7 +1438,7 @@
         "max": "90",
         "colors": [
             "#0000ff",
-            "#ffffff",
+            "#0292b0",
             "#ca3838"
         ],
         "seg1": "0",
