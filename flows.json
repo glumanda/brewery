@@ -35,6 +35,13 @@
         "info": ""
     },
     {
+        "id": "2b73de56.557c42",
+        "type": "tab",
+        "label": "notification",
+        "disabled": false,
+        "info": ""
+    },
+    {
         "id": "acc8977e.fd0588",
         "type": "tab",
         "label": "system",
@@ -46,10 +53,11 @@
         "type": "mqtt-broker",
         "z": "",
         "name": "",
-        "broker": "nodesathome2",
-        "port": "1883",
+        "broker": "nodesathome1",
+        "port": "8883",
+        "tls": "5c6624c5.d9c1fc",
         "clientid": "",
-        "usetls": false,
+        "usetls": true,
         "compatmode": true,
         "keepalive": "60",
         "cleansession": true,
@@ -110,7 +118,7 @@
         "id": "80ff57a1.b1f1b8",
         "type": "influxdb",
         "z": "",
-        "hostname": "nodesathome2",
+        "hostname": "nodesathome1",
         "port": "8086",
         "protocol": "http",
         "database": "brewery",
@@ -297,6 +305,58 @@
         "verifyservercert": true
     },
     {
+        "id": "7ff4fe7a.3ac32",
+        "type": "ui_group",
+        "z": "",
+        "name": "CPU",
+        "tab": "69a8028b.adbe6c",
+        "order": 2,
+        "disp": true,
+        "width": "6",
+        "collapse": true
+    },
+    {
+        "id": "9101803f.bdb66",
+        "type": "ui_group",
+        "z": "",
+        "name": "SD card",
+        "tab": "69a8028b.adbe6c",
+        "order": 4,
+        "disp": true,
+        "width": "6",
+        "collapse": true
+    },
+    {
+        "id": "975ff8f3.be83d8",
+        "type": "ui_group",
+        "z": "",
+        "name": "Memory",
+        "tab": "69a8028b.adbe6c",
+        "order": 3,
+        "disp": true,
+        "width": "6",
+        "collapse": true
+    },
+    {
+        "id": "bb7c5f7a.88cd1",
+        "type": "ui_group",
+        "z": "",
+        "name": "Buttons",
+        "tab": "69a8028b.adbe6c",
+        "order": 1,
+        "disp": false,
+        "width": "3",
+        "collapse": false
+    },
+    {
+        "id": "69a8028b.adbe6c",
+        "type": "ui_tab",
+        "z": "",
+        "name": "System",
+        "icon": "settings",
+        "order": 2
+    },
+    {
         "id": "e9c6e592.9bfc78",
         "type": "comment",
         "z": "4018cef4.755f3",
@@ -311,7 +371,7 @@
         "type": "function",
         "z": "4018cef4.755f3",
         "name": "2-point-controller",
-        "func": "\n// junand 19.09.2017\n\n//----------------------------------------------------------------\n\nconst DEFAULT_RECIPE_NAME = \"unknown\";\nconst DEFAULT_BREW_START = \"unknown\";\nconst DEFAULT_STEP_DESCIPTION = \"unknown\";\nconst DEFAULT_TEMP = 1;\nconst DEFAULT_HEATING = \"control\";\nconst DEFAULT_STIRRING = \"off\";\nconst DEFAULT_HYSTERESIS = 1;\nconst DEFAULT_DURATION = 1;\nconst DEFAULT_HEATER_ON = false;\nconst DEFAULT_STIRRER_ON = false;\n\nvar recipeName = context.get ( \"recipeName\" );\nvar brewStart = context.get ( \"brewStart\" );\nvar stepDescription = context.get ( \"stepDescription\" );\nvar targetTemp = context.get ( \"targetTemp\" ) || DEFAULT_TEMP;\nvar brewTemp = context.get ( \"brewTemp\" ) || DEFAULT_TEMP;\nvar heatingMode = context.get ( \"heating\" ) || DEFAULT_HEATING;\nvar stirringMode = context.get ( \"stirring\" ) || DEFAULT_STIRRING;\nvar hysteresis = context.get ( \"hysteresis\" ) || DEFAULT_HYSTERESIS;\nvar periodLength = context.get ( \"periodLength\" ) || DEFAULT_DURATION;\nvar alarm = context.get ( \"alarm\" );\n\nconst PERIOD_INCREMENT = 1; // 30;                            // <- accelerate time here\nconst PERIOD_ZERO = { min: 0, sec: 0 };\nvar periodCount = context.get ( \"periodCount\" ) || PERIOD_ZERO;\nvar heaterOn = context.get ( \"heaterOn\" ) || DEFAULT_HEATER_ON;\nvar stirrerOn = context.get ( \"stirrerOn\" ) || DEFAULT_STIRRER_ON;\n\nconst STATE_IDLE = \"idle\";\nconst STATE_START = \"start\";\nconst STATE_STARTING = \"starting\";\nconst STATE_PERIOD_STARTED = \"started\";\nconst STATE_PERIOD_FINISHED = \"finished\";\n\nconst STATE_COLOR = [];\nSTATE_COLOR [STATE_IDLE] = \"grey\";\nSTATE_COLOR [STATE_START] = \"white\";\nSTATE_COLOR [STATE_STARTING] = \"yellow\";\nSTATE_COLOR [STATE_PERIOD_STARTED] = \"green\";\nSTATE_COLOR [STATE_PERIOD_FINISHED] = \"black\";\n\nconst LCD_ALARM_MSG_DURATION = 5; //sec\nvar lcdAlarmPeriod = context.get ( \"alarmPeriod\" );\nvar lcdAlarmMsg = context.get ( \"alarmMsg\" );\nvar lcdSparge = context.get ( \"lcdSparge\" ) || false;\n\nvar spargeTemp = context.get ( \"spargeTemp\" );\n\n//----------------------------------------------------------------\n\nvar state = context.get ( \"state\" ) || STATE_IDLE;\n\nif ( state == STATE_IDLE ) {\n    node.status ( { fill: STATE_COLOR [state], shape: \"dot\", text: state } );\n}\n\n//----------------------------------------------------------------\n\nfunction incPeriodCount ( cnt ) {\n    cnt.sec += PERIOD_INCREMENT;\n    if ( cnt.sec > 59 ) {\n        cnt.sec = 0;\n        cnt.min++;\n    }\n    return cnt;\n}\n\n//----------------------------------------------------------------\n\nfunction createHeaterMessage ( onOff ) { return { payload: onOff }; }\n\nfunction createStirrerMessage ( onOff ) { return { payload: onOff }; }\n\nfunction createStepMessage () { return { topic: \"next\", payload: \"x\" }; }\n\nfunction createPeriodeMessage ( count ) { return { payload: count.min + \":\" + (\"0\" + count.sec).slice ( -2 ) }; }\n\nfunction createAlarmMessage ( notification ) { return { payload: notification }; }\n\nfunction createAudioMessage ( audio ) { return { payload: audio };\n}\n\nfunction createChartMessage ( temp, target ) { \n    if ( target ) {\n        return [\n            { topic: \"value\", payload: temp },\n            { topic: \"target\", payload: target }\n        ];\n    }\n    else {\n        return { topic: \"value\", payload: temp };\n    }\n}\n\nfunction createInfluxMessage () {\n    return {\n        measurement: \"°C\",\n        payload: [\n            // fields\n            {\n                state: state,\n                step: stepDescription,\n                brewTemp: brewTemp,\n                target: targetTemp,\n                heater: heaterOn ? \"on\" : \"off\",\n                stirrer: stirrerOn ? \"on\" : \"off\",\n                counterMin: periodCount.min,\n                counterSec: periodCount.sec,\n            },\n            // tags\n            {\n                recipe: recipeName,\n                brewStart: brewStart\n            }\n        ]\n    };\n}\n\nfunction centerLine ( c1, s, c2 ) {\n    \n    len = 18;\n    \n    if ( s.length > len ) {\n        s = s.slice ( 0, len );\n    }\n\n    var l1 = ((len - s.length - 0.5) / 2).toFixed ( 0 );\n    var l2 = len - s.length - l1;\n    \n    return c1 + \" \".repeat ( l1 ) + s + \" \".repeat ( l2 ) + c2;\n    \n}\n\nfunction createLcdMessage ( step ) {\n    \n    //node.warn ( \"[LCD] topic=\" + msg.topic + \" state=\" + state + \" recipe=\" + recipeName + \" heaterOn=\" + heaterOn + \" stirrerOn=\" + stirrerOn + \" step=\" + step + \" stepDescription=\" + stepDescription + \" brewTemp=\" + brewTemp + \" targetTemp=\" + targetTemp );\n    \n    if ( lcdSparge ) {\n        return {\n            payload: {\n                msgs: [\n                    { msg: \"Nachguss\" },\n                    { msg: \"                   \" },\n                    { msg: \"t1 - blau: \" + (spargeTemp.temperature1.toFixed ( 1 ) + \"ßC\" || \"--\") },\n                    { msg: \"t2 - gelb: \" + (spargeTemp.temperature2.toFixed ( 1 ) + \"ßC\" || \"--\") },\n                ]\n            }\n        };\n    }\n    else {\n        if ( state == STATE_IDLE ) {\n            return {\n                payload: {\n                    msgs: [\n                        { msg: \"####################\" },\n                        { msg: \"#   PiBrew Ready   #\" },\n                        { msg: centerLine ( \"#\", recipeName || \"\", \"#\" ) },\n                        { msg: \"####################\" },\n                    ]\n                }\n            };\n        }\n        else if ( lcdAlarmMsg ) {\n            return {\n                payload: {\n                    msgs: [\n                        { msg: \"!!!!!!!!!!!!!!!!!!!!\" },\n                        { msg: lcdAlarmMsg, center: true },\n                        { msg: \" \" },\n                        { msg: periodCount.min + \":\" + (\"0\" + periodCount.sec).slice ( -2 ) + \" min\", center: true }\n                    ]\n                }\n            };\n        }\n        else {\n            return {\n                payload: {\n                    msgs: [\n                        { msg: recipeName || DEFAULT_RECIPE_NAME },\n                        { msg: step ? step : (stepDescription || DEFAULT_STEP_DESCIPTION).slice ( 0, 20 ) },\n                        { msg: centerLine ( heaterOn ? \"+\" : \" \", brewTemp.toFixed ( 1 ) + \"ßC -> \" + targetTemp.toFixed ( 1 ) + \"ßC\", stirrerOn ? \"*\" : \" \" ) },\n                        { msg: periodCount.min + \":\" + (\"0\" + periodCount.sec).slice ( -2 ) + \" min\", center: true }\n                    ]\n                }\n            };\n        }\n    }\n}\n\n//----------------------------------------------------------------\n\nfunction setState ( newState ) {\n    state = newState;\n    context.set ( \"state\", state );\n    node.status ( { fill: STATE_COLOR [state], shape: \"dot\", text: state } );\n}\n\nfunction setHeaterOn ( value ) {\n    heaterOn = value;\n    context.set ( \"heaterOn\", heaterOn );\n}\n\nfunction setStirrerOn ( value ) {\n    stirrerOn = value;\n    context.set ( \"stirrerOn\", stirrerOn );\n}\n\n//----------------------------------------------------------------\n\nif ( false && msg.topic != \"tick\" && msg.topic != \"FF2D57A41605\" ) {\n    node.warn ( \"[EVENT] topic=\" + msg.topic + \" state=\" + state + \" min=\" + periodCount.min + \" sec=\" + periodCount.sec );\n}\n\nif ( msg.topic == \"finished\" ) {\n    setState ( STATE_IDLE );\n    setHeaterOn ( false );\n    setStirrerOn ( false );\n    return [createLcdMessage (), createHeaterMessage ( \"OFF\" ), createStirrerMessage ( \"OFF\" )];\n}\nelse if ( msg.topic == \"recipe\" ) {\n    recipeName = msg.recipeName;\n    context.set ( \"recipeName\", recipeName );\n    setState ( STATE_IDLE );\n    setHeaterOn ( false );\n    setStirrerOn ( false );\n    return [createLcdMessage (), createHeaterMessage ( \"OFF\" ), createStirrerMessage ( \"OFF\" )];\n}\nelse if ( msg.topic == \"stop\" ) {\n    setState ( STATE_IDLE );\n    setHeaterOn ( false );\n    setStirrerOn ( false );\n    return [createLcdMessage (), createHeaterMessage ( \"OFF\" ), createStirrerMessage ( \"OFF\" )];\n}\nelse if ( msg.topic == \"start\" ) {\n    \n    recipeName = msg.recipeName || recipeName || DEFAULT_RECIPE_NAME;\n    brewStart = msg.brewStart || brewStart || DEFAULT_BREW_START;\n    stepDescription = msg.step || step || DEFAULT_STEP_DESCIPTION;\n    var t = msg.temperature || DEFAULT_TEMP; \n    if ( t > 0 && t < 105 ) targetTemp = t;\n    heatingMode = msg.heating || heatingMode || DEFAULT_HEATING;\n    stirringMode = msg.stirring || stirringMode || DEFAULT_STIRRING;\n    var h = msg.hysteresis || DEFAULT_HYSTERESIS;\n    if ( h > 0 && h < 10 ) hysteresis = h;\n    var p = msg.duration || DEFAULT_DURATION;\n    if ( p === \"wait\" || p > 0 ) periodLength = p;\n\n    //node.warn ( \"[START] mode=\" + heatingMode + \" stirrer=\" + stirringMode + \" t=\" + targetTemp + \" h=\" + hysteresis + \" p=\" + periodLength );\n    \n    context.set ( \"recipeName\", recipeName );\n    context.set ( \"brewStart\", brewStart );\n    context.set ( \"stepDescription\", stepDescription );\n    context.set ( \"targetTemp\", targetTemp );\n    context.set ( \"heating\", heatingMode );\n    context.set ( \"stirring\", stirringMode );\n    context.set ( \"hysteresis\", hysteresis );\n    context.set ( \"periodLength\", periodLength );\n    context.set ( \"alarm\", msg.alarm );\n    \n    context.set ( \"periodCount\", PERIOD_ZERO );\n\n    setState ( STATE_START );\n    \n    return [createLcdMessage (), null, null, null, createPeriodeMessage ( PERIOD_ZERO )];\n\n}\nelse if ( msg.topic == \"hysteresis\" ) {\n    context.set ( \"hysteresis\", hysteresis );\n}\nelse if ( msg.topic == \"tick\" ) { // every sec\n    // check lcd alarm\n    if ( lcdAlarmPeriod && lcdAlarmPeriod > 0 ) {\n        lcdAlarmPeriod--;\n        context.set ( \"alarmPeriod\", lcdAlarmPeriod );\n    }\n    else {\n        lcdAlarmPeriod = null;\n        lcdAlarmMsg = null;\n        context.set ( \"alarmPeriod\", null );\n        context.set ( \"alarmMsg\", null );\n    }\n    // check for period length\n    if ( state == STATE_PERIOD_STARTED ) {\n        context.set ( \"periodCount\", incPeriodCount ( periodCount ) );\n        var alarmMsg = null;\n        var audioMsg = null;\n        if ( alarm ) {\n            for ( var i = 0; i < alarm.length; i++ ) {\n                var alarmtime = null;\n                if ( typeof ( alarm [i] ) === \"number\" ) alarmtime = alarm [i];\n                else alarmtime = alarm [i].time;\n                if ( periodCount.min == alarmtime ) {\n                    if ( periodCount.sec === 0 || alarmtime === 0 && periodCount.sec === PERIOD_INCREMENT ) { // exception for 00:00, 1 sec later\n                        lcdAlarmMsg = alarm [i].text;\n                        context.set ( \"alarmMsg\", lcdAlarmMsg );\n                        lcdAlarmPeriod = LCD_ALARM_MSG_DURATION;\n                        context.set ( \"alarmPeriod\", lcdAlarmPeriod );\n                        alarmMsg = createAlarmMessage ( lcdAlarmMsg );\n                        audioMsg = createAudioMessage ( \"ring\" );\n                        break;\n                    }\n                }\n            }\n        }\n        if ( periodLength == \"wait\" ) {} // do nothing, only tick and maybe ring\n        else {\n            if ( periodCount.min >= periodLength ) {\n                setState ( STATE_PERIOD_FINISHED );\n                context.set ( \"targetTemp\", null );\n                setHeaterOn ( false );\n                setStirrerOn ( false );\n                if ( !audioMsg ) audioMsg = createAudioMessage ( \"tweet2x\" );\n                return [createLcdMessage (), createHeaterMessage ( \"OFF\" ), createStirrerMessage ( \"OFF\" ), null, createPeriodeMessage ( periodCount ), null, createStepMessage (), alarmMsg, audioMsg]; \n            }\n        }\n        \n        //node.warn ( \"[TICK] p=\" + periodLength + \" min=\" + periodCount.min + \" sec=\" + periodCount.sec + \" state=\" + state );\n\n        // tick\n        return [createLcdMessage (), null, null, null, createPeriodeMessage ( periodCount ), null, null, alarmMsg, audioMsg];\n    }\n}\nelse if ( msg.topic == \"nodes@home/control/ssr/brewery/socket1\" ) {\n    setHeaterOn ( msg.payload == \"ON\" ? true : false );\n    return [createLcdMessage (), createHeaterMessage ( msg.payload )];\n}\nelse if ( msg.topic == \"nodes@home/control/ssr/brewery/socket2\" ) {\n    setStirrerOn ( msg.payload == \"ON\" ? true : false );\n    return [createLcdMessage (), null, createStirrerMessage ( msg.payload )];\n}\nelse if ( msg.topic == \"lcd\" ) {\n    lcdSparge = !lcdSparge;\n    context.set ( \"lcdSparge\", lcdSparge )\n    return [createLcdMessage ()];\n}\nelse if ( msg.topic == \"nodes@home/sensor/ds18b20/brewery/value/temperature\" ) {\n    context.set ( \"spargeTemp\", msg.payload );\n    return [createLcdMessage ()];\n}\nelse {\n    // temperature received\n    if ( state == STATE_IDLE ) {} // do nothing\n    else {\n        brewTemp = msg.payload;\n        context.set ( \"brewTemp\", brewTemp );\n        if ( state == STATE_PERIOD_FINISHED ) {\n            return [createLcdMessage (), null, null, createChartMessage ( brewTemp ), null, createInfluxMessage ()];\n        }\n        else {\n            \n            // special treatment for beginning a new step with same target temperature\n            if ( state == STATE_START ) {\n                if ( brewTemp >= targetTemp ) {\n                    setState ( STATE_PERIOD_STARTED );\n                }\n                else {\n                    setState ( STATE_STARTING );\n                }\n            }\n\n            var heaterMsg = null;\n            var stirrerMsg = null;\n            var alarmMsg = null;\n            var audioMsg = null;\n            var newHeaterOn = null;\n            var newStirrerOn = null;\n\n            if ( brewTemp >= targetTemp ) {\n                if ( heaterOn && heatingMode != \"full\" ) newHeaterOn = false;\n                if ( stirrerOn && stirringMode != \"full\" ) newStirrerOn = false;\n                if ( state == STATE_STARTING ) {\n                    setState ( STATE_PERIOD_STARTED );\n                    audioMsg = createAudioMessage ( \"tweet2x\" );\n                }\n            }\n\n            if ( heatingMode == \"off\" ) {\n                if ( heaterOn ) newHeaterOn = false;\n            }\n            else if ( heatingMode == \"one_time\" ) {\n                if ( state == STATE_STARTING ) {\n                    if ( !heaterOn ) newHeaterOn = true;\n                }\n            }\n            else if ( heatingMode == \"control\" ) {\n                if ( brewTemp <= targetTemp - hysteresis ) {\n                    if ( !heaterOn ) newHeaterOn = true;\n                }\n            }\n            else if ( heatingMode == \"full\" ) {\n                if ( !heaterOn ) newHeaterOn = true;\n            }\n            \n            if ( newHeaterOn !== null ) {\n                //node.warn ( \"switch heater from \" + heaterOn + \" to \" + newHeaterOn );                    \n                setHeaterOn ( newHeaterOn );\n                heaterMsg = createHeaterMessage ( newHeaterOn ? \"ON\" : \"OFF\" );\n                if ( !audioMsg ) audioMsg = createAudioMessage ( \"tweet\" );\n            }\n            \n            if ( stirringMode == \"off\" ) {\n                if ( stirrerOn ) newStirrerOn = false;\n            }\n            else if ( stirringMode == \"control\" ) {\n                if ( brewTemp <= targetTemp - hysteresis ) {\n                    if ( !stirrerOn ) newStirrerOn = true;\n                }\n            }\n            else if ( stirringMode == \"full\" ) {\n                if ( !stirrerOn ) newStirrerOn = true;\n            }\n            \n            if ( newStirrerOn !== null ) {\n                //node.warn ( \"switch stirrer from \" + stirrerOn + \" to \" + newStirrerOn );                    \n                setStirrerOn ( newStirrerOn );\n                stirrerMsg = createStirrerMessage ( newStirrerOn ? \"ON\" : \"OFF\" );\n            }\n\n            //node.warn ( \"[TEMP] heater=\" + heaterOn + \" newHeater=\" + newHeaterOn + \" mode=\" + heatingMode + \" p=\" + periodLength + \" min=\" + periodCount.min + \" sec=\" + periodCount.sec + \" state=\" + state );\n            \n            // on every temp, send target and data fields\n            return [createLcdMessage (), heaterMsg, stirrerMsg, createChartMessage ( brewTemp, targetTemp ), null, createInfluxMessage (), null, alarmMsg, audioMsg];\n            \n        }\n    }\n}\n",
+        "func": "\n// junand 19.09.2017\n\n//----------------------------------------------------------------\n\nconst DEFAULT_RECIPE_NAME = \"unknown\";\nconst DEFAULT_BREW_START = \"unknown\";\nconst DEFAULT_STEP_DESCIPTION = \"unknown\";\nconst DEFAULT_TEMP = 1;\nconst DEFAULT_HEATING = \"control\";\nconst DEFAULT_STIRRING = \"off\";\nconst DEFAULT_HYSTERESIS = 1;\nconst DEFAULT_DURATION = 1;\nconst DEFAULT_HEATER_ON = false;\nconst DEFAULT_STIRRER_ON = false;\n\nvar recipeName = context.get ( \"recipeName\" );\nvar brewStart = context.get ( \"brewStart\" );\nvar stepDescription = context.get ( \"stepDescription\" );\nvar targetTemp = context.get ( \"targetTemp\" ) || DEFAULT_TEMP;\nvar brewTemp = context.get ( \"brewTemp\" ) || DEFAULT_TEMP;\nvar heatingMode = context.get ( \"heating\" ) || DEFAULT_HEATING;\nvar stirringMode = context.get ( \"stirring\" ) || DEFAULT_STIRRING;\nvar hysteresis = context.get ( \"hysteresis\" ) || DEFAULT_HYSTERESIS;\nvar periodLength = context.get ( \"periodLength\" ) || DEFAULT_DURATION;\nvar alarm = context.get ( \"alarm\" );\n\nconst PERIOD_INCREMENT = 1; // 30;                            // <- accelerate time here\nconst PERIOD_ZERO = { min: 0, sec: 0 };\nvar periodCount = context.get ( \"periodCount\" ) || PERIOD_ZERO;\nvar heaterOn = context.get ( \"heaterOn\" ) || DEFAULT_HEATER_ON;\nvar stirrerOn = context.get ( \"stirrerOn\" ) || DEFAULT_STIRRER_ON;\n\nconst STATE_IDLE = \"idle\";\nconst STATE_START = \"start\";\nconst STATE_STARTING = \"starting\";\nconst STATE_PERIOD_STARTED = \"started\";\nconst STATE_PERIOD_FINISHED = \"finished\";\n\nconst STATE_COLOR = [];\nSTATE_COLOR [STATE_IDLE] = \"grey\";\nSTATE_COLOR [STATE_START] = \"white\";\nSTATE_COLOR [STATE_STARTING] = \"yellow\";\nSTATE_COLOR [STATE_PERIOD_STARTED] = \"green\";\nSTATE_COLOR [STATE_PERIOD_FINISHED] = \"black\";\n\nconst LCD_ALARM_MSG_DURATION = 5; //sec\nvar lcdAlarmPeriod = context.get ( \"alarmPeriod\" );\nvar lcdAlarmMsg = context.get ( \"alarmMsg\" );\nvar lcdSparge = context.get ( \"lcdSparge\" ) || false;\n\nvar spargeTemp = context.get ( \"spargeTemp\" );\n\n//----------------------------------------------------------------\n\nvar state = context.get ( \"state\" ) || STATE_IDLE;\n\nif ( state == STATE_IDLE ) {\n    node.status ( { fill: STATE_COLOR [state], shape: \"dot\", text: state } );\n}\n\n//----------------------------------------------------------------\n\nfunction incPeriodCount ( cnt ) {\n    cnt.sec += PERIOD_INCREMENT;\n    if ( cnt.sec > 59 ) {\n        cnt.sec = 0;\n        cnt.min++;\n    }\n    return cnt;\n}\n\n//----------------------------------------------------------------\n\nfunction createHeaterMessage ( onOff ) { return { payload: onOff }; }\n\nfunction createStirrerMessage ( onOff ) { return { payload: onOff }; }\n\nfunction createStepMessage () { return { topic: \"next\", payload: \"x\" }; }\n\nfunction createPeriodeMessage ( count ) { return { payload: count.min + \":\" + (\"0\" + count.sec).slice ( -2 ) }; }\n\nfunction createAlarmMessage ( notification ) { return { payload: notification }; }\n\nfunction createAudioMessage ( audio ) { return { payload: audio };\n}\n\nfunction createChartMessage ( temp, target ) { \n    if ( target ) {\n        return [\n            { topic: \"value\", payload: temp },\n            { topic: \"target\", payload: target }\n        ];\n    }\n    else {\n        return { topic: \"value\", payload: temp };\n    }\n}\n\nfunction createInfluxMessage () {\n    return {\n        measurement: \"°C\",\n        payload: [\n            // fields\n            {\n                state: state,\n                step: stepDescription,\n                brewTemp: brewTemp,\n                target: targetTemp,\n                heater: heaterOn ? \"on\" : \"off\",\n                stirrer: stirrerOn ? \"on\" : \"off\",\n                counterMin: periodCount.min,\n                counterSec: periodCount.sec,\n            },\n            // tags\n            {\n                recipe: recipeName,\n                brewStart: brewStart\n            }\n        ]\n    };\n}\n\nfunction centerLine ( c1, s, c2 ) {\n    \n    len = 18;\n    \n    if ( s.length > len ) {\n        s = s.slice ( 0, len );\n    }\n\n    var l1 = ((len - s.length - 0.5) / 2).toFixed ( 0 );\n    var l2 = len - s.length - l1;\n    \n    return c1 + \" \".repeat ( l1 ) + s + \" \".repeat ( l2 ) + c2;\n    \n}\n\nfunction createLcdMessage ( step ) {\n    \n    //node.warn ( \"[LCD] topic=\" + msg.topic + \" state=\" + state + \" recipe=\" + recipeName + \" heaterOn=\" + heaterOn + \" stirrerOn=\" + stirrerOn + \" step=\" + step + \" stepDescription=\" + stepDescription + \" brewTemp=\" + brewTemp + \" targetTemp=\" + targetTemp );\n    \n    if ( lcdSparge ) {\n        return {\n            payload: {\n                msgs: [\n                    { msg: \"Nachguss\" },\n                    { msg: \"                   \" },\n                    { msg: \"t1 - blau: \" + (spargeTemp.temperature1.toFixed ( 1 ) + \"ßC\" || \"--\") },\n                    { msg: \"t2 - gelb: \" + (spargeTemp.temperature2.toFixed ( 1 ) + \"ßC\" || \"--\") },\n                ]\n            }\n        };\n    }\n    else {\n        if ( state == STATE_IDLE ) {\n            return {\n                payload: {\n                    msgs: [\n                        { msg: \"####################\" },\n                        { msg: \"#   PiBrew Ready   #\" },\n                        { msg: centerLine ( \"#\", recipeName || \"\", \"#\" ) },\n                        { msg: \"####################\" },\n                    ]\n                }\n            };\n        }\n        else if ( lcdAlarmMsg ) {\n            var s1, s2;\n            if ( lcdAlarmMsg.length > 20 ) {\n                s1 = lcdAlarmMsg.slice ( 0, 20 );\n                s2 = lcdAlarmMsg.slice ( 20, 40 );\n            }\n            else {\n                s1 = lcdAlarmMsg;\n                s2 = \" \";\n            }\n            return {\n                payload: {\n                    msgs: [\n                        { msg: \"!!!!!!!!!!!!!!!!!!!!\" },\n                        { msg: s1 },\n                        { msg: s2 },\n                        { msg: periodCount.min + \":\" + (\"0\" + periodCount.sec).slice ( -2 ) + \" min\", center: true }\n                    ]\n                }\n            };\n        }\n        else {\n            return {\n                payload: {\n                    msgs: [\n                        { msg: recipeName || DEFAULT_RECIPE_NAME },\n                        { msg: step ? step : (stepDescription || DEFAULT_STEP_DESCIPTION).slice ( 0, 20 ) },\n                        { msg: centerLine ( heaterOn ? \"+\" : \" \", brewTemp.toFixed ( 1 ) + \"ßC -> \" + targetTemp.toFixed ( 1 ) + \"ßC\", stirrerOn ? \"*\" : \" \" ) },\n                        { msg: periodCount.min + \":\" + (\"0\" + periodCount.sec).slice ( -2 ) + \" min\", center: true }\n                    ]\n                }\n            };\n        }\n    }\n}\n\n//----------------------------------------------------------------\n\nfunction setState ( newState ) {\n    state = newState;\n    context.set ( \"state\", state );\n    node.status ( { fill: STATE_COLOR [state], shape: \"dot\", text: state } );\n}\n\nfunction setHeaterOn ( value ) {\n    heaterOn = value;\n    context.set ( \"heaterOn\", heaterOn );\n}\n\nfunction setStirrerOn ( value ) {\n    stirrerOn = value;\n    context.set ( \"stirrerOn\", stirrerOn );\n}\n\n//----------------------------------------------------------------\n\nif ( false && msg.topic != \"tick\" && msg.topic != \"FF2D57A41605\" ) {\n    node.warn ( \"[EVENT] topic=\" + msg.topic + \" state=\" + state + \" min=\" + periodCount.min + \" sec=\" + periodCount.sec );\n}\n\nif ( msg.topic == \"finished\" ) {\n    setState ( STATE_IDLE );\n    setHeaterOn ( false );\n    setStirrerOn ( false );\n    return [createLcdMessage (), createHeaterMessage ( \"OFF\" ), createStirrerMessage ( \"OFF\" )];\n}\nelse if ( msg.topic == \"recipe\" ) {\n    recipeName = msg.recipeName;\n    context.set ( \"recipeName\", recipeName );\n    setState ( STATE_IDLE );\n    setHeaterOn ( false );\n    setStirrerOn ( false );\n    return [createLcdMessage (), createHeaterMessage ( \"OFF\" ), createStirrerMessage ( \"OFF\" )];\n}\nelse if ( msg.topic == \"stop\" ) {\n    setState ( STATE_IDLE );\n    setHeaterOn ( false );\n    setStirrerOn ( false );\n    return [createLcdMessage (), createHeaterMessage ( \"OFF\" ), createStirrerMessage ( \"OFF\" )];\n}\nelse if ( msg.topic == \"start\" ) {\n    \n    recipeName = msg.recipeName || recipeName || DEFAULT_RECIPE_NAME;\n    brewStart = msg.brewStart || brewStart || DEFAULT_BREW_START;\n    stepDescription = msg.step || step || DEFAULT_STEP_DESCIPTION;\n    var t = msg.temperature || DEFAULT_TEMP; \n    if ( t > 0 && t < 105 ) targetTemp = t;\n    heatingMode = msg.heating || heatingMode || DEFAULT_HEATING;\n    stirringMode = msg.stirring || stirringMode || DEFAULT_STIRRING;\n    var h = msg.hysteresis || DEFAULT_HYSTERESIS;\n    if ( h > 0 && h < 10 ) hysteresis = h;\n    var p = msg.duration || DEFAULT_DURATION;\n    if ( p === \"wait\" || p > 0 ) periodLength = p;\n\n    //node.warn ( \"[START] mode=\" + heatingMode + \" stirrer=\" + stirringMode + \" t=\" + targetTemp + \" h=\" + hysteresis + \" p=\" + periodLength );\n    \n    context.set ( \"recipeName\", recipeName );\n    context.set ( \"brewStart\", brewStart );\n    context.set ( \"stepDescription\", stepDescription );\n    context.set ( \"targetTemp\", targetTemp );\n    context.set ( \"heating\", heatingMode );\n    context.set ( \"stirring\", stirringMode );\n    context.set ( \"hysteresis\", hysteresis );\n    context.set ( \"periodLength\", periodLength );\n    context.set ( \"alarm\", msg.alarm );\n    \n    context.set ( \"periodCount\", PERIOD_ZERO );\n\n    setState ( STATE_START );\n    \n    return [createLcdMessage (), null, null, null, createPeriodeMessage ( PERIOD_ZERO )];\n\n}\nelse if ( msg.topic == \"hysteresis\" ) {\n    context.set ( \"hysteresis\", hysteresis );\n}\nelse if ( msg.topic == \"tick\" ) { // every sec\n    // check lcd alarm\n    if ( lcdAlarmPeriod && lcdAlarmPeriod > 0 ) {\n        lcdAlarmPeriod--;\n        context.set ( \"alarmPeriod\", lcdAlarmPeriod );\n    }\n    else {\n        lcdAlarmPeriod = null;\n        lcdAlarmMsg = null;\n        context.set ( \"alarmPeriod\", null );\n        context.set ( \"alarmMsg\", null );\n    }\n    // check for period length\n    if ( state == STATE_PERIOD_STARTED ) {\n        context.set ( \"periodCount\", incPeriodCount ( periodCount ) );\n        var alarmMsg = null;\n        var audioMsg = null;\n        if ( alarm ) {\n            for ( var i = 0; i < alarm.length; i++ ) {\n                var alarmtime = null;\n                if ( typeof ( alarm [i] ) === \"number\" ) alarmtime = alarm [i];\n                else alarmtime = alarm [i].time;\n                if ( periodCount.min == alarmtime ) {\n                    if ( periodCount.sec === 0 || alarmtime === 0 && periodCount.sec === PERIOD_INCREMENT ) { // exception for 00:00, 1 sec later\n                        lcdAlarmMsg = alarm [i].text;\n                        context.set ( \"alarmMsg\", lcdAlarmMsg );\n                        lcdAlarmPeriod = LCD_ALARM_MSG_DURATION;\n                        context.set ( \"alarmPeriod\", lcdAlarmPeriod );\n                        alarmMsg = createAlarmMessage ( lcdAlarmMsg );\n                        audioMsg = createAudioMessage ( \"ring\" );\n                        break;\n                    }\n                }\n            }\n        }\n        if ( periodLength == \"wait\" ) {} // do nothing, only tick and maybe ring\n        else {\n            if ( periodCount.min >= periodLength ) {\n                setState ( STATE_PERIOD_FINISHED );\n                context.set ( \"targetTemp\", null );\n                if ( !audioMsg ) audioMsg = createAudioMessage ( \"tweet2x\" );\n                return [createLcdMessage (), null, null, null, createPeriodeMessage ( periodCount ), null, createStepMessage (), alarmMsg, audioMsg]; \n            }\n        }\n        \n        //node.warn ( \"[TICK] p=\" + periodLength + \" min=\" + periodCount.min + \" sec=\" + periodCount.sec + \" state=\" + state );\n\n        // tick\n        return [createLcdMessage (), null, null, null, createPeriodeMessage ( periodCount ), null, null, alarmMsg, audioMsg];\n    }\n}\nelse if ( msg.topic == \"nodes@home/control/ssr/brewery/socket1\" ) {\n    setHeaterOn ( msg.payload == \"ON\" ? true : false );\n    return [createLcdMessage (), createHeaterMessage ( msg.payload )];\n}\nelse if ( msg.topic == \"nodes@home/control/ssr/brewery/socket2\" ) {\n    setStirrerOn ( msg.payload == \"ON\" ? true : false );\n    return [createLcdMessage (), null, createStirrerMessage ( msg.payload )];\n}\nelse if ( msg.topic == \"lcd\" ) {\n    lcdSparge = !lcdSparge;\n    context.set ( \"lcdSparge\", lcdSparge )\n    return [createLcdMessage ()];\n}\nelse if ( msg.topic == \"nodes@home/sensor/ds18b20/brewery/value/temperature\" ) {\n    context.set ( \"spargeTemp\", msg.payload );\n    return [createLcdMessage ()];\n}\nelse {\n    // temperature received\n    if ( state == STATE_IDLE ) {} // do nothing\n    else {\n        brewTemp = msg.payload;\n        context.set ( \"brewTemp\", brewTemp );\n        if ( state == STATE_PERIOD_FINISHED ) {\n            return [createLcdMessage (), null, null, createChartMessage ( brewTemp ), null, createInfluxMessage ()];\n        }\n        else {\n\n            // first temp event after start step            \n            if ( state == STATE_START ) {\n                setState ( STATE_STARTING );\n            }\n\n            var heaterMsg = null;\n            var stirrerMsg = null;\n            var alarmMsg = null;\n            var audioMsg = null;\n            var newHeaterOn = null;\n            var newStirrerOn = null;\n\n            if ( brewTemp >= targetTemp ) {\n                if ( heaterOn && heatingMode != \"full\" ) newHeaterOn = false;\n                if ( stirrerOn && stirringMode != \"full\" ) newStirrerOn = false;\n                if ( state == STATE_STARTING ) {\n                    setState ( STATE_PERIOD_STARTED );\n                    audioMsg = createAudioMessage ( \"tweet2x\" );\n                }\n            }\n\n            if ( heatingMode == \"off\" ) {\n                if ( heaterOn ) newHeaterOn = false;\n            }\n            else if ( heatingMode == \"one_time\" ) {\n                if ( state == STATE_STARTING ) {\n                    if ( !heaterOn ) newHeaterOn = true;\n                }\n            }\n            else if ( heatingMode == \"control\" ) {\n                if ( brewTemp <= targetTemp - hysteresis ) {\n                    if ( !heaterOn ) newHeaterOn = true;\n                }\n            }\n            else if ( heatingMode == \"full\" ) {\n                if ( !heaterOn ) newHeaterOn = true;\n            }\n            \n            if ( newHeaterOn !== null ) {\n                //node.warn ( \"switch heater from \" + heaterOn + \" to \" + newHeaterOn );                    \n                setHeaterOn ( newHeaterOn );\n                heaterMsg = createHeaterMessage ( newHeaterOn ? \"ON\" : \"OFF\" );\n                if ( !audioMsg ) audioMsg = createAudioMessage ( \"tweet\" );\n            }\n            \n            if ( stirringMode == \"off\" ) {\n                if ( stirrerOn ) newStirrerOn = false;\n            }\n            else if ( stirringMode == \"control\" ) {\n                if ( brewTemp <= targetTemp - hysteresis ) {\n                    if ( !stirrerOn ) newStirrerOn = true;\n                }\n            }\n            else if ( stirringMode == \"full\" ) {\n                if ( !stirrerOn ) newStirrerOn = true;\n            }\n            \n            if ( newStirrerOn !== null ) {\n                //node.warn ( \"switch stirrer from \" + stirrerOn + \" to \" + newStirrerOn );                    \n                setStirrerOn ( newStirrerOn );\n                stirrerMsg = createStirrerMessage ( newStirrerOn ? \"ON\" : \"OFF\" );\n            }\n\n            //node.warn ( \"[TEMP] heater=\" + heaterOn + \" newHeater=\" + newHeaterOn + \" mode=\" + heatingMode + \" p=\" + periodLength + \" min=\" + periodCount.min + \" sec=\" + periodCount.sec + \" state=\" + state );\n            \n            // on every temp, send target and data fields\n            return [createLcdMessage (), heaterMsg, stirrerMsg, createChartMessage ( brewTemp, targetTemp ), null, createInfluxMessage (), null, alarmMsg, audioMsg];\n            \n        }\n    }\n}\n",
         "outputs": 9,
         "noerr": 0,
         "x": 670,
@@ -1136,7 +1196,7 @@
                 "t": "set",
                 "p": "filename",
                 "pt": "msg",
-                "to": "$flowContext('basepath') & \"/mp3/\" & msg.payload & \".mp3\"",
+                "to": "$globalContext('basepath') & \"/mp3/\" & msg.payload & \".mp3\"",
                 "tot": "jsonata"
             }
         ],
@@ -1318,9 +1378,9 @@
         "z": "4018cef4.755f3",
         "name": "alarm",
         "links": [
-            "9ae7ba59.e3ec58",
-            "6c843107.5ac24",
-            "c838fc7e.25bbd"
+            "60b617a.8d9cfe8",
+            "c838fc7e.25bbd",
+            "fe7f38cb.b322c8"
         ],
         "x": 835,
         "y": 460,
@@ -3036,12 +3096,15 @@
         "type": "function",
         "z": "d0c185b8.08bb48",
         "name": "options",
-        "func": "// junand 15.04.2018\n\nif ( msg.topic == \"recipe\" ) {\n    context.set ( \"lastchoice\", msg.payload );\n    return null;\n}\n\nvar basepath = global.get ( \"basepath\" ) + \"/recipes/\";\n\nvar l1 = \"recipe_\".length;\nvar l2 = \".json\".length;\n        \n// 1) create array of files\nvar s = msg.payload;\nvar files = s.substring ( 0, s.length - 1 ).split ( \"\\n\" );\n//node.warn ( \"files=\" + files );\n\n// 2) dropdown list\nvar l = [];\nfor ( var i = 0; i < files.length; i++ ) {\n    var f = files [i];\n    if ( f.startsWith ( \"recipe_\" ) && f.endsWith ( \".json\" ) ) {\n        var option = f.substring ( l1, f.length - l2 );\n        //node.warn ( \"option=\" + option );\n        l [i] = {};\n        l[i] [option] = basepath + f;\n    }\n}\n\nvar _msg = {};\nif ( msg.topic == \"refresh\" ) _msg.payload = context.get ( \"lastchoice\" );\n_msg.options = l;\n\nreturn _msg;",
-        "outputs": 1,
+        "func": "// junand 15.04.2018\n\nif ( msg.topic == \"recipe\" ) {\n    flow.set ( \"lastchoice\", msg.payload );\n    return [null, null];\n}\n\nvar basepath = global.get ( \"basepath\" ) + \"/recipes/\";\n\nvar l1 = \"recipe_\".length;\nvar l2 = \".json\".length;\n        \n// 1) create array of files\nvar s = msg.payload;\nvar files = s.substring ( 0, s.length - 1 ).split ( \"\\n\" );\n//node.warn ( \"files=\" + files );\n\n// 2) dropdown list\nvar l = [];\nfor ( var i = 0; i < files.length; i++ ) {\n    var f = files [i];\n    if ( f.startsWith ( \"recipe_\" ) && f.endsWith ( \".json\" ) ) {\n        var option = f.substring ( l1, f.length - l2 );\n        //node.warn ( \"option=\" + option );\n        l [i] = {};\n        l[i] [option] = basepath + f;\n    }\n}\n\nif ( msg.topic == \"refresh\" ) {\n    return [{ topic: \"recipe\", payload: flow.get ( \"lastchoice\" ) }, { payload: flow.get ( \"lastchoice\" ), options: l }];\n}\nelse {\n    return [null, { options: l }];\n}\n",
+        "outputs": 2,
         "noerr": 0,
         "x": 700,
         "y": 320,
         "wires": [
+            [
+                "9587eabe.4a7868"
+            ],
             [
                 "35e7bb49.758ad4"
             ]
@@ -3289,8 +3352,15 @@
                 "tot": "bool"
             },
             {
-                "t": "delete",
+                "t": "set",
                 "p": "payload",
+                "pt": "msg",
+                "to": "lastchoice",
+                "tot": "flow"
+            },
+            {
+                "t": "delete",
+                "p": "topic",
                 "pt": "msg"
             }
         ],
@@ -3322,8 +3392,15 @@
                 "tot": "bool"
             },
             {
-                "t": "delete",
+                "t": "set",
                 "p": "payload",
+                "pt": "msg",
+                "to": "lastchoice",
+                "tot": "flow"
+            },
+            {
+                "t": "delete",
+                "p": "topic",
                 "pt": "msg"
             }
         ],
@@ -4060,5 +4137,170 @@
         "x": 150,
         "y": 660,
         "wires": []
+    },
+    {
+        "id": "83216f19.7ce89",
+        "type": "inject",
+        "z": "2b73de56.557c42",
+        "name": "",
+        "topic": "",
+        "payload": "Hallo Test Brauerei!",
+        "payloadType": "str",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": "",
+        "x": 130,
+        "y": 140,
+        "wires": [
+            [
+                "5ca57a5b.4e9a74"
+            ]
+        ]
+    },
+    {
+        "id": "f2d1b279.f039c",
+        "type": "http request",
+        "z": "2b73de56.557c42",
+        "name": "simplepush",
+        "method": "GET",
+        "ret": "txt",
+        "url": "",
+        "tls": "",
+        "x": 520,
+        "y": 100,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "5ca57a5b.4e9a74",
+        "type": "change",
+        "z": "2b73de56.557c42",
+        "name": "url",
+        "rules": [
+            {
+                "t": "set",
+                "p": "url",
+                "pt": "msg",
+                "to": "\"https://api.simplepush.io/send/\" & $flowContext(\"simple_push_id\") & \"/\" & payload & \"/event/brewery\"",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 370,
+        "y": 100,
+        "wires": [
+            [
+                "f2d1b279.f039c"
+            ]
+        ]
+    },
+    {
+        "id": "6b7aa98a.b0f258",
+        "type": "comment",
+        "z": "2b73de56.557c42",
+        "name": "send msg to simplepush",
+        "info": "",
+        "x": 150,
+        "y": 60,
+        "wires": []
+    },
+    {
+        "id": "b15bbd0d.578e9",
+        "type": "inject",
+        "z": "2b73de56.557c42",
+        "name": "load",
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "repeat": "",
+        "crontab": "",
+        "once": true,
+        "onceDelay": "",
+        "x": 90,
+        "y": 200,
+        "wires": [
+            [
+                "7e83e349.c6b1fc"
+            ]
+        ]
+    },
+    {
+        "id": "7e83e349.c6b1fc",
+        "type": "file in",
+        "z": "2b73de56.557c42",
+        "name": "id file",
+        "filename": "ids/simple_push_id.txt",
+        "format": "utf8",
+        "sendError": true,
+        "x": 210,
+        "y": 200,
+        "wires": [
+            [
+                "339447f9.656848"
+            ]
+        ]
+    },
+    {
+        "id": "339447f9.656848",
+        "type": "change",
+        "z": "2b73de56.557c42",
+        "name": "set id",
+        "rules": [
+            {
+                "t": "set",
+                "p": "simple_push_id",
+                "pt": "flow",
+                "to": "$substring(msg.payload,0,$length(msg.payload)-1)",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 330,
+        "y": 200,
+        "wires": [
+            [
+                "a833e3ca.a0901"
+            ]
+        ]
+    },
+    {
+        "id": "a833e3ca.a0901",
+        "type": "function",
+        "z": "2b73de56.557c42",
+        "name": "status",
+        "func": "node.status ( \n    { \n        fill: \"blue\", \n        shape: \"dot\", \n        text: msg.payload \n    } \n);\n\nreturn null;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 450,
+        "y": 200,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "fe7f38cb.b322c8",
+        "type": "link in",
+        "z": "2b73de56.557c42",
+        "name": "alarm",
+        "links": [
+            "2c4d6050.8244f"
+        ],
+        "x": 55,
+        "y": 100,
+        "wires": [
+            [
+                "5ca57a5b.4e9a74"
+            ]
+        ]
     }
 ]
