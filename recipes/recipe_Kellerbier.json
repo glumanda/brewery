@@ -1,0 +1,118 @@
+    {
+    "name": "Kellerbier",
+    "comment": "https://www.maischemalzundmehr.de/index.php?inhaltmitte=recipe&id=235&suche_begriff=kellerbier&zutat_enthalten%5B%5D=ja&zutat_kategorie%5B%5D=...&zutat%5B%5D=...&factoraw=20&factorsha=53&factorhav=4&factorhav2=6&factorha1=4&factorha2=6&factorha3=4&factorha4=4&factorha5=6&factorha6=4",
+    "steps": [
+        {
+            "id": 1,
+            "step": "Mit 18l einmaischen",
+            "temperature": 50,
+            "heating": "one_time",
+            "stirring": "full",
+            "duration": "wait",
+            "alarm": [ 
+                { "time": 0, "text": "Einmaischen starten!" } 
+            ]
+        },
+        {
+            "id": 2,
+            "step": "1. Rast",
+            "temperature": 56,
+            "heating": "control",
+            "stirring": "full",
+            "duration": 10,
+            "hysteresis": 0.5
+        },
+        {
+            "id": 3,
+            "step": "2. Rast",
+            "temperature": 64,
+            "heating": "control",
+            "stirring": "full",
+            "duration": 40,
+            "hysteresis": 0.5
+        },
+        {
+            "id": 5,
+            "step": "3. Rast",
+            "temperature": 72,
+            "heating": "control",
+            "stirring": "full",
+            "duration": 35,
+            "hysteresis": 0.5
+        },
+        {
+            "id": 5,
+            "step": "Jod Prüfung",
+            "temperature": 72,
+            "heating": "control",
+            "stirring": "full",
+            "duration": "wait",
+            "hysteresis": 0.5,
+            "alarm": [ 
+                { "time": 0, "text": "Jodprüfung vornehmen!" } 
+            ]
+        },
+        {
+            "id": 6,
+            "step": "Abmaischen nach 10 min",
+            "temperature": 78,
+            "heating": "control",
+            "stirring": "full",
+            "duration": "wait",
+            "hysteresis": 0.5,
+            "alarm": [ 
+                { "time": 10, "text": "Abmaischen starten!" } 
+            ]
+        },
+        {
+            "id": 7,
+            "step": "Läuterruhe",
+            "temperature": 1,
+            "heating": "off",
+            "stirring": "off",
+            "duration": 20,
+            "alarm": [ 
+                { "time": 20, "text": "Die Läuterung kann beginnen!" } 
+            ]
+        },
+        {
+            "id": 8,
+            "step": "Mit 12l Nachguss läutern",
+            "temperature": 1,
+            "heating": "off",
+            "stirring": "off",
+            "duration": "wait",
+            "alarm": [ 
+				{ "time": 0, "text": "Hopfengabe 1: 10g East Kent Golding und 5g Cascade zur Vorderwürze geben!" } 
+			]
+        },
+        {
+            "id": 9,
+            "step": "Kochen und Hopfengaben",
+            "temperature": 97,
+            "heating": "full",
+            "stirring": "off",
+            "duration": 90,
+            "hysteresis": 0.1,
+            "alarm": [
+                { "time": 0, "text": "Hopfengabe 2: 5g East Kent Golding und 5g Cascade dazugeben!" },
+                { "time": 70, "text": "Hopfengabe 3: 5g East Kent Golding dazugeben!" },
+                { "time": 80, "text": "Hopfengabe 4: 15g East Kent Golding und 5g Cascade dazugeben!" },
+                { "time": 90, "text": "Hopfengabe 5: 5g East Kent Golding dazugeben!" }
+            ]
+        },
+        {
+            "id": 10,
+            "step": "Kühlung",
+            "temperature": 25,
+            "heating": "off",
+            "stirring": "off",
+            "duration": "wait",
+            "hysteresis": 0.1,
+            "alarm": [
+                { "time": 0, "text": "Wasser an und auf 25°C runter kühlen!" },
+                { "time": 30, "text": "Wasser aus bei 25°C!" }  
+            ]
+        }
+    ]
+}
