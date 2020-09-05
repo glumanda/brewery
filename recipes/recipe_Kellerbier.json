@@ -107,11 +107,11 @@
             "temperature": 25,
             "heating": "off",
             "stirring": "off",
-            "duration": "wait",
+            "cooling": "full",
+            "duration": 0,
             "hysteresis": 0.1,
             "alarm": [
-                { "time": 0, "text": "Wasser an und auf 25°C runter kühlen!" },
-                { "time": 30, "text": "Wasser aus bei 25°C!" }  
+                { "time": 0, "text": "Wasser aus bei 25°C!" }
             ]
         }
     ]
