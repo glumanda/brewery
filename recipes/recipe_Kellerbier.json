@@ -83,7 +83,7 @@
             "stirring": "off",
             "duration": "wait",
             "alarm": [ 
-				{ "time": 0, "text": "Hopfengabe 1: 10g East Kent Golding und 5g Cascade zur Vorderwürze geben!" } 
+				{ "time": 0, "text": "Hopfengabe 1: 10g Saazer und 5g Cascade zur Vorderwürze geben!" }
 			]
         },
         {
@@ -95,10 +95,11 @@
             "duration": 90,
             "hysteresis": 0.1,
             "alarm": [
-                { "time": 0, "text": "Hopfengabe 2: 5g East Kent Golding und 5g Cascade dazugeben!" },
-                { "time": 70, "text": "Hopfengabe 3: 5g East Kent Golding dazugeben!" },
-                { "time": 80, "text": "Hopfengabe 4: 15g East Kent Golding und 5g Cascade dazugeben!" },
-                { "time": 90, "text": "Hopfengabe 5: 5g East Kent Golding dazugeben!" }
+                { "time": 0, "text": "Hopfengabe 2: 5g Saazer und 5g Cascade dazugeben!" },
+                { "time": 70, "text": "Hopfengabe 3: 5g Saazer dazugeben!" },
+                { "time": 75, "text": "Bitte Kühlspirale in den Sud zum Sterilisieren geben!" },
+                { "time": 80, "text": "Hopfengabe 4: 15g Saazer und 5g Cascade dazugeben!" },
+                { "time": 90, "text": "Hopfengabe 5: 5g Saazer dazugeben!" }
             ]
         },
         {
