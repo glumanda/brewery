@@ -108,8 +108,8 @@
             "temperature": 25,
             "heating": "off",
             "stirring": "off",
-            "cooling": "full",
-            "duration": 0,
+            "cooling": "one_time",
+            "duration": 1,
             "hysteresis": 0.1,
             "alarm": [
                 { "time": 0, "text": "Wasser aus bei 25°C!" }
