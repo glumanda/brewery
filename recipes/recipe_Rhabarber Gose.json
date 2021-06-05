@@ -85,15 +85,15 @@
         {
             "id": 8,
             "step": "Kühlung",
-            "temperature": 25,
+            "temperature": 30,
             "heating": "off",
             "stirring": "off",
-            "duration": "wait",
+            "cooling": "one_time",
+            "duration": 1,
             "hysteresis": 0.1,
             "alarm": [
-                { "time": 0, "text": "Wasser an und auf 25°C runter kühlen!" },
-                { "time": 30, "text": "Wasser aus bei 25°C!" }  
-           ]
+                { "time": 0, "text": "Wasser aus bei 30°C!" }
+            ]
         }
     ]
 }

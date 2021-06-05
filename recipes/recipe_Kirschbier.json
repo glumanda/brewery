@@ -81,6 +81,19 @@
                 { "time": 60, "text": "Hopfengabe 3: Bitte 10g Cascade zugeben!" },
                 { "time": 70, "text": "Hopfengabe 4: Bitte 10g Cascade zum Whirlpool geben!" }  
             ]
+        },
+        {
+            "id": 9,
+            "step": "Kühlung",
+            "temperature": 30,
+            "heating": "off",
+            "stirring": "off",
+            "cooling": "one_time",
+            "duration": 1,
+            "hysteresis": 0.1,
+            "alarm": [
+                { "time": 0, "text": "Wasser aus bei 30°C!" }
+            ]
         }
     ]
 }

@@ -105,14 +105,14 @@
         {
             "id": 10,
             "step": "Kühlung",
-            "temperature": 25,
+            "temperature": 30,
             "heating": "off",
             "stirring": "off",
             "cooling": "one_time",
             "duration": 1,
             "hysteresis": 0.1,
             "alarm": [
-                { "time": 0, "text": "Wasser aus bei 25°C!" }
+                { "time": 0, "text": "Wasser aus bei 30°C!" }
             ]
         }
     ]
