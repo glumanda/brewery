@@ -65,7 +65,6 @@
     {
         "id": "faf25434.0c0ff8",
         "type": "mqtt-broker",
-        "z": "",
         "name": "",
         "broker": "nodesathome1",
         "port": "8883",
@@ -88,7 +87,6 @@
     {
         "id": "26c5d339.37638c",
         "type": "ui_group",
-        "z": "",
         "name": "Temperatur",
         "tab": "8fef3bad.282ce8",
         "order": 2,
@@ -99,7 +97,6 @@
     {
         "id": "6d970163.d439f",
         "type": "ui_group",
-        "z": "",
         "name": "Steuerung",
         "tab": "8fef3bad.282ce8",
         "order": 1,
@@ -109,7 +106,6 @@
     {
         "id": "ed68914c.8764b",
         "type": "ui_group",
-        "z": "",
         "name": "Rezept",
         "tab": "8fef3bad.282ce8",
         "order": 3,
@@ -120,7 +116,6 @@
     {
         "id": "bd0e967c.257d88",
         "type": "ui_group",
-        "z": "",
         "name": "Ticker",
         "tab": "8fef3bad.282ce8",
         "order": 4,
@@ -131,19 +126,20 @@
     {
         "id": "80ff57a1.b1f1b8",
         "type": "influxdb",
-        "z": "",
         "hostname": "nodesathome1",
         "port": "8086",
         "protocol": "http",
         "database": "brewery",
-        "name": "",
+        "name": "nodesathome1_influxdb",
         "usetls": true,
-        "tls": "5c6624c5.d9c1fc"
+        "tls": "5c6624c5.d9c1fc",
+        "influxdbVersion": "2.0",
+        "url": "https://nodesathome1:8086",
+        "rejectUnauthorized": false
     },
     {
         "id": "cbad4bec.ed7c88",
         "type": "ui_group",
-        "z": "",
         "name": "Temperatur 1 (blau)",
         "tab": "fdf6c30b.7cd49",
         "order": 1,
@@ -154,7 +150,6 @@
     {
         "id": "ae17b855.7e0858",
         "type": "ui_group",
-        "z": "",
         "name": "Temperatur 2 (gelb)",
         "tab": "fdf6c30b.7cd49",
         "order": 2,
@@ -165,7 +160,6 @@
     {
         "id": "f7a4a10e.66a75",
         "type": "ui_group",
-        "z": "",
         "name": "Spannungsversorgung",
         "tab": "fdf6c30b.7cd49",
         "order": 3,
@@ -175,7 +169,6 @@
     {
         "id": "8fef3bad.282ce8",
         "type": "ui_tab",
-        "z": "",
         "name": "Brauerei",
         "icon": "fa-beer",
         "order": 1
@@ -183,7 +176,6 @@
     {
         "id": "fdf6c30b.7cd49",
         "type": "ui_tab",
-        "z": "",
         "name": "Nachguss",
         "icon": "dashboard",
         "order": 2,
@@ -289,7 +281,6 @@
     {
         "id": "cee51941.7e69d8",
         "type": "ui_tab",
-        "z": "",
         "name": "System",
         "icon": "power_settings_new",
         "order": 4,
@@ -299,7 +290,6 @@
     {
         "id": "4a318d10.c590e4",
         "type": "ui_group",
-        "z": "",
         "name": "Shutdown",
         "tab": "cee51941.7e69d8",
         "order": 1,
@@ -310,7 +300,6 @@
     {
         "id": "5c6624c5.d9c1fc",
         "type": "tls-config",
-        "z": "",
         "name": "nodesathome",
         "cert": "",
         "key": "",
@@ -324,7 +313,6 @@
     {
         "id": "9edf9c6c.1f6d2",
         "type": "ui_group",
-        "z": "",
         "name": "Einstellungen",
         "tab": "e7aa01f6.e0f7c",
         "order": 2,
@@ -335,7 +323,6 @@
     {
         "id": "e7aa01f6.e0f7c",
         "type": "ui_tab",
-        "z": "",
         "name": "Einstellungen",
         "icon": "settings",
         "order": 3,
@@ -481,7 +468,6 @@
             "#9467bd",
             "#c5b0d5"
         ],
-        "useOldStyle": true,
         "outputs": 1,
         "x": 1110,
         "y": 280,
@@ -679,6 +665,11 @@
         "measurement": "°C",
         "precision": "",
         "retentionPolicy": "",
+        "database": "",
+        "precisionV18FluxV20": "ms",
+        "retentionPolicyV18Flux": "",
+        "org": "nodesathome",
+        "bucket": "brewery",
         "x": 1120,
         "y": 600,
         "wires": []
@@ -1581,7 +1572,6 @@
             "#9467bd",
             "#c5b0d5"
         ],
-        "useOldStyle": false,
         "outputs": 1,
         "x": 610,
         "y": 200,
@@ -1726,7 +1716,6 @@
             "#9467bd",
             "#c5b0d5"
         ],
-        "useOldStyle": false,
         "outputs": 2,
         "x": 610,
         "y": 280,
@@ -1795,7 +1784,6 @@
             "#9467bd",
             "#c5b0d5"
         ],
-        "useOldStyle": false,
         "outputs": 2,
         "x": 610,
         "y": 480,
