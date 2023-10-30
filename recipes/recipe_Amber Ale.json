@@ -54,14 +54,14 @@
         },
         {
             "id": 6,
-            "step": "Abmaischen",
+            "step": "Abmaischen nach 5 min",
             "temperature": 78,
             "heating": "control",
             "stirring": "full",
             "duration": "wait",
             "hysteresis": 0.5,
             "alarm": [ 
-                { "time": 0, "text": "Abmaischen starten!" } 
+                { "time": 5, "text": "Abmaischen starten!" } 
             ]
         },
         {
@@ -83,7 +83,7 @@
             "stirring": "off",
             "duration": "wait",
             "alarm": [
-                { "time": 0, "text": "Hopfengabe 1 in Vorderwürze: 68g Tettnanger dazugeben!" }
+                { "time": 0, "text": "Hopfengabe 1: 68g Tettnanger zur Vorderwürze geben!" }
             ]
         },
         {
