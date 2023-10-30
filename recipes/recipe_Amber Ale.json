@@ -1,0 +1,115 @@
+{
+    "name": "Amber Ale",
+    "comment": "https://der-braukurs.de/braurezepte/amber-ale-braurezept",
+    "steps": [
+        {
+            "id": 1,
+            "step": "Mit 19l einmaischen",
+            "temperature": 60,
+            "heating": "one_time",
+            "stirring": "full",
+            "duration": "wait",
+            "alarm": [ 
+                { "time": 0, "text": "Einmaischen starten!" } 
+            ]
+        },
+        {
+            "id": 2,
+            "step": "1. Rast",
+            "temperature": 57,
+            "heating": "control",
+            "stirring": "full",
+            "duration": 15,
+            "hysteresis": 0.5
+        },
+        {
+            "id": 3,
+            "step": "2. Rast",
+            "temperature": 63,
+            "heating": "control",
+            "stirring": "full",
+            "duration": 60,
+            "hysteresis": 0.5
+        },
+        {
+            "id": 4,
+            "step": "3. Rast",
+            "temperature": 73,
+            "heating": "control",
+            "stirring": "full",
+            "duration": 20,
+            "hysteresis": 0.5
+        },
+        {
+            "id": 5,
+            "step": "Jod Prüfung",
+            "temperature": 73,
+            "heating": "control",
+            "stirring": "full",
+            "duration": "wait",
+            "hysteresis": 0.5,
+            "alarm": [ 
+                { "time": 0, "text": "Jodprüfung vornehmen!" } 
+            ]
+        },
+        {
+            "id": 6,
+            "step": "Abmaischen",
+            "temperature": 78,
+            "heating": "control",
+            "stirring": "full",
+            "duration": "wait",
+            "hysteresis": 0.5,
+            "alarm": [ 
+                { "time": 0, "text": "Abmaischen starten!" } 
+            ]
+        },
+        {
+            "id": 7,
+            "step": "Läuterruhe",
+            "temperature": 1,
+            "heating": "off",
+            "stirring": "off",
+            "duration": 20,
+            "alarm": [ 
+                { "time": 20, "text": "Die Läuterung kann beginnen!" } 
+            ]
+        },
+        {
+            "id": 8,
+            "step": "Mit 10l Nachguss läutern",
+            "temperature": 1,
+            "heating": "off",
+            "stirring": "off",
+            "duration": "wait",
+            "alarm": [
+                { "time": 0, "text": "Hopfengabe 1 in Vorderwürze: 68g Tettnanger dazugeben!" }
+            ]
+        },
+        {
+            "id": 9,
+            "step": "Kochen und Hopfengaben",
+            "temperature": 97,
+            "heating": "full",
+            "stirring": "off",
+            "duration": 90,
+            "hysteresis": 0.1,
+            "alarm": [
+                { "time": 0, "text": "Hopfengabe 2: 12g Spalter Select dazugeben!" }
+            ]
+        },
+        {
+            "id": 10,
+            "step": "Kühlung",
+            "temperature": 28,
+            "heating": "off",
+            "stirring": "off",
+            "cooling": "one_time",
+            "duration": 1,
+            "hysteresis": 0.1,
+            "alarm": [
+                { "time": 0, "text": "Kühlung beendet. Abseihen kann beginnen!" }
+            ]
+        }
+    ]
+}
