@@ -4,8 +4,8 @@
     "steps": [
         {
             "id": 1,
-            "step": "Mit 21l einmaischen",
-            "temperature": 55,
+            "step": "Mit 20l einmaischen",
+            "temperature": 38,
             "heating": "one_time",
             "stirring": "full",
             "duration": "wait",
@@ -15,8 +15,8 @@
         },
         {
             "id": 2,
-            "step": "Eiweißrast",
-            "temperature": 55,
+            "step": "Gummirast",
+            "temperature": 38,
             "heating": "control",
             "stirring": "full",
             "duration": 10,
@@ -25,7 +25,7 @@
         {
             "id": 3,
             "step": "Maltoserast",
-            "temperature": 62,
+            "temperature": 63,
             "heating": "control",
             "stirring": "full",
             "duration": 35,
@@ -33,8 +33,8 @@
         },
         {
             "id": 4,
-            "step": "Verzuckerung",
-            "temperature": 71,
+            "step": "Verzuckerungsrast",
+            "temperature": 72,
             "heating": "control",
             "stirring": "full",
             "duration": 25,
@@ -54,14 +54,14 @@
         },
         {
             "id": 6,
-            "step": "Abmaischen nach 10 min",
+            "step": "Abmaischen nach 5 min",
             "temperature": 78,
             "heating": "control",
             "stirring": "full",
             "duration": "wait",
             "hysteresis": 0.5,
             "alarm": [ 
-				{ "time": 10, "text": "Abmaischen starten!" } 
+				{ "time": 5, "text": "Abmaischen starten!" } 
 			]
         },
         {
@@ -77,7 +77,7 @@
         },
         {
             "id": 8,
-            "step": "Mit 9l Nachguss läutern",
+            "step": "Mit 10l Nachguss läutern",
             "temperature": 1,
             "heating": "off",
             "stirring": "off",
@@ -101,7 +101,7 @@
         {
             "id": 10,
             "step": "Nachisomerisierung",
-            "temperature": 25,
+            "temperature": 80,
             "heating": "off",
             "stirring": "off",
             "duration": 10,
@@ -110,14 +110,14 @@
         {
             "id": 11,
             "step": "Kühlung",
-            "temperature": 30,
+            "temperature": 28,
             "heating": "off",
             "stirring": "off",
             "cooling": "one_time",
             "duration": 1,
             "hysteresis": 0.1,
             "alarm": [
-                { "time": 0, "text": "Wasser aus bei 30°C!" }
+                { "time": 0, "text": "Kühlung beendet. Abseihen kann beginnen!" }
             ]
         }
     ]
