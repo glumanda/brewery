@@ -330,6 +330,30 @@
         "hidden": false
     },
     {
+        "id": "b706f06.87d811",
+        "type": "config",
+        "z": "962f6b3.4c14f98",
+        "name": "config",
+        "properties": [
+            {
+                "p": "basepath",
+                "pt": "global",
+                "to": "/home/pi/GIT/brewery",
+                "tot": "str"
+            },
+            {
+                "p": "timeScale",
+                "pt": "global",
+                "to": "1",
+                "tot": "num"
+            }
+        ],
+        "active": true,
+        "x": 130,
+        "y": 80,
+        "wires": []
+    },
+    {
         "id": "e9c6e592.9bfc78",
         "type": "comment",
         "z": "4018cef4.755f3",
@@ -604,6 +628,7 @@
         "qos": "0",
         "datatype": "auto",
         "broker": "faf25434.0c0ff8",
+        "inputs": 0,
         "x": 110,
         "y": 231,
         "wires": [
@@ -693,6 +718,7 @@
         "qos": "0",
         "datatype": "auto",
         "broker": "faf25434.0c0ff8",
+        "inputs": 0,
         "x": 110,
         "y": 280,
         "wires": [
@@ -983,11 +1009,12 @@
         "type": "rpi-gpio out",
         "z": "4018cef4.755f3",
         "name": "stirrer",
-        "pin": "16",
+        "pin": "23",
         "set": true,
         "level": "0",
         "freq": "",
         "out": "out",
+        "bcm": true,
         "x": 1230,
         "y": 400,
         "wires": []
@@ -997,11 +1024,12 @@
         "type": "rpi-gpio out",
         "z": "4018cef4.755f3",
         "name": "heater",
-        "pin": "18",
+        "pin": "24",
         "set": true,
         "level": "0",
         "freq": "100",
         "out": "out",
+        "bcm": true,
         "x": 1230,
         "y": 360,
         "wires": []
@@ -1087,11 +1115,12 @@
         "type": "rpi-gpio out",
         "z": "4018cef4.755f3",
         "name": "buzzer",
-        "pin": "15",
+        "pin": "22",
         "set": true,
         "level": "0",
         "freq": "100",
         "out": "out",
+        "bcm": true,
         "x": 1570,
         "y": 760,
         "wires": []
@@ -1242,6 +1271,7 @@
         "randomLast": "5",
         "randomUnits": "seconds",
         "drop": false,
+        "outputs": 1,
         "x": 1270,
         "y": 800,
         "wires": [
@@ -1404,185 +1434,72 @@
         ]
     },
     {
-        "id": "b0c59940.8ae458",
-        "type": "ui_button",
-        "z": "acc8977e.fd0588",
-        "name": "",
-        "group": "4a318d10.c590e4",
-        "order": 1,
-        "width": 0,
-        "height": 0,
-        "passthru": false,
-        "label": "shutdown",
-        "tooltip": "",
-        "color": "",
-        "bgcolor": "",
-        "icon": "",
-        "payload": "",
-        "payloadType": "str",
-        "topic": "",
-        "x": 170,
-        "y": 120,
+        "id": "8a848227.dcc85",
+        "type": "link in",
+        "z": "4018cef4.755f3",
+        "name": "blank",
+        "links": [
+            "146e5abc.5a9575",
+            "2bf980d.298c08",
+            "c86d925a.2d93b",
+            "a7d78432.8834f8",
+            "2f3afbb1.9e58e4"
+        ],
+        "x": 755,
+        "y": 660,
         "wires": [
             [
-                "a7efa4e4.82fa48"
+                "dab737b.a3dc5c8"
             ]
         ]
     },
     {
-        "id": "a7efa4e4.82fa48",
-        "type": "exec",
-        "z": "acc8977e.fd0588",
-        "command": "sudo shutdown -h now",
-        "addpay": true,
-        "append": "",
-        "useSpawn": "false",
-        "timer": "",
-        "oldrc": false,
-        "name": "",
-        "x": 400,
-        "y": 120,
+        "id": "763118ef.9f4668",
+        "type": "link in",
+        "z": "4018cef4.755f3",
+        "name": "recipe",
+        "links": [
+            "3bd82293.1951de",
+            "bb96b38e.6a74e"
+        ],
+        "x": 515,
+        "y": 560,
         "wires": [
-            [],
-            [],
-            []
+            [
+                "ab315bed.9c0268"
+            ]
         ]
     },
     {
-        "id": "8a59353e.51e018",
-        "type": "ui_gauge",
-        "z": "5f9eca78.52cb34",
-        "name": "temperature",
-        "group": "cbad4bec.ed7c88",
-        "order": 2,
-        "width": 0,
-        "height": 0,
-        "gtype": "gage",
-        "title": "",
-        "label": "°C",
-        "format": "{{value | number:1}}",
-        "min": 0,
-        "max": "90",
-        "colors": [
-            "#0000ff",
-            "#0292b0",
-            "#ca3838"
+        "id": "38cc6d34.85aa92",
+        "type": "link in",
+        "z": "4018cef4.755f3",
+        "name": "button press",
+        "links": [
+            "2c0fd36d.b8a70c",
+            "68b89b4.f6d0f64",
+            "307e67e0.04c178",
+            "8eb1baed.b5b518",
+            "2e20381f.409388",
+            "4e61a66e.975628",
+            "393e48b3.c68f98",
+            "a970a0fe.0b279",
+            "e7490bd8.735b18",
+            "64cbde22.ce25f",
+            "5e08f88c.5bfa78"
         ],
-        "seg1": "0",
-        "seg2": "78",
-        "x": 630,
-        "y": 240,
-        "wires": []
+        "x": 515,
+        "y": 600,
+        "wires": [
+            [
+                "ab315bed.9c0268"
+            ]
+        ]
     },
     {
-        "id": "5197e496.c62d0c",
+        "id": "dab737b.a3dc5c8",
         "type": "change",
-        "z": "5f9eca78.52cb34",
-        "name": "get value",
-        "rules": [
-            {
-                "t": "move",
-                "p": "payload.temperature1",
-                "pt": "msg",
-                "to": "payload",
-                "tot": "msg"
-            },
-            {
-                "t": "set",
-                "p": "topic",
-                "pt": "msg",
-                "to": "value",
-                "tot": "str"
-            }
-        ],
-        "action": "",
-        "property": "",
-        "from": "",
-        "to": "",
-        "reg": false,
-        "x": 300,
-        "y": 240,
-        "wires": [
-            [
-                "8a59353e.51e018",
-                "8a93f228.992e5"
-            ]
-        ]
-    },
-    {
-        "id": "d82379aa.bfbf58",
-        "type": "mqtt in",
-        "z": "5f9eca78.52cb34",
-        "name": "mqtt",
-        "topic": "nodes@home/sensor/ds18b20/brewery/value/temperature",
-        "qos": "0",
-        "datatype": "json",
-        "broker": "faf25434.0c0ff8",
-        "x": 90,
-        "y": 240,
-        "wires": [
-            [
-                "639b1bc0.0ab124",
-                "e8224c88.9ccdc",
-                "5197e496.c62d0c"
-            ]
-        ]
-    },
-    {
-        "id": "46a125f8.69cdfc",
-        "type": "comment",
-        "z": "5f9eca78.52cb34",
-        "name": "Temperatur Nachguss",
-        "info": "",
-        "x": 140,
-        "y": 200,
-        "wires": []
-    },
-    {
-        "id": "8a93f228.992e5",
-        "type": "ui_chart",
-        "z": "5f9eca78.52cb34",
-        "name": "chart",
-        "group": "cbad4bec.ed7c88",
-        "order": 1,
-        "width": 0,
-        "height": 0,
-        "label": "",
-        "chartType": "line",
-        "legend": "false",
-        "xformat": "dd HH:mm",
-        "interpolate": "linear",
-        "nodata": "---",
-        "dot": false,
-        "ymin": "0",
-        "ymax": "90",
-        "removeOlder": "1",
-        "removeOlderPoints": "",
-        "removeOlderUnit": "86400",
-        "cutout": 0,
-        "useOneColor": false,
-        "colors": [
-            "#8080ff",
-            "#aec7e8",
-            "#ff7f0e",
-            "#2ca02c",
-            "#98df8a",
-            "#d62728",
-            "#ff9896",
-            "#9467bd",
-            "#c5b0d5"
-        ],
-        "outputs": 1,
-        "x": 610,
-        "y": 200,
-        "wires": [
-            []
-        ]
-    },
-    {
-        "id": "ca11600c.7d927",
-        "type": "change",
-        "z": "5f9eca78.52cb34",
+        "z": "4018cef4.755f3",
         "name": "blank",
         "rules": [
             {
@@ -1598,244 +1515,460 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 290,
-        "y": 120,
+        "x": 850,
+        "y": 660,
         "wires": [
             [
-                "8a93f228.992e5",
-                "7011e4ac.40d81c",
-                "3c7adeab.59ce32"
+                "d2dc225.23641e"
             ]
         ]
     },
     {
-        "id": "fa7efb75.fe1348",
-        "type": "change",
-        "z": "5f9eca78.52cb34",
-        "name": "value = 0",
-        "rules": [
-            {
-                "t": "set",
-                "p": "payload",
-                "pt": "msg",
-                "to": "0",
-                "tot": "num"
-            }
+        "id": "58b705f4.c0ec8c",
+        "type": "mqtt in",
+        "z": "4018cef4.755f3",
+        "name": "mqtt",
+        "topic": "nodes@home/sensor/ds18b20/brewery/value/temperature",
+        "qos": "0",
+        "datatype": "json",
+        "broker": "faf25434.0c0ff8",
+        "inputs": 0,
+        "x": 110,
+        "y": 742,
+        "wires": [
+            [
+                "e72e0a4e.b17428"
+            ]
+        ]
+    },
+    {
+        "id": "d8176565.66c988",
+        "type": "link in",
+        "z": "4018cef4.755f3",
+        "name": "switch lcd",
+        "links": [
+            "3c0cf97f.b39aa6"
         ],
-        "action": "",
-        "property": "",
-        "from": "",
-        "to": "",
-        "reg": false,
-        "x": 300,
-        "y": 160,
+        "x": 135,
+        "y": 702,
         "wires": [
             [
-                "8a59353e.51e018",
-                "19202a16.3c9986",
-                "5df482f1.fed54c"
+                "e72e0a4e.b17428"
             ]
         ]
     },
     {
-        "id": "465298ed.33e498",
+        "id": "eae76f2c.5924b",
         "type": "comment",
-        "z": "5f9eca78.52cb34",
-        "name": "Akkuüberwachung",
+        "z": "4018cef4.755f3",
+        "name": "Nachguss auf LCD",
         "info": "",
-        "x": 130,
+        "x": 150,
+        "y": 662,
+        "wires": []
+    },
+    {
+        "id": "fc6fe1c6.a49ae",
+        "type": "rpi-gpio out",
+        "z": "4018cef4.755f3",
+        "name": "valve",
+        "pin": "17",
+        "set": true,
+        "level": "1",
+        "freq": "100",
+        "out": "out",
+        "bcm": true,
+        "x": 1230,
         "y": 440,
         "wires": []
     },
     {
-        "id": "639b1bc0.0ab124",
-        "type": "change",
-        "z": "5f9eca78.52cb34",
-        "name": "get value",
-        "rules": [
-            {
-                "t": "move",
-                "p": "payload.temperature2",
-                "pt": "msg",
-                "to": "payload",
-                "tot": "msg"
-            },
-            {
-                "t": "set",
-                "p": "topic",
-                "pt": "msg",
-                "to": "value",
-                "tot": "str"
-            }
-        ],
-        "action": "",
-        "property": "",
-        "from": "",
-        "to": "",
-        "reg": false,
-        "x": 300,
-        "y": 300,
-        "wires": [
-            [
-                "19202a16.3c9986",
-                "7011e4ac.40d81c"
-            ]
-        ]
-    },
-    {
-        "id": "7011e4ac.40d81c",
-        "type": "ui_chart",
-        "z": "5f9eca78.52cb34",
-        "name": "chart",
-        "group": "ae17b855.7e0858",
-        "order": 1,
-        "width": 0,
-        "height": 0,
-        "label": "",
-        "chartType": "line",
-        "legend": "false",
-        "xformat": "dd HH:mm",
-        "interpolate": "linear",
-        "nodata": "---",
-        "dot": false,
-        "ymin": "0",
-        "ymax": "90",
-        "removeOlder": "1",
-        "removeOlderPoints": "",
-        "removeOlderUnit": "86400",
-        "cutout": 0,
-        "useOneColor": false,
-        "colors": [
-            "#8080ff",
-            "#aec7e8",
-            "#ff7f0e",
-            "#2ca02c",
-            "#98df8a",
-            "#d62728",
-            "#ff9896",
-            "#9467bd",
-            "#c5b0d5"
-        ],
-        "outputs": 2,
-        "x": 610,
-        "y": 280,
-        "wires": [
-            [],
-            []
-        ]
-    },
-    {
-        "id": "19202a16.3c9986",
-        "type": "ui_gauge",
-        "z": "5f9eca78.52cb34",
-        "name": "temperature",
-        "group": "ae17b855.7e0858",
-        "order": 2,
-        "width": 0,
-        "height": 0,
-        "gtype": "gage",
-        "title": "",
-        "label": "°C",
-        "format": "{{value | number:1}}",
-        "min": 0,
-        "max": "90",
-        "colors": [
-            "#0000ff",
-            "#ffff00",
-            "#ca3838"
-        ],
-        "seg1": "0",
-        "seg2": "78",
-        "x": 630,
-        "y": 320,
+        "id": "be65350d.ef0288",
+        "type": "mqtt out",
+        "z": "4018cef4.755f3",
+        "name": "valve",
+        "topic": "nodes@home/control/ssr/brewery/valve/state",
+        "qos": "0",
+        "retain": "false",
+        "broker": "faf25434.0c0ff8",
+        "x": 1110,
+        "y": 560,
         "wires": []
     },
     {
-        "id": "3c7adeab.59ce32",
-        "type": "ui_chart",
-        "z": "5f9eca78.52cb34",
-        "name": "chart",
-        "group": "f7a4a10e.66a75",
-        "order": 1,
-        "width": 0,
-        "height": 0,
-        "label": "",
-        "chartType": "line",
-        "legend": "false",
-        "xformat": "dd HH:mm",
-        "interpolate": "linear",
-        "nodata": "---",
-        "dot": false,
-        "ymin": "3.0",
-        "ymax": "4.5",
-        "removeOlder": "1",
-        "removeOlderPoints": "",
-        "removeOlderUnit": "86400",
-        "cutout": 0,
-        "useOneColor": false,
-        "colors": [
-            "#8080ff",
-            "#aec7e8",
-            "#ff7f0e",
-            "#2ca02c",
-            "#98df8a",
-            "#d62728",
-            "#ff9896",
-            "#9467bd",
-            "#c5b0d5"
-        ],
-        "outputs": 2,
-        "x": 610,
-        "y": 480,
-        "wires": [
-            [],
-            []
-        ]
-    },
-    {
-        "id": "5df482f1.fed54c",
-        "type": "ui_gauge",
-        "z": "5f9eca78.52cb34",
-        "name": "voltage",
-        "group": "f7a4a10e.66a75",
-        "order": 2,
-        "width": 0,
-        "height": 0,
-        "gtype": "gage",
-        "title": "",
-        "label": "V",
-        "format": "{{value | number:2}}",
-        "min": "3.0",
-        "max": "4.5",
-        "colors": [
-            "#ff0000",
-            "#ffff00",
-            "#008000"
-        ],
-        "seg1": "3.6",
-        "seg2": "3.8",
-        "x": 620,
-        "y": 520,
-        "wires": []
-    },
-    {
-        "id": "487d9e54.9f681",
+        "id": "391143b8.3c01fc",
         "type": "change",
-        "z": "5f9eca78.52cb34",
-        "name": "get value",
+        "z": "4018cef4.755f3",
+        "name": "map",
         "rules": [
             {
                 "t": "set",
                 "p": "payload",
                 "pt": "msg",
-                "to": "payload.value / 1000",
+                "to": "msg.payload = \"ON\" ? 0: (msg.payload = \"OFF\" ? 1 : null )",
                 "tot": "jsonata"
-            },
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1110,
+        "y": 440,
+        "wires": [
+            [
+                "fc6fe1c6.a49ae"
+            ]
+        ]
+    },
+    {
+        "id": "3d3357d2.80e128",
+        "type": "mqtt in",
+        "z": "4018cef4.755f3",
+        "name": "valve",
+        "topic": "nodes@home/control/ssr/brewery/valve",
+        "qos": "0",
+        "datatype": "auto",
+        "broker": "faf25434.0c0ff8",
+        "inputs": 0,
+        "x": 110,
+        "y": 330,
+        "wires": [
+            [
+                "e72e0a4e.b17428"
+            ]
+        ]
+    },
+    {
+        "id": "81ee5d3.eafaaa",
+        "type": "ui_switch",
+        "z": "4018cef4.755f3",
+        "name": "valve",
+        "label": "Kühlschlange",
+        "tooltip": "",
+        "group": "6d970163.d439f",
+        "order": 7,
+        "width": 0,
+        "height": 0,
+        "passthru": false,
+        "decouple": "true",
+        "topic": "",
+        "style": "",
+        "onvalue": "ON",
+        "onvalueType": "str",
+        "onicon": "trending_up",
+        "oncolor": "red",
+        "offvalue": "OFF",
+        "offvalueType": "str",
+        "officon": "trending_down",
+        "offcolor": "blue",
+        "x": 1110,
+        "y": 200,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "5f1bfba8.0d9ce4",
+        "type": "link out",
+        "z": "4018cef4.755f3",
+        "name": "temperature",
+        "links": [
+            "89fdf163.e2ca1",
+            "cd0f36a7.59c118"
+        ],
+        "x": 355,
+        "y": 520,
+        "wires": []
+    },
+    {
+        "id": "89fdf163.e2ca1",
+        "type": "link in",
+        "z": "4018cef4.755f3",
+        "name": "termperature",
+        "links": [
+            "5f1bfba8.0d9ce4",
+            "c082b6f9.325738"
+        ],
+        "x": 1015,
+        "y": 240,
+        "wires": [
+            [
+                "a4def846.268a18"
+            ]
+        ]
+    },
+    {
+        "id": "cd0f36a7.59c118",
+        "type": "link in",
+        "z": "4018cef4.755f3",
+        "name": "termperature",
+        "links": [
+            "5f1bfba8.0d9ce4",
+            "c082b6f9.325738"
+        ],
+        "x": 435,
+        "y": 420,
+        "wires": [
+            [
+                "e72e0a4e.b17428"
+            ]
+        ]
+    },
+    {
+        "id": "eb39735f.01791",
+        "type": "comment",
+        "z": "d0c185b8.08bb48",
+        "name": "Physische Button",
+        "info": "",
+        "x": 140,
+        "y": 520,
+        "wires": []
+    },
+    {
+        "id": "5e9b4421.93446c",
+        "type": "switch",
+        "z": "d0c185b8.08bb48",
+        "name": "?on",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "0",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 230,
+        "y": 680,
+        "wires": [
+            [
+                "89b61a52.cc0bf8"
+            ]
+        ]
+    },
+    {
+        "id": "76201d87.8ec054",
+        "type": "exec",
+        "z": "d0c185b8.08bb48",
+        "command": "ls ",
+        "addpay": true,
+        "append": "",
+        "useSpawn": "false",
+        "timer": "",
+        "oldrc": false,
+        "name": "ls",
+        "x": 550,
+        "y": 320,
+        "wires": [
+            [
+                "e4e72531.c5f6a8"
+            ],
+            [],
+            []
+        ]
+    },
+    {
+        "id": "a126846.4838d78",
+        "type": "ui_button",
+        "z": "d0c185b8.08bb48",
+        "name": "refresh",
+        "group": "6d970163.d439f",
+        "order": 2,
+        "width": "1",
+        "height": "1",
+        "passthru": false,
+        "label": "",
+        "tooltip": "",
+        "color": "grey",
+        "bgcolor": "white",
+        "icon": "refresh",
+        "payload": "",
+        "payloadType": "str",
+        "topic": "refresh",
+        "x": 260,
+        "y": 320,
+        "wires": [
+            [
+                "247c3d8b.b96a42"
+            ]
+        ]
+    },
+    {
+        "id": "e4e72531.c5f6a8",
+        "type": "function",
+        "z": "d0c185b8.08bb48",
+        "name": "options",
+        "func": "// junand 15.04.2018\n\nif ( msg.topic == \"recipe\" ) {\n    flow.set ( \"lastchoice\", msg.payload );\n    return [null, null];\n}\n\nvar basepath = global.get ( \"basepath\" ) + \"/recipes/\";\n\nvar l1 = \"recipe_\".length;\nvar l2 = \".json\".length;\n        \n// 1) create array of files\nvar s = msg.payload;\nvar files = s.substring ( 0, s.length - 1 ).split ( \"\\n\" );\n//node.warn ( \"files=\" + files );\n\n// 2) dropdown list\nvar l = [];\nfor ( var i = 0; i < files.length; i++ ) {\n    var f = files [i];\n    if ( f.startsWith ( \"recipe_\" ) && f.endsWith ( \".json\" ) ) {\n        var option = f.substring ( l1, f.length - l2 );\n        //node.warn ( \"option=\" + option );\n        l [i] = {};\n        l[i] [option] = basepath + f;\n    }\n}\n\nif ( msg.topic == \"refresh\" ) {\n    return [{ topic: \"recipe\", payload: flow.get ( \"lastchoice\" ) }, { payload: flow.get ( \"lastchoice\" ), options: l }];\n}\nelse {\n    return [null, { options: l }];\n}\n",
+        "outputs": 2,
+        "noerr": 0,
+        "x": 700,
+        "y": 320,
+        "wires": [
+            [
+                "9587eabe.4a7868"
+            ],
+            [
+                "35e7bb49.758ad4"
+            ]
+        ]
+    },
+    {
+        "id": "e8a3580c.c42118",
+        "type": "comment",
+        "z": "d0c185b8.08bb48",
+        "name": "Rezeptauswahl",
+        "info": "",
+        "x": 140,
+        "y": 280,
+        "wires": []
+    },
+    {
+        "id": "650314b0.cf0c4c",
+        "type": "rpi-gpio in",
+        "z": "d0c185b8.08bb48",
+        "name": "next",
+        "pin": "5",
+        "intype": "up",
+        "debounce": "25",
+        "read": true,
+        "bcm": true,
+        "x": 110,
+        "y": 680,
+        "wires": [
+            [
+                "5e9b4421.93446c"
+            ]
+        ]
+    },
+    {
+        "id": "8088372.5b2bdc8",
+        "type": "rpi-gpio in",
+        "z": "d0c185b8.08bb48",
+        "name": "stop",
+        "pin": "6",
+        "intype": "up",
+        "debounce": "25",
+        "read": true,
+        "bcm": true,
+        "x": 110,
+        "y": 800,
+        "wires": [
+            [
+                "e91a3d08.3a1e5"
+            ]
+        ]
+    },
+    {
+        "id": "e91a3d08.3a1e5",
+        "type": "switch",
+        "z": "d0c185b8.08bb48",
+        "name": "?on",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "0",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 230,
+        "y": 800,
+        "wires": [
+            [
+                "87511e99.20dcd"
+            ]
+        ]
+    },
+    {
+        "id": "247c3d8b.b96a42",
+        "type": "change",
+        "z": "d0c185b8.08bb48",
+        "name": "filename",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "$globalContext('basepath') & \"/recipes\"",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 420,
+        "y": 320,
+        "wires": [
+            [
+                "76201d87.8ec054"
+            ]
+        ]
+    },
+    {
+        "id": "94f600b3.8bd71",
+        "type": "rpi-gpio in",
+        "z": "d0c185b8.08bb48",
+        "name": "start",
+        "pin": "12",
+        "intype": "up",
+        "debounce": "25",
+        "read": true,
+        "bcm": true,
+        "x": 110,
+        "y": 560,
+        "wires": [
+            [
+                "cca6a6f8.8ce098"
+            ]
+        ]
+    },
+    {
+        "id": "cca6a6f8.8ce098",
+        "type": "switch",
+        "z": "d0c185b8.08bb48",
+        "name": "?on",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "0",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 230,
+        "y": 560,
+        "wires": [
+            [
+                "42b37792.15a508"
+            ]
+        ]
+    },
+    {
+        "id": "884a6fa0.ad817",
+        "type": "change",
+        "z": "d0c185b8.08bb48",
+        "name": "topic",
+        "rules": [
             {
                 "t": "set",
                 "p": "topic",
                 "pt": "msg",
-                "to": "value",
+                "to": "stop",
                 "tot": "str"
             }
         ],
@@ -1844,117 +1977,787 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 300,
-        "y": 480,
+        "x": 490,
+        "y": 800,
         "wires": [
             [
-                "5df482f1.fed54c",
-                "3c7adeab.59ce32"
+                "e22fdc95.99ba2",
+                "c106feb4.6a2bd",
+                "ffe02357.cc2f3",
+                "6a6200ec.0f76c",
+                "a970a0fe.0b279"
             ]
         ]
     },
     {
-        "id": "ba00bf4f.3901a",
-        "type": "mqtt in",
-        "z": "5f9eca78.52cb34",
-        "name": "boiler",
-        "topic": "nodes@home/sensor/ds18b20/brewery/value/voltage",
-        "qos": "0",
-        "datatype": "json",
-        "broker": "faf25434.0c0ff8",
-        "x": 87,
-        "y": 480,
+        "id": "9145c3ab.c10b8",
+        "type": "change",
+        "z": "d0c185b8.08bb48",
+        "name": "topic",
+        "rules": [
+            {
+                "t": "set",
+                "p": "topic",
+                "pt": "msg",
+                "to": "next",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 490,
+        "y": 680,
         "wires": [
             [
-                "487d9e54.9f681"
+                "a970a0fe.0b279"
             ]
         ]
     },
     {
-        "id": "a159909d.1a946",
-        "type": "comment",
-        "z": "5f9eca78.52cb34",
-        "name": "Nachguss",
-        "info": "",
-        "x": 106,
-        "y": 80,
-        "wires": []
+        "id": "c0a2bfb3.999b7",
+        "type": "change",
+        "z": "d0c185b8.08bb48",
+        "name": "topic",
+        "rules": [
+            {
+                "t": "set",
+                "p": "topic",
+                "pt": "msg",
+                "to": "start",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 490,
+        "y": 560,
+        "wires": [
+            [
+                "6830c274.46fc8c",
+                "ecee77f8.3cb548",
+                "d088ad2f.31212",
+                "4d9b8472.0cd20c",
+                "c86d925a.2d93b",
+                "a970a0fe.0b279"
+            ]
+        ]
     },
     {
-        "id": "d39f22d.b466fe",
+        "id": "6830c274.46fc8c",
+        "type": "change",
+        "z": "d0c185b8.08bb48",
+        "name": "disable",
+        "rules": [
+            {
+                "t": "set",
+                "p": "enabled",
+                "pt": "msg",
+                "to": "false",
+                "tot": "bool"
+            },
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "lastchoice",
+                "tot": "flow"
+            },
+            {
+                "t": "delete",
+                "p": "topic",
+                "pt": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 120,
+        "y": 360,
+        "wires": [
+            [
+                "35e7bb49.758ad4",
+                "a126846.4838d78"
+            ]
+        ]
+    },
+    {
+        "id": "e22fdc95.99ba2",
+        "type": "change",
+        "z": "d0c185b8.08bb48",
+        "name": "enable",
+        "rules": [
+            {
+                "t": "set",
+                "p": "enabled",
+                "pt": "msg",
+                "to": "true",
+                "tot": "bool"
+            },
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "lastchoice",
+                "tot": "flow"
+            },
+            {
+                "t": "delete",
+                "p": "topic",
+                "pt": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 110,
+        "y": 320,
+        "wires": [
+            [
+                "35e7bb49.758ad4",
+                "a126846.4838d78"
+            ]
+        ]
+    },
+    {
+        "id": "42b37792.15a508",
+        "type": "switch",
+        "z": "d0c185b8.08bb48",
+        "name": "?enabled",
+        "property": "start_enabled",
+        "propertyType": "flow",
+        "rules": [
+            {
+                "t": "true"
+            },
+            {
+                "t": "else"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 360,
+        "y": 560,
+        "wires": [
+            [
+                "c0a2bfb3.999b7"
+            ],
+            [
+                "d6775082.5b7a"
+            ]
+        ]
+    },
+    {
+        "id": "89b61a52.cc0bf8",
+        "type": "switch",
+        "z": "d0c185b8.08bb48",
+        "name": "?enabled",
+        "property": "next_enabled",
+        "propertyType": "flow",
+        "rules": [
+            {
+                "t": "true"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 360,
+        "y": 680,
+        "wires": [
+            [
+                "9145c3ab.c10b8"
+            ]
+        ]
+    },
+    {
+        "id": "87511e99.20dcd",
+        "type": "switch",
+        "z": "d0c185b8.08bb48",
+        "name": "?enabled",
+        "property": "stop_enabled",
+        "propertyType": "flow",
+        "rules": [
+            {
+                "t": "true"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 360,
+        "y": 800,
+        "wires": [
+            [
+                "884a6fa0.ad817"
+            ]
+        ]
+    },
+    {
+        "id": "c7c0b192.87a36",
         "type": "ui_button",
-        "z": "5f9eca78.52cb34",
-        "name": "",
-        "group": "f7a4a10e.66a75",
-        "order": 56,
+        "z": "d0c185b8.08bb48",
+        "name": "start",
+        "group": "6d970163.d439f",
+        "order": 4,
         "width": 0,
         "height": 0,
         "passthru": false,
-        "label": "Reset",
+        "label": "Start",
         "tooltip": "",
-        "color": "",
-        "bgcolor": "",
+        "color": "green",
+        "bgcolor": "white",
         "icon": "",
-        "payload": "",
+        "payload": "x",
         "payloadType": "str",
-        "topic": "",
-        "x": 96,
-        "y": 120,
+        "topic": "start",
+        "x": 990,
+        "y": 560,
         "wires": [
             [
-                "ca11600c.7d927",
-                "fa7efb75.fe1348"
+                "6830c274.46fc8c",
+                "d088ad2f.31212",
+                "4d9b8472.0cd20c",
+                "ecee77f8.3cb548",
+                "c86d925a.2d93b",
+                "a970a0fe.0b279"
             ]
         ]
     },
     {
-        "id": "e8224c88.9ccdc",
-        "type": "function",
-        "z": "5f9eca78.52cb34",
-        "name": "detect alarm",
-        "func": "\nif ( msg.payload.temperature1 >= 78.0 ) {\n    return [{ payload: \"Kessel 1 hat Nachguss-Temperatur erreicht!\" }, { payload: \"ring\" }];\n}\n\nif ( msg.payload.temperature2 >= 78.0 ) {\n    return [{ payload: \"Kessel 2 hat Nachguss-Temperatur erreicht!\" }, { payload: \"ring\" }];\n}\n\nreturn null;",
-        "outputs": 2,
-        "noerr": 0,
-        "x": 310,
-        "y": 360,
+        "id": "e2932144.22c94",
+        "type": "ui_button",
+        "z": "d0c185b8.08bb48",
+        "name": "stop",
+        "group": "6d970163.d439f",
+        "order": 8,
+        "width": 0,
+        "height": 0,
+        "passthru": false,
+        "label": "Stop",
+        "tooltip": "",
+        "color": "white",
+        "bgcolor": "#FFAAAA",
+        "icon": "",
+        "payload": "x",
+        "payloadType": "str",
+        "topic": "stop",
+        "x": 990,
+        "y": 800,
         "wires": [
             [
-                "69cd691a.437ca8"
-            ],
-            [
-                "b3dc4a64.b281e8"
+                "e22fdc95.99ba2",
+                "6a6200ec.0f76c",
+                "ffe02357.cc2f3",
+                "c106feb4.6a2bd",
+                "a970a0fe.0b279"
             ]
-        ],
-        "outputLabels": [
-            "alarm",
-            "audio"
         ]
     },
     {
-        "id": "69cd691a.437ca8",
-        "type": "link out",
-        "z": "5f9eca78.52cb34",
-        "name": "alarm",
-        "links": [
-            "9ae7ba59.e3ec58",
-            "6c843107.5ac24",
-            "c838fc7e.25bbd"
-        ],
-        "x": 575,
-        "y": 360,
+        "id": "e9e72b99.7f6c88",
+        "type": "ui_button",
+        "z": "d0c185b8.08bb48",
+        "name": "next",
+        "group": "6d970163.d439f",
+        "order": 5,
+        "width": 0,
+        "height": 0,
+        "passthru": false,
+        "label": "Weiter",
+        "tooltip": "",
+        "color": "white",
+        "bgcolor": "green",
+        "icon": "",
+        "payload": "x",
+        "payloadType": "str",
+        "topic": "next",
+        "x": 990,
+        "y": 680,
+        "wires": [
+            [
+                "a970a0fe.0b279"
+            ]
+        ]
+    },
+    {
+        "id": "4aef7a83.ebfc34",
+        "type": "comment",
+        "z": "d0c185b8.08bb48",
+        "name": "Gui Button",
+        "info": "",
+        "x": 820,
+        "y": 520,
         "wires": []
     },
     {
-        "id": "b3dc4a64.b281e8",
-        "type": "link out",
-        "z": "5f9eca78.52cb34",
-        "name": "audio",
-        "links": [
-            "5c503456.e30fdc",
-            "fadd3ed.9095bc"
+        "id": "c106feb4.6a2bd",
+        "type": "change",
+        "z": "d0c185b8.08bb48",
+        "name": "enable",
+        "rules": [
+            {
+                "t": "set",
+                "p": "enabled",
+                "pt": "msg",
+                "to": "true",
+                "tot": "bool"
+            },
+            {
+                "t": "set",
+                "p": "start_enabled",
+                "pt": "flow",
+                "to": "enabled",
+                "tot": "msg"
+            }
         ],
-        "x": 575,
-        "y": 400,
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 810,
+        "y": 560,
+        "wires": [
+            [
+                "c7c0b192.87a36"
+            ]
+        ]
+    },
+    {
+        "id": "ecee77f8.3cb548",
+        "type": "change",
+        "z": "d0c185b8.08bb48",
+        "name": "disable",
+        "rules": [
+            {
+                "t": "set",
+                "p": "enabled",
+                "pt": "msg",
+                "to": "false",
+                "tot": "bool"
+            },
+            {
+                "t": "set",
+                "p": "start_enabled",
+                "pt": "flow",
+                "to": "enabled",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 820,
+        "y": 620,
+        "wires": [
+            [
+                "c7c0b192.87a36"
+            ]
+        ]
+    },
+    {
+        "id": "b8e8792a.48e4d8",
+        "type": "link in",
+        "z": "d0c185b8.08bb48",
+        "name": "load on startup",
+        "links": [
+            "9eb8404e.13d46",
+            "c480b759.94c038",
+            "4591e583.8d859c"
+        ],
+        "x": 135,
+        "y": 80,
+        "wires": [
+            [
+                "ecee77f8.3cb548",
+                "ffe02357.cc2f3",
+                "6a6200ec.0f76c",
+                "247c3d8b.b96a42",
+                "e22fdc95.99ba2"
+            ]
+        ]
+    },
+    {
+        "id": "ffe02357.cc2f3",
+        "type": "change",
+        "z": "d0c185b8.08bb48",
+        "name": "disable",
+        "rules": [
+            {
+                "t": "set",
+                "p": "enabled",
+                "pt": "msg",
+                "to": "false",
+                "tot": "bool"
+            },
+            {
+                "t": "set",
+                "p": "next_enabled",
+                "pt": "flow",
+                "to": "enabled",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 820,
+        "y": 740,
+        "wires": [
+            [
+                "e9e72b99.7f6c88"
+            ]
+        ]
+    },
+    {
+        "id": "d088ad2f.31212",
+        "type": "change",
+        "z": "d0c185b8.08bb48",
+        "name": "enable",
+        "rules": [
+            {
+                "t": "set",
+                "p": "enabled",
+                "pt": "msg",
+                "to": "true",
+                "tot": "bool"
+            },
+            {
+                "t": "set",
+                "p": "next_enabled",
+                "pt": "flow",
+                "to": "enabled",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 810,
+        "y": 680,
+        "wires": [
+            [
+                "e9e72b99.7f6c88"
+            ]
+        ]
+    },
+    {
+        "id": "6a6200ec.0f76c",
+        "type": "change",
+        "z": "d0c185b8.08bb48",
+        "name": "disable",
+        "rules": [
+            {
+                "t": "set",
+                "p": "enabled",
+                "pt": "msg",
+                "to": "false",
+                "tot": "bool"
+            },
+            {
+                "t": "set",
+                "p": "stop_enabled",
+                "pt": "flow",
+                "to": "enabled",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 820,
+        "y": 860,
+        "wires": [
+            [
+                "e2932144.22c94"
+            ]
+        ]
+    },
+    {
+        "id": "4d9b8472.0cd20c",
+        "type": "change",
+        "z": "d0c185b8.08bb48",
+        "name": "enable",
+        "rules": [
+            {
+                "t": "set",
+                "p": "enabled",
+                "pt": "msg",
+                "to": "true",
+                "tot": "bool"
+            },
+            {
+                "t": "set",
+                "p": "stop_enabled",
+                "pt": "flow",
+                "to": "enabled",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 810,
+        "y": 800,
+        "wires": [
+            [
+                "e2932144.22c94"
+            ]
+        ]
+    },
+    {
+        "id": "178905b7.6844ba",
+        "type": "comment",
+        "z": "d0c185b8.08bb48",
+        "name": "Nebenwirkung",
+        "info": "Obige change-Operatoren enable/disable setzen auch einen flow-Para,eter für die (De)Aktivierung der physischen Button)",
+        "x": 830,
+        "y": 900,
+        "wires": []
+    },
+    {
+        "id": "c86d925a.2d93b",
+        "type": "link out",
+        "z": "d0c185b8.08bb48",
+        "name": "blank",
+        "links": [
+            "8a848227.dcc85"
+        ],
+        "x": 1415,
+        "y": 420,
+        "wires": []
+    },
+    {
+        "id": "6f227e8d.19871",
+        "type": "link in",
+        "z": "d0c185b8.08bb48",
+        "name": "recipe schedule",
+        "links": [
+            "2712e131.9920de"
+        ],
+        "x": 135,
+        "y": 120,
+        "wires": [
+            [
+                "fe90346c.ccc528"
+            ]
+        ]
+    },
+    {
+        "id": "fe90346c.ccc528",
+        "type": "switch",
+        "z": "d0c185b8.08bb48",
+        "name": "?finished",
+        "property": "topic",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "finished",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 240,
+        "y": 120,
+        "wires": [
+            [
+                "e22fdc95.99ba2",
+                "c106feb4.6a2bd",
+                "6a6200ec.0f76c",
+                "ffe02357.cc2f3"
+            ]
+        ]
+    },
+    {
+        "id": "35e7bb49.758ad4",
+        "type": "ui_dropdown",
+        "z": "d0c185b8.08bb48",
+        "name": "recipe",
+        "label": "",
+        "tooltip": "",
+        "place": "Rezept auswählen",
+        "group": "6d970163.d439f",
+        "order": 1,
+        "width": "4",
+        "height": "1",
+        "passthru": false,
+        "options": [
+            {
+                "label": "",
+                "value": "",
+                "type": "str"
+            }
+        ],
+        "payload": "",
+        "topic": "recipe",
+        "x": 830,
+        "y": 360,
+        "wires": [
+            [
+                "9587eabe.4a7868",
+                "e4e72531.c5f6a8"
+            ]
+        ]
+    },
+    {
+        "id": "9587eabe.4a7868",
+        "type": "change",
+        "z": "d0c185b8.08bb48",
+        "name": "filename",
+        "rules": [
+            {
+                "t": "move",
+                "p": "payload",
+                "pt": "msg",
+                "to": "filename",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 980,
+        "y": 320,
+        "wires": [
+            [
+                "4e44bddc.fb33b4"
+            ]
+        ]
+    },
+    {
+        "id": "4e44bddc.fb33b4",
+        "type": "file in",
+        "z": "d0c185b8.08bb48",
+        "name": "",
+        "filename": "",
+        "format": "utf8",
+        "chunk": false,
+        "sendError": false,
+        "x": 1110,
+        "y": 320,
+        "wires": [
+            [
+                "32c135d2.d15d4a"
+            ]
+        ]
+    },
+    {
+        "id": "32c135d2.d15d4a",
+        "type": "json",
+        "z": "d0c185b8.08bb48",
+        "name": "",
+        "pretty": false,
+        "x": 1230,
+        "y": 320,
+        "wires": [
+            [
+                "bb96b38e.6a74e",
+                "c106feb4.6a2bd"
+            ]
+        ]
+    },
+    {
+        "id": "bb96b38e.6a74e",
+        "type": "link out",
+        "z": "d0c185b8.08bb48",
+        "name": "recipe",
+        "links": [
+            "bcd51fcf.6e841",
+            "c1f169a3.ced248",
+            "d1fc50e6.16a48",
+            "f6278604.186ef8",
+            "c368a98c.5f8c28",
+            "763118ef.9f4668"
+        ],
+        "x": 1415,
+        "y": 320,
+        "wires": []
+    },
+    {
+        "id": "a970a0fe.0b279",
+        "type": "link out",
+        "z": "d0c185b8.08bb48",
+        "name": "button press",
+        "links": [
+            "38cc6d34.85aa92"
+        ],
+        "x": 1415,
+        "y": 1020,
+        "wires": []
+    },
+    {
+        "id": "2212e4ff.bdfc4c",
+        "type": "comment",
+        "z": "d0c185b8.08bb48",
+        "name": "Button Steuerung",
+        "info": "# Flow Start\n * ",
+        "x": 140,
+        "y": 40,
+        "wires": []
+    },
+    {
+        "id": "d6775082.5b7a",
+        "type": "change",
+        "z": "d0c185b8.08bb48",
+        "name": "topic",
+        "rules": [
+            {
+                "t": "set",
+                "p": "topic",
+                "pt": "msg",
+                "to": "lcd",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 330,
+        "y": 960,
+        "wires": [
+            [
+                "3c0cf97f.b39aa6"
+            ]
+        ]
+    },
+    {
+        "id": "3c0cf97f.b39aa6",
+        "type": "link out",
+        "z": "d0c185b8.08bb48",
+        "name": "switch lcd",
+        "links": [
+            "d8176565.66c988"
+        ],
+        "x": 435,
+        "y": 960,
         "wires": []
     },
     {
@@ -2903,1062 +3706,141 @@
         ]
     },
     {
-        "id": "ff2e08c5.c64e98",
-        "type": "comment",
-        "z": "acc8977e.fd0588",
-        "name": "shutdown",
-        "info": "",
-        "x": 160,
-        "y": 80,
+        "id": "8a59353e.51e018",
+        "type": "ui_gauge",
+        "z": "5f9eca78.52cb34",
+        "name": "temperature",
+        "group": "cbad4bec.ed7c88",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "gtype": "gage",
+        "title": "",
+        "label": "°C",
+        "format": "{{value | number:1}}",
+        "min": 0,
+        "max": "90",
+        "colors": [
+            "#0000ff",
+            "#0292b0",
+            "#ca3838"
+        ],
+        "seg1": "0",
+        "seg2": "78",
+        "x": 630,
+        "y": 240,
         "wires": []
     },
     {
-        "id": "8a848227.dcc85",
-        "type": "link in",
-        "z": "4018cef4.755f3",
-        "name": "blank",
-        "links": [
-            "146e5abc.5a9575",
-            "2bf980d.298c08",
-            "c86d925a.2d93b",
-            "a7d78432.8834f8",
-            "2f3afbb1.9e58e4"
-        ],
-        "x": 755,
-        "y": 660,
-        "wires": [
-            [
-                "dab737b.a3dc5c8"
-            ]
-        ]
-    },
-    {
-        "id": "763118ef.9f4668",
-        "type": "link in",
-        "z": "4018cef4.755f3",
-        "name": "recipe",
-        "links": [
-            "3bd82293.1951de",
-            "bb96b38e.6a74e"
-        ],
-        "x": 515,
-        "y": 560,
-        "wires": [
-            [
-                "ab315bed.9c0268"
-            ]
-        ]
-    },
-    {
-        "id": "38cc6d34.85aa92",
-        "type": "link in",
-        "z": "4018cef4.755f3",
-        "name": "button press",
-        "links": [
-            "2c0fd36d.b8a70c",
-            "68b89b4.f6d0f64",
-            "307e67e0.04c178",
-            "8eb1baed.b5b518",
-            "2e20381f.409388",
-            "4e61a66e.975628",
-            "393e48b3.c68f98",
-            "a970a0fe.0b279",
-            "e7490bd8.735b18",
-            "64cbde22.ce25f",
-            "5e08f88c.5bfa78"
-        ],
-        "x": 515,
-        "y": 600,
-        "wires": [
-            [
-                "ab315bed.9c0268"
-            ]
-        ]
-    },
-    {
-        "id": "eb39735f.01791",
-        "type": "comment",
-        "z": "d0c185b8.08bb48",
-        "name": "Physische Button",
-        "info": "",
-        "x": 140,
-        "y": 520,
-        "wires": []
-    },
-    {
-        "id": "5e9b4421.93446c",
-        "type": "switch",
-        "z": "d0c185b8.08bb48",
-        "name": "?on",
-        "property": "payload",
-        "propertyType": "msg",
+        "id": "5197e496.c62d0c",
+        "type": "change",
+        "z": "5f9eca78.52cb34",
+        "name": "get value",
         "rules": [
             {
-                "t": "eq",
-                "v": "0",
-                "vt": "str"
+                "t": "move",
+                "p": "payload.temperature1",
+                "pt": "msg",
+                "to": "payload",
+                "tot": "msg"
+            },
+            {
+                "t": "set",
+                "p": "topic",
+                "pt": "msg",
+                "to": "value",
+                "tot": "str"
             }
         ],
-        "checkall": "true",
-        "repair": false,
-        "outputs": 1,
-        "x": 230,
-        "y": 680,
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 300,
+        "y": 240,
         "wires": [
             [
-                "89b61a52.cc0bf8"
+                "8a59353e.51e018",
+                "8a93f228.992e5"
             ]
         ]
     },
     {
-        "id": "76201d87.8ec054",
-        "type": "exec",
-        "z": "d0c185b8.08bb48",
-        "command": "ls ",
-        "addpay": true,
-        "append": "",
-        "useSpawn": "false",
-        "timer": "",
-        "oldrc": false,
-        "name": "ls",
-        "x": 550,
-        "y": 320,
+        "id": "d82379aa.bfbf58",
+        "type": "mqtt in",
+        "z": "5f9eca78.52cb34",
+        "name": "mqtt",
+        "topic": "nodes@home/sensor/ds18b20/brewery/value/temperature",
+        "qos": "0",
+        "datatype": "json",
+        "broker": "faf25434.0c0ff8",
+        "inputs": 0,
+        "x": 90,
+        "y": 240,
         "wires": [
             [
-                "e4e72531.c5f6a8"
-            ],
-            [],
+                "639b1bc0.0ab124",
+                "e8224c88.9ccdc",
+                "5197e496.c62d0c"
+            ]
+        ]
+    },
+    {
+        "id": "46a125f8.69cdfc",
+        "type": "comment",
+        "z": "5f9eca78.52cb34",
+        "name": "Temperatur Nachguss",
+        "info": "",
+        "x": 140,
+        "y": 200,
+        "wires": []
+    },
+    {
+        "id": "8a93f228.992e5",
+        "type": "ui_chart",
+        "z": "5f9eca78.52cb34",
+        "name": "chart",
+        "group": "cbad4bec.ed7c88",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "label": "",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "dd HH:mm",
+        "interpolate": "linear",
+        "nodata": "---",
+        "dot": false,
+        "ymin": "0",
+        "ymax": "90",
+        "removeOlder": "1",
+        "removeOlderPoints": "",
+        "removeOlderUnit": "86400",
+        "cutout": 0,
+        "useOneColor": false,
+        "colors": [
+            "#8080ff",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "x": 610,
+        "y": 200,
+        "wires": [
             []
         ]
     },
     {
-        "id": "a126846.4838d78",
-        "type": "ui_button",
-        "z": "d0c185b8.08bb48",
-        "name": "refresh",
-        "group": "6d970163.d439f",
-        "order": 2,
-        "width": "1",
-        "height": "1",
-        "passthru": false,
-        "label": "",
-        "tooltip": "",
-        "color": "grey",
-        "bgcolor": "white",
-        "icon": "refresh",
-        "payload": "",
-        "payloadType": "str",
-        "topic": "refresh",
-        "x": 260,
-        "y": 320,
-        "wires": [
-            [
-                "247c3d8b.b96a42"
-            ]
-        ]
-    },
-    {
-        "id": "e4e72531.c5f6a8",
-        "type": "function",
-        "z": "d0c185b8.08bb48",
-        "name": "options",
-        "func": "// junand 15.04.2018\n\nif ( msg.topic == \"recipe\" ) {\n    flow.set ( \"lastchoice\", msg.payload );\n    return [null, null];\n}\n\nvar basepath = global.get ( \"basepath\" ) + \"/recipes/\";\n\nvar l1 = \"recipe_\".length;\nvar l2 = \".json\".length;\n        \n// 1) create array of files\nvar s = msg.payload;\nvar files = s.substring ( 0, s.length - 1 ).split ( \"\\n\" );\n//node.warn ( \"files=\" + files );\n\n// 2) dropdown list\nvar l = [];\nfor ( var i = 0; i < files.length; i++ ) {\n    var f = files [i];\n    if ( f.startsWith ( \"recipe_\" ) && f.endsWith ( \".json\" ) ) {\n        var option = f.substring ( l1, f.length - l2 );\n        //node.warn ( \"option=\" + option );\n        l [i] = {};\n        l[i] [option] = basepath + f;\n    }\n}\n\nif ( msg.topic == \"refresh\" ) {\n    return [{ topic: \"recipe\", payload: flow.get ( \"lastchoice\" ) }, { payload: flow.get ( \"lastchoice\" ), options: l }];\n}\nelse {\n    return [null, { options: l }];\n}\n",
-        "outputs": 2,
-        "noerr": 0,
-        "x": 700,
-        "y": 320,
-        "wires": [
-            [
-                "9587eabe.4a7868"
-            ],
-            [
-                "35e7bb49.758ad4"
-            ]
-        ]
-    },
-    {
-        "id": "e8a3580c.c42118",
-        "type": "comment",
-        "z": "d0c185b8.08bb48",
-        "name": "Rezeptauswahl",
-        "info": "",
-        "x": 140,
-        "y": 280,
-        "wires": []
-    },
-    {
-        "id": "650314b0.cf0c4c",
-        "type": "rpi-gpio in",
-        "z": "d0c185b8.08bb48",
-        "name": "next",
-        "pin": "29",
-        "intype": "up",
-        "debounce": "25",
-        "read": true,
-        "x": 110,
-        "y": 680,
-        "wires": [
-            [
-                "5e9b4421.93446c"
-            ]
-        ]
-    },
-    {
-        "id": "8088372.5b2bdc8",
-        "type": "rpi-gpio in",
-        "z": "d0c185b8.08bb48",
-        "name": "stop",
-        "pin": "31",
-        "intype": "up",
-        "debounce": "25",
-        "read": true,
-        "x": 110,
-        "y": 800,
-        "wires": [
-            [
-                "e91a3d08.3a1e5"
-            ]
-        ]
-    },
-    {
-        "id": "e91a3d08.3a1e5",
-        "type": "switch",
-        "z": "d0c185b8.08bb48",
-        "name": "?on",
-        "property": "payload",
-        "propertyType": "msg",
-        "rules": [
-            {
-                "t": "eq",
-                "v": "0",
-                "vt": "str"
-            }
-        ],
-        "checkall": "true",
-        "repair": false,
-        "outputs": 1,
-        "x": 230,
-        "y": 800,
-        "wires": [
-            [
-                "87511e99.20dcd"
-            ]
-        ]
-    },
-    {
-        "id": "247c3d8b.b96a42",
+        "id": "ca11600c.7d927",
         "type": "change",
-        "z": "d0c185b8.08bb48",
-        "name": "filename",
-        "rules": [
-            {
-                "t": "set",
-                "p": "payload",
-                "pt": "msg",
-                "to": "$globalContext('basepath') & \"/recipes\"",
-                "tot": "jsonata"
-            }
-        ],
-        "action": "",
-        "property": "",
-        "from": "",
-        "to": "",
-        "reg": false,
-        "x": 420,
-        "y": 320,
-        "wires": [
-            [
-                "76201d87.8ec054"
-            ]
-        ]
-    },
-    {
-        "id": "94f600b3.8bd71",
-        "type": "rpi-gpio in",
-        "z": "d0c185b8.08bb48",
-        "name": "start",
-        "pin": "32",
-        "intype": "up",
-        "debounce": "25",
-        "read": true,
-        "x": 110,
-        "y": 560,
-        "wires": [
-            [
-                "cca6a6f8.8ce098"
-            ]
-        ]
-    },
-    {
-        "id": "cca6a6f8.8ce098",
-        "type": "switch",
-        "z": "d0c185b8.08bb48",
-        "name": "?on",
-        "property": "payload",
-        "propertyType": "msg",
-        "rules": [
-            {
-                "t": "eq",
-                "v": "0",
-                "vt": "str"
-            }
-        ],
-        "checkall": "true",
-        "repair": false,
-        "outputs": 1,
-        "x": 230,
-        "y": 560,
-        "wires": [
-            [
-                "42b37792.15a508"
-            ]
-        ]
-    },
-    {
-        "id": "884a6fa0.ad817",
-        "type": "change",
-        "z": "d0c185b8.08bb48",
-        "name": "topic",
-        "rules": [
-            {
-                "t": "set",
-                "p": "topic",
-                "pt": "msg",
-                "to": "stop",
-                "tot": "str"
-            }
-        ],
-        "action": "",
-        "property": "",
-        "from": "",
-        "to": "",
-        "reg": false,
-        "x": 490,
-        "y": 800,
-        "wires": [
-            [
-                "e22fdc95.99ba2",
-                "c106feb4.6a2bd",
-                "ffe02357.cc2f3",
-                "6a6200ec.0f76c",
-                "a970a0fe.0b279"
-            ]
-        ]
-    },
-    {
-        "id": "9145c3ab.c10b8",
-        "type": "change",
-        "z": "d0c185b8.08bb48",
-        "name": "topic",
-        "rules": [
-            {
-                "t": "set",
-                "p": "topic",
-                "pt": "msg",
-                "to": "next",
-                "tot": "str"
-            }
-        ],
-        "action": "",
-        "property": "",
-        "from": "",
-        "to": "",
-        "reg": false,
-        "x": 490,
-        "y": 680,
-        "wires": [
-            [
-                "a970a0fe.0b279"
-            ]
-        ]
-    },
-    {
-        "id": "c0a2bfb3.999b7",
-        "type": "change",
-        "z": "d0c185b8.08bb48",
-        "name": "topic",
-        "rules": [
-            {
-                "t": "set",
-                "p": "topic",
-                "pt": "msg",
-                "to": "start",
-                "tot": "str"
-            }
-        ],
-        "action": "",
-        "property": "",
-        "from": "",
-        "to": "",
-        "reg": false,
-        "x": 490,
-        "y": 560,
-        "wires": [
-            [
-                "6830c274.46fc8c",
-                "ecee77f8.3cb548",
-                "d088ad2f.31212",
-                "4d9b8472.0cd20c",
-                "c86d925a.2d93b",
-                "a970a0fe.0b279"
-            ]
-        ]
-    },
-    {
-        "id": "6830c274.46fc8c",
-        "type": "change",
-        "z": "d0c185b8.08bb48",
-        "name": "disable",
-        "rules": [
-            {
-                "t": "set",
-                "p": "enabled",
-                "pt": "msg",
-                "to": "false",
-                "tot": "bool"
-            },
-            {
-                "t": "set",
-                "p": "payload",
-                "pt": "msg",
-                "to": "lastchoice",
-                "tot": "flow"
-            },
-            {
-                "t": "delete",
-                "p": "topic",
-                "pt": "msg"
-            }
-        ],
-        "action": "",
-        "property": "",
-        "from": "",
-        "to": "",
-        "reg": false,
-        "x": 120,
-        "y": 360,
-        "wires": [
-            [
-                "35e7bb49.758ad4",
-                "a126846.4838d78"
-            ]
-        ]
-    },
-    {
-        "id": "e22fdc95.99ba2",
-        "type": "change",
-        "z": "d0c185b8.08bb48",
-        "name": "enable",
-        "rules": [
-            {
-                "t": "set",
-                "p": "enabled",
-                "pt": "msg",
-                "to": "true",
-                "tot": "bool"
-            },
-            {
-                "t": "set",
-                "p": "payload",
-                "pt": "msg",
-                "to": "lastchoice",
-                "tot": "flow"
-            },
-            {
-                "t": "delete",
-                "p": "topic",
-                "pt": "msg"
-            }
-        ],
-        "action": "",
-        "property": "",
-        "from": "",
-        "to": "",
-        "reg": false,
-        "x": 110,
-        "y": 320,
-        "wires": [
-            [
-                "35e7bb49.758ad4",
-                "a126846.4838d78"
-            ]
-        ]
-    },
-    {
-        "id": "42b37792.15a508",
-        "type": "switch",
-        "z": "d0c185b8.08bb48",
-        "name": "?enabled",
-        "property": "start_enabled",
-        "propertyType": "flow",
-        "rules": [
-            {
-                "t": "true"
-            },
-            {
-                "t": "else"
-            }
-        ],
-        "checkall": "true",
-        "repair": false,
-        "outputs": 2,
-        "x": 360,
-        "y": 560,
-        "wires": [
-            [
-                "c0a2bfb3.999b7"
-            ],
-            [
-                "d6775082.5b7a"
-            ]
-        ]
-    },
-    {
-        "id": "89b61a52.cc0bf8",
-        "type": "switch",
-        "z": "d0c185b8.08bb48",
-        "name": "?enabled",
-        "property": "next_enabled",
-        "propertyType": "flow",
-        "rules": [
-            {
-                "t": "true"
-            }
-        ],
-        "checkall": "true",
-        "repair": false,
-        "outputs": 1,
-        "x": 360,
-        "y": 680,
-        "wires": [
-            [
-                "9145c3ab.c10b8"
-            ]
-        ]
-    },
-    {
-        "id": "87511e99.20dcd",
-        "type": "switch",
-        "z": "d0c185b8.08bb48",
-        "name": "?enabled",
-        "property": "stop_enabled",
-        "propertyType": "flow",
-        "rules": [
-            {
-                "t": "true"
-            }
-        ],
-        "checkall": "true",
-        "repair": false,
-        "outputs": 1,
-        "x": 360,
-        "y": 800,
-        "wires": [
-            [
-                "884a6fa0.ad817"
-            ]
-        ]
-    },
-    {
-        "id": "c7c0b192.87a36",
-        "type": "ui_button",
-        "z": "d0c185b8.08bb48",
-        "name": "start",
-        "group": "6d970163.d439f",
-        "order": 4,
-        "width": 0,
-        "height": 0,
-        "passthru": false,
-        "label": "Start",
-        "tooltip": "",
-        "color": "green",
-        "bgcolor": "white",
-        "icon": "",
-        "payload": "x",
-        "payloadType": "str",
-        "topic": "start",
-        "x": 990,
-        "y": 560,
-        "wires": [
-            [
-                "6830c274.46fc8c",
-                "d088ad2f.31212",
-                "4d9b8472.0cd20c",
-                "ecee77f8.3cb548",
-                "c86d925a.2d93b",
-                "a970a0fe.0b279"
-            ]
-        ]
-    },
-    {
-        "id": "e2932144.22c94",
-        "type": "ui_button",
-        "z": "d0c185b8.08bb48",
-        "name": "stop",
-        "group": "6d970163.d439f",
-        "order": 8,
-        "width": 0,
-        "height": 0,
-        "passthru": false,
-        "label": "Stop",
-        "tooltip": "",
-        "color": "white",
-        "bgcolor": "#FFAAAA",
-        "icon": "",
-        "payload": "x",
-        "payloadType": "str",
-        "topic": "stop",
-        "x": 990,
-        "y": 800,
-        "wires": [
-            [
-                "e22fdc95.99ba2",
-                "6a6200ec.0f76c",
-                "ffe02357.cc2f3",
-                "c106feb4.6a2bd",
-                "a970a0fe.0b279"
-            ]
-        ]
-    },
-    {
-        "id": "e9e72b99.7f6c88",
-        "type": "ui_button",
-        "z": "d0c185b8.08bb48",
-        "name": "next",
-        "group": "6d970163.d439f",
-        "order": 5,
-        "width": 0,
-        "height": 0,
-        "passthru": false,
-        "label": "Weiter",
-        "tooltip": "",
-        "color": "white",
-        "bgcolor": "green",
-        "icon": "",
-        "payload": "x",
-        "payloadType": "str",
-        "topic": "next",
-        "x": 990,
-        "y": 680,
-        "wires": [
-            [
-                "a970a0fe.0b279"
-            ]
-        ]
-    },
-    {
-        "id": "4aef7a83.ebfc34",
-        "type": "comment",
-        "z": "d0c185b8.08bb48",
-        "name": "Gui Button",
-        "info": "",
-        "x": 820,
-        "y": 520,
-        "wires": []
-    },
-    {
-        "id": "c106feb4.6a2bd",
-        "type": "change",
-        "z": "d0c185b8.08bb48",
-        "name": "enable",
-        "rules": [
-            {
-                "t": "set",
-                "p": "enabled",
-                "pt": "msg",
-                "to": "true",
-                "tot": "bool"
-            },
-            {
-                "t": "set",
-                "p": "start_enabled",
-                "pt": "flow",
-                "to": "enabled",
-                "tot": "msg"
-            }
-        ],
-        "action": "",
-        "property": "",
-        "from": "",
-        "to": "",
-        "reg": false,
-        "x": 810,
-        "y": 560,
-        "wires": [
-            [
-                "c7c0b192.87a36"
-            ]
-        ]
-    },
-    {
-        "id": "ecee77f8.3cb548",
-        "type": "change",
-        "z": "d0c185b8.08bb48",
-        "name": "disable",
-        "rules": [
-            {
-                "t": "set",
-                "p": "enabled",
-                "pt": "msg",
-                "to": "false",
-                "tot": "bool"
-            },
-            {
-                "t": "set",
-                "p": "start_enabled",
-                "pt": "flow",
-                "to": "enabled",
-                "tot": "msg"
-            }
-        ],
-        "action": "",
-        "property": "",
-        "from": "",
-        "to": "",
-        "reg": false,
-        "x": 820,
-        "y": 620,
-        "wires": [
-            [
-                "c7c0b192.87a36"
-            ]
-        ]
-    },
-    {
-        "id": "b8e8792a.48e4d8",
-        "type": "link in",
-        "z": "d0c185b8.08bb48",
-        "name": "load on startup",
-        "links": [
-            "9eb8404e.13d46",
-            "c480b759.94c038",
-            "4591e583.8d859c"
-        ],
-        "x": 135,
-        "y": 80,
-        "wires": [
-            [
-                "ecee77f8.3cb548",
-                "ffe02357.cc2f3",
-                "6a6200ec.0f76c",
-                "247c3d8b.b96a42",
-                "e22fdc95.99ba2"
-            ]
-        ]
-    },
-    {
-        "id": "ffe02357.cc2f3",
-        "type": "change",
-        "z": "d0c185b8.08bb48",
-        "name": "disable",
-        "rules": [
-            {
-                "t": "set",
-                "p": "enabled",
-                "pt": "msg",
-                "to": "false",
-                "tot": "bool"
-            },
-            {
-                "t": "set",
-                "p": "next_enabled",
-                "pt": "flow",
-                "to": "enabled",
-                "tot": "msg"
-            }
-        ],
-        "action": "",
-        "property": "",
-        "from": "",
-        "to": "",
-        "reg": false,
-        "x": 820,
-        "y": 740,
-        "wires": [
-            [
-                "e9e72b99.7f6c88"
-            ]
-        ]
-    },
-    {
-        "id": "d088ad2f.31212",
-        "type": "change",
-        "z": "d0c185b8.08bb48",
-        "name": "enable",
-        "rules": [
-            {
-                "t": "set",
-                "p": "enabled",
-                "pt": "msg",
-                "to": "true",
-                "tot": "bool"
-            },
-            {
-                "t": "set",
-                "p": "next_enabled",
-                "pt": "flow",
-                "to": "enabled",
-                "tot": "msg"
-            }
-        ],
-        "action": "",
-        "property": "",
-        "from": "",
-        "to": "",
-        "reg": false,
-        "x": 810,
-        "y": 680,
-        "wires": [
-            [
-                "e9e72b99.7f6c88"
-            ]
-        ]
-    },
-    {
-        "id": "6a6200ec.0f76c",
-        "type": "change",
-        "z": "d0c185b8.08bb48",
-        "name": "disable",
-        "rules": [
-            {
-                "t": "set",
-                "p": "enabled",
-                "pt": "msg",
-                "to": "false",
-                "tot": "bool"
-            },
-            {
-                "t": "set",
-                "p": "stop_enabled",
-                "pt": "flow",
-                "to": "enabled",
-                "tot": "msg"
-            }
-        ],
-        "action": "",
-        "property": "",
-        "from": "",
-        "to": "",
-        "reg": false,
-        "x": 820,
-        "y": 860,
-        "wires": [
-            [
-                "e2932144.22c94"
-            ]
-        ]
-    },
-    {
-        "id": "4d9b8472.0cd20c",
-        "type": "change",
-        "z": "d0c185b8.08bb48",
-        "name": "enable",
-        "rules": [
-            {
-                "t": "set",
-                "p": "enabled",
-                "pt": "msg",
-                "to": "true",
-                "tot": "bool"
-            },
-            {
-                "t": "set",
-                "p": "stop_enabled",
-                "pt": "flow",
-                "to": "enabled",
-                "tot": "msg"
-            }
-        ],
-        "action": "",
-        "property": "",
-        "from": "",
-        "to": "",
-        "reg": false,
-        "x": 810,
-        "y": 800,
-        "wires": [
-            [
-                "e2932144.22c94"
-            ]
-        ]
-    },
-    {
-        "id": "178905b7.6844ba",
-        "type": "comment",
-        "z": "d0c185b8.08bb48",
-        "name": "Nebenwirkung",
-        "info": "Obige change-Operatoren enable/disable setzen auch einen flow-Para,eter für die (De)Aktivierung der physischen Button)",
-        "x": 830,
-        "y": 900,
-        "wires": []
-    },
-    {
-        "id": "c86d925a.2d93b",
-        "type": "link out",
-        "z": "d0c185b8.08bb48",
-        "name": "blank",
-        "links": [
-            "8a848227.dcc85"
-        ],
-        "x": 1415,
-        "y": 420,
-        "wires": []
-    },
-    {
-        "id": "6f227e8d.19871",
-        "type": "link in",
-        "z": "d0c185b8.08bb48",
-        "name": "recipe schedule",
-        "links": [
-            "2712e131.9920de"
-        ],
-        "x": 135,
-        "y": 120,
-        "wires": [
-            [
-                "fe90346c.ccc528"
-            ]
-        ]
-    },
-    {
-        "id": "fe90346c.ccc528",
-        "type": "switch",
-        "z": "d0c185b8.08bb48",
-        "name": "?finished",
-        "property": "topic",
-        "propertyType": "msg",
-        "rules": [
-            {
-                "t": "eq",
-                "v": "finished",
-                "vt": "str"
-            }
-        ],
-        "checkall": "true",
-        "repair": false,
-        "outputs": 1,
-        "x": 240,
-        "y": 120,
-        "wires": [
-            [
-                "e22fdc95.99ba2",
-                "c106feb4.6a2bd",
-                "6a6200ec.0f76c",
-                "ffe02357.cc2f3"
-            ]
-        ]
-    },
-    {
-        "id": "35e7bb49.758ad4",
-        "type": "ui_dropdown",
-        "z": "d0c185b8.08bb48",
-        "name": "recipe",
-        "label": "",
-        "tooltip": "",
-        "place": "Rezept auswählen",
-        "group": "6d970163.d439f",
-        "order": 1,
-        "width": "4",
-        "height": "1",
-        "passthru": false,
-        "options": [
-            {
-                "label": "",
-                "value": "",
-                "type": "str"
-            }
-        ],
-        "payload": "",
-        "topic": "recipe",
-        "x": 830,
-        "y": 360,
-        "wires": [
-            [
-                "9587eabe.4a7868",
-                "e4e72531.c5f6a8"
-            ]
-        ]
-    },
-    {
-        "id": "9587eabe.4a7868",
-        "type": "change",
-        "z": "d0c185b8.08bb48",
-        "name": "filename",
-        "rules": [
-            {
-                "t": "move",
-                "p": "payload",
-                "pt": "msg",
-                "to": "filename",
-                "tot": "msg"
-            }
-        ],
-        "action": "",
-        "property": "",
-        "from": "",
-        "to": "",
-        "reg": false,
-        "x": 980,
-        "y": 320,
-        "wires": [
-            [
-                "4e44bddc.fb33b4"
-            ]
-        ]
-    },
-    {
-        "id": "4e44bddc.fb33b4",
-        "type": "file in",
-        "z": "d0c185b8.08bb48",
-        "name": "",
-        "filename": "",
-        "format": "utf8",
-        "chunk": false,
-        "sendError": false,
-        "x": 1110,
-        "y": 320,
-        "wires": [
-            [
-                "32c135d2.d15d4a"
-            ]
-        ]
-    },
-    {
-        "id": "32c135d2.d15d4a",
-        "type": "json",
-        "z": "d0c185b8.08bb48",
-        "name": "",
-        "pretty": false,
-        "x": 1230,
-        "y": 320,
-        "wires": [
-            [
-                "bb96b38e.6a74e",
-                "c106feb4.6a2bd"
-            ]
-        ]
-    },
-    {
-        "id": "bb96b38e.6a74e",
-        "type": "link out",
-        "z": "d0c185b8.08bb48",
-        "name": "recipe",
-        "links": [
-            "bcd51fcf.6e841",
-            "c1f169a3.ced248",
-            "d1fc50e6.16a48",
-            "f6278604.186ef8",
-            "c368a98c.5f8c28",
-            "763118ef.9f4668"
-        ],
-        "x": 1415,
-        "y": 320,
-        "wires": []
-    },
-    {
-        "id": "dab737b.a3dc5c8",
-        "type": "change",
-        "z": "4018cef4.755f3",
+        "z": "5f9eca78.52cb34",
         "name": "blank",
         "rules": [
             {
@@ -3974,88 +3856,73 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 850,
-        "y": 660,
+        "x": 290,
+        "y": 120,
         "wires": [
             [
-                "d2dc225.23641e"
+                "8a93f228.992e5",
+                "7011e4ac.40d81c",
+                "3c7adeab.59ce32"
             ]
         ]
     },
     {
-        "id": "a970a0fe.0b279",
-        "type": "link out",
-        "z": "d0c185b8.08bb48",
-        "name": "button press",
-        "links": [
-            "38cc6d34.85aa92"
-        ],
-        "x": 1415,
-        "y": 1020,
-        "wires": []
-    },
-    {
-        "id": "2212e4ff.bdfc4c",
-        "type": "comment",
-        "z": "d0c185b8.08bb48",
-        "name": "Button Steuerung",
-        "info": "# Flow Start\n * ",
-        "x": 140,
-        "y": 40,
-        "wires": []
-    },
-    {
-        "id": "b706f06.87d811",
-        "type": "config",
-        "z": "962f6b3.4c14f98",
-        "name": "config",
-        "properties": [
+        "id": "fa7efb75.fe1348",
+        "type": "change",
+        "z": "5f9eca78.52cb34",
+        "name": "value = 0",
+        "rules": [
             {
-                "p": "basepath",
-                "pt": "global",
-                "to": "/home/pi/GIT/brewery",
-                "tot": "str"
-            },
-            {
-                "p": "timeScale",
-                "pt": "global",
-                "to": "1",
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "0",
                 "tot": "num"
             }
         ],
-        "active": true,
-        "x": 130,
-        "y": 80,
-        "wires": []
-    },
-    {
-        "id": "58b705f4.c0ec8c",
-        "type": "mqtt in",
-        "z": "4018cef4.755f3",
-        "name": "mqtt",
-        "topic": "nodes@home/sensor/ds18b20/brewery/value/temperature",
-        "qos": "0",
-        "datatype": "json",
-        "broker": "faf25434.0c0ff8",
-        "x": 110,
-        "y": 742,
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 300,
+        "y": 160,
         "wires": [
             [
-                "e72e0a4e.b17428"
+                "8a59353e.51e018",
+                "19202a16.3c9986",
+                "5df482f1.fed54c"
             ]
         ]
     },
     {
-        "id": "d6775082.5b7a",
+        "id": "465298ed.33e498",
+        "type": "comment",
+        "z": "5f9eca78.52cb34",
+        "name": "Akkuüberwachung",
+        "info": "",
+        "x": 130,
+        "y": 440,
+        "wires": []
+    },
+    {
+        "id": "639b1bc0.0ab124",
         "type": "change",
-        "z": "d0c185b8.08bb48",
-        "name": "topic",
+        "z": "5f9eca78.52cb34",
+        "name": "get value",
         "rules": [
+            {
+                "t": "move",
+                "p": "payload.temperature2",
+                "pt": "msg",
+                "to": "payload",
+                "tot": "msg"
+            },
             {
                 "t": "set",
                 "p": "topic",
                 "pt": "msg",
-                "to": "lcd",
+                "to": "value",
                 "tot": "str"
             }
         ],
@@ -4064,50 +3931,289 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 330,
-        "y": 960,
+        "x": 300,
+        "y": 300,
         "wires": [
             [
-                "3c0cf97f.b39aa6"
+                "19202a16.3c9986",
+                "7011e4ac.40d81c"
             ]
         ]
     },
     {
-        "id": "3c0cf97f.b39aa6",
-        "type": "link out",
-        "z": "d0c185b8.08bb48",
-        "name": "switch lcd",
-        "links": [
-            "d8176565.66c988"
+        "id": "7011e4ac.40d81c",
+        "type": "ui_chart",
+        "z": "5f9eca78.52cb34",
+        "name": "chart",
+        "group": "ae17b855.7e0858",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "label": "",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "dd HH:mm",
+        "interpolate": "linear",
+        "nodata": "---",
+        "dot": false,
+        "ymin": "0",
+        "ymax": "90",
+        "removeOlder": "1",
+        "removeOlderPoints": "",
+        "removeOlderUnit": "86400",
+        "cutout": 0,
+        "useOneColor": false,
+        "colors": [
+            "#8080ff",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
         ],
-        "x": 435,
-        "y": 960,
+        "outputs": 2,
+        "x": 610,
+        "y": 280,
+        "wires": [
+            [],
+            []
+        ]
+    },
+    {
+        "id": "19202a16.3c9986",
+        "type": "ui_gauge",
+        "z": "5f9eca78.52cb34",
+        "name": "temperature",
+        "group": "ae17b855.7e0858",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "gtype": "gage",
+        "title": "",
+        "label": "°C",
+        "format": "{{value | number:1}}",
+        "min": 0,
+        "max": "90",
+        "colors": [
+            "#0000ff",
+            "#ffff00",
+            "#ca3838"
+        ],
+        "seg1": "0",
+        "seg2": "78",
+        "x": 630,
+        "y": 320,
         "wires": []
     },
     {
-        "id": "d8176565.66c988",
-        "type": "link in",
-        "z": "4018cef4.755f3",
-        "name": "switch lcd",
-        "links": [
-            "3c0cf97f.b39aa6"
+        "id": "3c7adeab.59ce32",
+        "type": "ui_chart",
+        "z": "5f9eca78.52cb34",
+        "name": "chart",
+        "group": "f7a4a10e.66a75",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "label": "",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "dd HH:mm",
+        "interpolate": "linear",
+        "nodata": "---",
+        "dot": false,
+        "ymin": "3.0",
+        "ymax": "4.5",
+        "removeOlder": "1",
+        "removeOlderPoints": "",
+        "removeOlderUnit": "86400",
+        "cutout": 0,
+        "useOneColor": false,
+        "colors": [
+            "#8080ff",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
         ],
-        "x": 135,
-        "y": 702,
+        "outputs": 2,
+        "x": 610,
+        "y": 480,
+        "wires": [
+            [],
+            []
+        ]
+    },
+    {
+        "id": "5df482f1.fed54c",
+        "type": "ui_gauge",
+        "z": "5f9eca78.52cb34",
+        "name": "voltage",
+        "group": "f7a4a10e.66a75",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "gtype": "gage",
+        "title": "",
+        "label": "V",
+        "format": "{{value | number:2}}",
+        "min": "3.0",
+        "max": "4.5",
+        "colors": [
+            "#ff0000",
+            "#ffff00",
+            "#008000"
+        ],
+        "seg1": "3.6",
+        "seg2": "3.8",
+        "x": 620,
+        "y": 520,
+        "wires": []
+    },
+    {
+        "id": "487d9e54.9f681",
+        "type": "change",
+        "z": "5f9eca78.52cb34",
+        "name": "get value",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "payload.value / 1000",
+                "tot": "jsonata"
+            },
+            {
+                "t": "set",
+                "p": "topic",
+                "pt": "msg",
+                "to": "value",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 300,
+        "y": 480,
         "wires": [
             [
-                "e72e0a4e.b17428"
+                "5df482f1.fed54c",
+                "3c7adeab.59ce32"
             ]
         ]
     },
     {
-        "id": "eae76f2c.5924b",
+        "id": "ba00bf4f.3901a",
+        "type": "mqtt in",
+        "z": "5f9eca78.52cb34",
+        "name": "boiler",
+        "topic": "nodes@home/sensor/ds18b20/brewery/value/voltage",
+        "qos": "0",
+        "datatype": "json",
+        "broker": "faf25434.0c0ff8",
+        "inputs": 0,
+        "x": 87,
+        "y": 480,
+        "wires": [
+            [
+                "487d9e54.9f681"
+            ]
+        ]
+    },
+    {
+        "id": "a159909d.1a946",
         "type": "comment",
-        "z": "4018cef4.755f3",
-        "name": "Nachguss auf LCD",
+        "z": "5f9eca78.52cb34",
+        "name": "Nachguss",
         "info": "",
-        "x": 150,
-        "y": 662,
+        "x": 106,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "d39f22d.b466fe",
+        "type": "ui_button",
+        "z": "5f9eca78.52cb34",
+        "name": "",
+        "group": "f7a4a10e.66a75",
+        "order": 56,
+        "width": 0,
+        "height": 0,
+        "passthru": false,
+        "label": "Reset",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "icon": "",
+        "payload": "",
+        "payloadType": "str",
+        "topic": "",
+        "x": 96,
+        "y": 120,
+        "wires": [
+            [
+                "ca11600c.7d927",
+                "fa7efb75.fe1348"
+            ]
+        ]
+    },
+    {
+        "id": "e8224c88.9ccdc",
+        "type": "function",
+        "z": "5f9eca78.52cb34",
+        "name": "detect alarm",
+        "func": "\nif ( msg.payload.temperature1 >= 78.0 ) {\n    return [{ payload: \"Kessel 1 hat Nachguss-Temperatur erreicht!\" }, { payload: \"ring\" }];\n}\n\nif ( msg.payload.temperature2 >= 78.0 ) {\n    return [{ payload: \"Kessel 2 hat Nachguss-Temperatur erreicht!\" }, { payload: \"ring\" }];\n}\n\nreturn null;",
+        "outputs": 2,
+        "noerr": 0,
+        "x": 310,
+        "y": 360,
+        "wires": [
+            [
+                "69cd691a.437ca8"
+            ],
+            [
+                "b3dc4a64.b281e8"
+            ]
+        ],
+        "outputLabels": [
+            "alarm",
+            "audio"
+        ]
+    },
+    {
+        "id": "69cd691a.437ca8",
+        "type": "link out",
+        "z": "5f9eca78.52cb34",
+        "name": "alarm",
+        "links": [
+            "9ae7ba59.e3ec58",
+            "6c843107.5ac24",
+            "c838fc7e.25bbd"
+        ],
+        "x": 575,
+        "y": 360,
+        "wires": []
+    },
+    {
+        "id": "b3dc4a64.b281e8",
+        "type": "link out",
+        "z": "5f9eca78.52cb34",
+        "name": "audio",
+        "links": [
+            "5c503456.e30fdc",
+            "fadd3ed.9095bc"
+        ],
+        "x": 575,
+        "y": 400,
         "wires": []
     },
     {
@@ -4207,9 +4313,11 @@
         "type": "file in",
         "z": "2b73de56.557c42",
         "name": "id file",
-        "filename": "ids/simple_push_id.txt",
+        "filename": ".node-red/ids/simplepush_id.txt",
+        "filenameType": "str",
         "format": "utf8",
         "sendError": true,
+        "allProps": false,
         "x": 210,
         "y": 200,
         "wires": [
@@ -4276,104 +4384,59 @@
         ]
     },
     {
-        "id": "fc6fe1c6.a49ae",
-        "type": "rpi-gpio out",
-        "z": "4018cef4.755f3",
-        "name": "valve",
-        "pin": "11",
-        "set": true,
-        "level": "1",
-        "freq": "100",
-        "out": "out",
-        "x": 1230,
-        "y": 440,
-        "wires": []
-    },
-    {
-        "id": "be65350d.ef0288",
-        "type": "mqtt out",
-        "z": "4018cef4.755f3",
-        "name": "valve",
-        "topic": "nodes@home/control/ssr/brewery/valve/state",
-        "qos": "0",
-        "retain": "false",
-        "broker": "faf25434.0c0ff8",
-        "x": 1110,
-        "y": 560,
-        "wires": []
-    },
-    {
-        "id": "391143b8.3c01fc",
-        "type": "change",
-        "z": "4018cef4.755f3",
-        "name": "map",
-        "rules": [
-            {
-                "t": "set",
-                "p": "payload",
-                "pt": "msg",
-                "to": "msg.payload = \"ON\" ? 0: (msg.payload = \"OFF\" ? 1 : null )",
-                "tot": "jsonata"
-            }
-        ],
-        "action": "",
-        "property": "",
-        "from": "",
-        "to": "",
-        "reg": false,
-        "x": 1110,
-        "y": 440,
-        "wires": [
-            [
-                "fc6fe1c6.a49ae"
-            ]
-        ]
-    },
-    {
-        "id": "3d3357d2.80e128",
-        "type": "mqtt in",
-        "z": "4018cef4.755f3",
-        "name": "valve",
-        "topic": "nodes@home/control/ssr/brewery/valve",
-        "qos": "0",
-        "datatype": "auto",
-        "broker": "faf25434.0c0ff8",
-        "x": 110,
-        "y": 330,
-        "wires": [
-            [
-                "e72e0a4e.b17428"
-            ]
-        ]
-    },
-    {
-        "id": "81ee5d3.eafaaa",
-        "type": "ui_switch",
-        "z": "4018cef4.755f3",
-        "name": "valve",
-        "label": "Kühlschlange",
-        "tooltip": "",
-        "group": "6d970163.d439f",
-        "order": 7,
+        "id": "b0c59940.8ae458",
+        "type": "ui_button",
+        "z": "acc8977e.fd0588",
+        "name": "",
+        "group": "4a318d10.c590e4",
+        "order": 1,
         "width": 0,
         "height": 0,
         "passthru": false,
-        "decouple": "true",
+        "label": "shutdown",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "icon": "",
+        "payload": "",
+        "payloadType": "str",
         "topic": "",
-        "style": "",
-        "onvalue": "ON",
-        "onvalueType": "str",
-        "onicon": "trending_up",
-        "oncolor": "red",
-        "offvalue": "OFF",
-        "offvalueType": "str",
-        "officon": "trending_down",
-        "offcolor": "blue",
-        "x": 1110,
-        "y": 200,
+        "x": 170,
+        "y": 120,
         "wires": [
+            [
+                "a7efa4e4.82fa48"
+            ]
+        ]
+    },
+    {
+        "id": "a7efa4e4.82fa48",
+        "type": "exec",
+        "z": "acc8977e.fd0588",
+        "command": "sudo shutdown -h now",
+        "addpay": true,
+        "append": "",
+        "useSpawn": "false",
+        "timer": "",
+        "oldrc": false,
+        "name": "",
+        "x": 400,
+        "y": 120,
+        "wires": [
+            [],
+            [],
             []
         ]
+    },
+    {
+        "id": "ff2e08c5.c64e98",
+        "type": "comment",
+        "z": "acc8977e.fd0588",
+        "name": "shutdown",
+        "info": "",
+        "x": 160,
+        "y": 80,
+        "wires": []
     },
     {
         "id": "44486b61.511914",
@@ -4511,53 +4574,6 @@
         "wires": [
             [
                 "375538bb.18f338"
-            ]
-        ]
-    },
-    {
-        "id": "5f1bfba8.0d9ce4",
-        "type": "link out",
-        "z": "4018cef4.755f3",
-        "name": "temperature",
-        "links": [
-            "89fdf163.e2ca1",
-            "cd0f36a7.59c118"
-        ],
-        "x": 355,
-        "y": 520,
-        "wires": []
-    },
-    {
-        "id": "89fdf163.e2ca1",
-        "type": "link in",
-        "z": "4018cef4.755f3",
-        "name": "termperature",
-        "links": [
-            "5f1bfba8.0d9ce4",
-            "c082b6f9.325738"
-        ],
-        "x": 1015,
-        "y": 240,
-        "wires": [
-            [
-                "a4def846.268a18"
-            ]
-        ]
-    },
-    {
-        "id": "cd0f36a7.59c118",
-        "type": "link in",
-        "z": "4018cef4.755f3",
-        "name": "termperature",
-        "links": [
-            "5f1bfba8.0d9ce4",
-            "c082b6f9.325738"
-        ],
-        "x": 435,
-        "y": 420,
-        "wires": [
-            [
-                "e72e0a4e.b17428"
             ]
         ]
     },
