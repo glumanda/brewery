@@ -9,7 +9,7 @@
     "node-red-contrib-lcd20x4-i2c": "~0.1.1",
     "node-red-contrib-os": "~0.1.7",
     "node-red-contrib-play-audio": "^2.5.0",
-    "node-red-dashboard": "~2.19.4",
+    "node-red-dashboard": "~2.26.2",
     "node-red-node-pi-gpio": "^1.2.0",
     "node-red-node-ping": "^0.2.1",
     "node-red-node-random": "^0.2.0",
