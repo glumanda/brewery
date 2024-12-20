@@ -95,7 +95,8 @@
             "duration": 70,
             "hysteresis": 0.1,
             "alarm": [
-                { "time": 70, "text": "Hopfengabe 2: Bitte 20g Mosaic und 20g VicSecret zum Whirlpool geben!" }  
+                { "time": 60, "text": "Bitte Kühlschlange in den Sud zum Mitkochen geben." },
+                { "time": 70, "text": "Hopfengabe 2: Bitte 20g Mosaic und 20g VicSecret zum Whirlpool geben!" }
             ]
         },
         {
