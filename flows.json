@@ -292,12 +292,13 @@
     {
         "id": "4a318d10.c590e4",
         "type": "ui_group",
-        "name": "Shutdown",
+        "name": "Commands",
         "tab": "cee51941.7e69d8",
         "order": 1,
-        "disp": false,
-        "width": "6",
-        "collapse": false
+        "disp": true,
+        "width": "10",
+        "collapse": false,
+        "className": ""
     },
     {
         "id": "5c6624c5.d9c1fc",
@@ -332,6 +333,67 @@
         "hidden": false
     },
     {
+        "id": "21613e521c04ebd0",
+        "type": "ui_group",
+        "name": "Switches",
+        "tab": "cee51941.7e69d8",
+        "order": 2,
+        "disp": true,
+        "width": 10,
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "99bfcccafcbfe1bd",
+        "type": "ui_spacer",
+        "z": "acc8977e.fd0588",
+        "name": "spacer",
+        "group": "21613e521c04ebd0",
+        "order": 2,
+        "width": "4",
+        "height": "1"
+    },
+    {
+        "id": "db976a72ddbc3918",
+        "type": "ui_spacer",
+        "z": "acc8977e.fd0588",
+        "name": "spacer",
+        "group": "21613e521c04ebd0",
+        "order": 4,
+        "width": "4",
+        "height": "1"
+    },
+    {
+        "id": "27e404076e32375b",
+        "type": "ui_spacer",
+        "z": "acc8977e.fd0588",
+        "name": "spacer",
+        "group": "21613e521c04ebd0",
+        "order": 6,
+        "width": "4",
+        "height": "1"
+    },
+    {
+        "id": "274bf388caaf567a",
+        "type": "ui_spacer",
+        "z": "acc8977e.fd0588",
+        "name": "spacer",
+        "group": "4a318d10.c590e4",
+        "order": 3,
+        "width": "4",
+        "height": "1"
+    },
+    {
+        "id": "9c7ad693117f528e",
+        "type": "ui_spacer",
+        "z": "acc8977e.fd0588",
+        "name": "spacer",
+        "group": "4a318d10.c590e4",
+        "order": 6,
+        "width": "4",
+        "height": "1"
+    },
+    {
         "id": "b706f06.87d811",
         "type": "config",
         "z": "962f6b3.4c14f98",
@@ -362,7 +424,7 @@
         "name": "Sekundentakt",
         "info": "",
         "x": 130,
-        "y": 380,
+        "y": 190,
         "wires": []
     },
     {
@@ -370,11 +432,13 @@
         "type": "function",
         "z": "4018cef4.755f3",
         "name": "2-point-controller",
-        "func": "\n// junand 19.09.2017\n\n//----------------------------------------------------------------\n\nconst DEFAULT_RECIPE_NAME = \"unknown\";\nconst DEFAULT_BREW_START = \"unknown\";\nconst DEFAULT_STEP_DESCIPTION = \"unknown\";\nconst DEFAULT_TEMP = 1;\nconst DEFAULT_HEATING = \"control\";\nconst DEFAULT_STIRRING = \"off\";\nconst DEFAULT_COOLING = \"off\";\nconst DEFAULT_HYSTERESIS = 1;\nconst DEFAULT_DURATION = 1;\nconst DEFAULT_HEATER_ON = false;\nconst DEFAULT_STIRRER_ON = false;\nconst DEFAULT_COOLER_ON = false;\n\nvar recipeName = context.get ( \"recipeName\" );\nvar brewStart = context.get ( \"brewStart\" );\nvar stepDescription = context.get ( \"stepDescription\" );\nvar targetTemp = context.get ( \"targetTemp\" ) || DEFAULT_TEMP;\nvar brewTemp = context.get ( \"brewTemp\" ) || DEFAULT_TEMP;\nvar heatingMode = context.get ( \"heating\" ) || DEFAULT_HEATING;\nvar stirringMode = context.get ( \"stirring\" ) || DEFAULT_STIRRING;\nvar coolingMode = context.get ( \"cooling\" ) || DEFAULT_COOLING;\nvar hysteresis = context.get ( \"hysteresis\" ) || DEFAULT_HYSTERESIS;\nvar periodLength = context.get ( \"periodLength\" ) || DEFAULT_DURATION;\nvar alarm = context.get ( \"alarm\" );\n\nconst PERIOD_INCREMENT = global.get( \"timeScale\" ); // normal -> 1, accelareted -> 30; <- accelerate time in config flow\nconst PERIOD_ZERO = { min: 0, sec: 0 };\nvar periodCount = context.get ( \"periodCount\" ) || PERIOD_ZERO;\nvar heaterOn = context.get ( \"heaterOn\" ) || DEFAULT_HEATER_ON;\nvar stirrerOn = context.get ( \"stirrerOn\" ) || DEFAULT_STIRRER_ON;\nvar coolerOn = context.get ( \"coolerOn\" ) || DEFAULT_COOLER_ON;\n\nconst STATE_IDLE = \"idle\";\nconst STATE_START = \"start\";\nconst STATE_STARTING = \"starting\";\nconst STATE_PERIOD_STARTED = \"started\";\nconst STATE_PERIOD_FINISHED = \"finished\";\n\nconst STATE_COLOR = [];\nSTATE_COLOR [STATE_IDLE] = \"grey\";\nSTATE_COLOR [STATE_START] = \"white\";\nSTATE_COLOR [STATE_STARTING] = \"yellow\";\nSTATE_COLOR [STATE_PERIOD_STARTED] = \"green\";\nSTATE_COLOR [STATE_PERIOD_FINISHED] = \"black\";\n\nconst LCD_ALARM_MSG_DURATION = 5; //sec\nvar lcdAlarmPeriod = context.get ( \"alarmPeriod\" );\nvar lcdAlarmMsg = context.get ( \"alarmMsg\" );\nvar lcdSparge = context.get ( \"lcdSparge\" ) || false;\n\nvar spargeTemp = context.get ( \"spargeTemp\" );\n\n//----------------------------------------------------------------\n\nvar state = context.get ( \"state\" ) || STATE_IDLE;\n\nif ( state == STATE_IDLE ) {\n    node.status ( { fill: STATE_COLOR [state], shape: \"dot\", text: state } );\n}\n\n//----------------------------------------------------------------\n\nfunction incPeriodCount ( cnt ) {\n    cnt.sec += PERIOD_INCREMENT;\n    if ( cnt.sec > 59 ) {\n        cnt.sec = 0;\n        cnt.min++;\n    }\n    return cnt;\n}\n\n//----------------------------------------------------------------\n\nfunction createHeaterMessage ( onOff ) { return { payload: onOff }; }\nfunction createStirrerMessage ( onOff ) { return { payload: onOff }; }\nfunction createCoolerMessage ( onOff ) { return { payload: onOff }; }\n\nfunction createStepMessage () { return { topic: \"next\", payload: \"x\" }; }\n\nfunction createPeriodeMessage ( count ) { return { payload: count.min + \":\" + (\"0\" + count.sec).slice ( -2 ) }; }\n\nfunction createAlarmMessage ( notification ) { return { payload: notification }; }\n\nfunction createAudioMessage ( audio ) { return { payload: audio };\n}\n\nfunction createChartMessage ( temp, target ) { \n    if ( target ) {\n        return [\n            { topic: \"value\", payload: temp },\n            { topic: \"target\", payload: target }\n        ];\n    }\n    else {\n        return { topic: \"value\", payload: temp };\n    }\n}\n\nfunction createInfluxMessage () {\n    return {\n        measurement: \"°C\",\n        payload: [\n            // fields\n            {\n                state: state,\n                step: stepDescription,\n                brewTemp: brewTemp,\n                target: targetTemp,\n                heater: heaterOn ? \"on\" : \"off\",\n                stirrer: stirrerOn ? \"on\" : \"off\",\n                cooler: coolerOn ? \"on\" : \"off\",\n                counterMin: periodCount.min,\n                counterSec: periodCount.sec,\n            },\n            // tags\n            {\n                recipe: recipeName,\n                brewStart: brewStart\n            }\n        ]\n    };\n}\n\nfunction centerLine ( c1, s, c2 ) {\n    \n    len = 18;\n    \n    if ( s.length > len ) {\n        s = s.slice ( 0, len );\n    }\n\n    var l1 = ((len - s.length - 0.5) / 2).toFixed ( 0 );\n    var l2 = len - s.length - l1;\n    \n    return c1 + \" \".repeat ( l1 ) + s + \" \".repeat ( l2 ) + c2;\n    \n}\n\nfunction createLcdMessage ( step ) {\n    \n    //node.warn ( \"[LCD] topic=\" + msg.topic + \" state=\" + state + \" recipe=\" + recipeName + \" heaterOn=\" + heaterOn + \" stirrerOn=\" + stirrerOn + \" step=\" + step + \" stepDescription=\" + stepDescription + \" brewTemp=\" + brewTemp + \" targetTemp=\" + targetTemp );\n    \n    if ( lcdSparge ) {\n        return {\n            payload: {\n                msgs: [\n                    { msg: \"Nachguss\" },\n                    { msg: \"                   \" },\n                    { msg: \"t1 - blau: \" + (spargeTemp && spargeTemp.temperature1.toFixed ( 1 ) + \"ßC\" || \"--\") },\n                    { msg: \"t2 - gelb: \" + (spargeTemp && spargeTemp.temperature2.toFixed ( 1 ) + \"ßC\" || \"--\") },\n                ]\n            }\n        };\n    }\n    else {\n        if ( state == STATE_IDLE ) {\n            return {\n                payload: {\n                    msgs: [\n                        { msg: \"####################\" },\n                        { msg: \"#   PiBrew Ready   #\" },\n                        { msg: centerLine ( \"#\", recipeName || \"\", \"#\" ) },\n                        { msg: \"####################\" },\n                    ]\n                }\n            };\n        }\n        else if ( lcdAlarmMsg ) {\n            var s1, s2;\n            if ( lcdAlarmMsg.length > 20 ) {\n                s1 = lcdAlarmMsg.slice ( 0, 20 );\n                s2 = lcdAlarmMsg.slice ( 20, 40 );\n            }\n            else {\n                s1 = lcdAlarmMsg;\n                s2 = \" \";\n            }\n            return {\n                payload: {\n                    msgs: [\n                        { msg: \"!!!!!!!!!!!!!!!!!!!!\" },\n                        { msg: s1 },\n                        { msg: s2 },\n                        { msg: periodCount.min + \":\" + (\"0\" + periodCount.sec).slice ( -2 ) + \" min\", center: true }\n                    ]\n                }\n            };\n        }\n        else {\n            return {\n                payload: {\n                    msgs: [\n                        { msg: recipeName || DEFAULT_RECIPE_NAME },\n                        { msg: step ? step : (stepDescription || DEFAULT_STEP_DESCIPTION).slice ( 0, 20 ) },\n                        { msg: centerLine ( heaterOn ? \"+\" : coolerOn ? \"~\" : \" \", brewTemp.toFixed ( 1 ) + \"ßC -> \" + targetTemp.toFixed ( 1 ) + \"ßC\", stirrerOn ? \"*\" : coolerOn ? \"~\" : \" \" ) },\n                        { msg: periodCount.min + \":\" + (\"0\" + periodCount.sec).slice ( -2 ) + \" min\", center: true }\n                    ]\n                }\n            };\n        }\n    }\n}\n\n//----------------------------------------------------------------\n\nfunction setState ( newState ) {\n    state = newState;\n    context.set ( \"state\", state );\n    node.status ( { fill: STATE_COLOR [state], shape: \"dot\", text: state } );\n}\n\nfunction setHeaterOn ( value ) {\n    heaterOn = value;\n    context.set ( \"heaterOn\", heaterOn );\n}\n\nfunction setStirrerOn ( value ) {\n    stirrerOn = value;\n    context.set ( \"stirrerOn\", stirrerOn );\n}\n\nfunction setCoolerOn ( value ) {\n    coolerOn = value;\n    context.set ( \"coolerOn\", coolerOn );\n}\n\n//----------------------------------------------------------------\n\nif ( false && msg.topic != \"tick\" && msg.topic != \"FF2D57A41605\" ) {\n    node.warn ( \"[EVENT] topic=\" + msg.topic + \" state=\" + state + \" min=\" + periodCount.min + \" sec=\" + periodCount.sec );\n}\n\nif ( msg.topic == \"finished\" ) {\n    setState ( STATE_IDLE );\n    setHeaterOn ( false );\n    setStirrerOn ( false );\n    setCoolerOn ( false );\n    return [createLcdMessage (), createHeaterMessage ( \"OFF\" ), createStirrerMessage ( \"OFF\" ), createCoolerMessage ( \"OFF\" )];\n}\nelse if ( msg.topic == \"recipe\" ) {\n    recipeName = msg.recipeName;\n    context.set ( \"recipeName\", recipeName );\n    setState ( STATE_IDLE );\n    setHeaterOn ( false );\n    setStirrerOn ( false );\n    setCoolerOn ( false );\n    return [createLcdMessage (), createHeaterMessage ( \"OFF\" ), createStirrerMessage ( \"OFF\" ), createCoolerMessage ( \"OFF\" )];\n}\nelse if ( msg.topic == \"stop\" ) {\n    setState ( STATE_IDLE );\n    setHeaterOn ( false );\n    setStirrerOn ( false );\n    setCoolerOn ( false );\n    return [createLcdMessage (), createHeaterMessage ( \"OFF\" ), createStirrerMessage ( \"OFF\" ), createCoolerMessage ( \"OFF\" )];\n}\nelse if ( msg.topic == \"start\" ) {\n    \n    recipeName = msg.recipeName || recipeName || DEFAULT_RECIPE_NAME;\n    brewStart = msg.brewStart || brewStart || DEFAULT_BREW_START;\n    stepDescription = msg.step || step || DEFAULT_STEP_DESCIPTION;\n    \n    var t = msg.temperature || DEFAULT_TEMP; \n    if ( t > 0 && t < 105 ) targetTemp = t;\n    \n    heatingMode = msg.heating || heatingMode || DEFAULT_HEATING;\n    stirringMode = msg.stirring || stirringMode || DEFAULT_STIRRING;\n    coolingMode = msg.cooling || coolingMode || DEFAULT_COOLING;\n    if ( heatingMode != \"off\" ) coolingMode = DEFAULT_COOLING;\n    \n    var h = msg.hysteresis || DEFAULT_HYSTERESIS;\n    if ( h > 0 && h < 10 ) hysteresis = h;\n    var p = msg.duration || DEFAULT_DURATION;\n    if ( p === \"wait\" || p > 0 ) periodLength = p;\n\n    //node.warn ( \"[START] mode=\" + heatingMode + \" stirrer=\" + stirringMode + \" cooler=\" + coolingMode + \" t=\" + targetTemp + \" h=\" + hysteresis + \" p=\" + periodLength );\n    \n    context.set ( \"recipeName\", recipeName );\n    context.set ( \"brewStart\", brewStart );\n    context.set ( \"stepDescription\", stepDescription );\n    context.set ( \"targetTemp\", targetTemp );\n    context.set ( \"heating\", heatingMode );\n    context.set ( \"stirring\", stirringMode );\n    context.set ( \"cooling\", coolingMode );\n    context.set ( \"hysteresis\", hysteresis );\n    context.set ( \"periodLength\", periodLength );\n    context.set ( \"alarm\", msg.alarm );\n    \n    context.set ( \"periodCount\", PERIOD_ZERO );\n\n    setState ( STATE_START );\n    \n    return [createLcdMessage (), null, null, null, null, createPeriodeMessage ( PERIOD_ZERO )];\n\n}\nelse if ( msg.topic == \"hysteresis\" ) {\n    context.set ( \"hysteresis\", hysteresis );\n}\nelse if ( msg.topic == \"tick\" ) { // every sec\n    // check lcd alarm\n    if ( lcdAlarmPeriod && lcdAlarmPeriod > 0 ) {\n        lcdAlarmPeriod--;\n        context.set ( \"alarmPeriod\", lcdAlarmPeriod );\n    }\n    else {\n        lcdAlarmPeriod = null;\n        lcdAlarmMsg = null;\n        context.set ( \"alarmPeriod\", null );\n        context.set ( \"alarmMsg\", null );\n    }\n    // check for period length\n    if ( state == STATE_PERIOD_STARTED ) {\n        context.set ( \"periodCount\", incPeriodCount ( periodCount ) );\n        var alarmMsg = null;\n        var audioMsg = null;\n        if ( alarm ) {\n            for ( var i = 0; i < alarm.length; i++ ) {\n                var alarmtime = null;\n                if ( typeof ( alarm [i] ) === \"number\" ) alarmtime = alarm [i];\n                else alarmtime = alarm [i].time;\n                if ( periodCount.min == alarmtime ) {\n                    if ( periodCount.sec === 0 || alarmtime === 0 && periodCount.sec === PERIOD_INCREMENT ) { // exception for 00:00, 1 sec later\n                        lcdAlarmMsg = alarm [i].text;\n                        context.set ( \"alarmMsg\", lcdAlarmMsg );\n                        lcdAlarmPeriod = LCD_ALARM_MSG_DURATION;\n                        context.set ( \"alarmPeriod\", lcdAlarmPeriod );\n                        alarmMsg = createAlarmMessage ( lcdAlarmMsg );\n                        audioMsg = createAudioMessage ( \"ring\" );\n                        break;\n                    }\n                }\n            }\n        }\n        if ( periodLength == \"wait\" ) {} // do nothing, only tick and maybe ring\n        else {\n            if ( periodCount.min >= periodLength ) {\n                setState ( STATE_PERIOD_FINISHED );\n                context.set ( \"targetTemp\", null );\n                if ( !audioMsg ) audioMsg = createAudioMessage ( \"tweet2x\" );\n                return [createLcdMessage (), null, null, null, null, createPeriodeMessage ( periodCount ), null, createStepMessage (), alarmMsg, audioMsg]; \n            }\n        }\n        \n        //node.warn ( \"[TICK] p=\" + periodLength + \" min=\" + periodCount.min + \" sec=\" + periodCount.sec + \" state=\" + state );\n\n        // tick\n        return [createLcdMessage (), null, null, null, null, createPeriodeMessage ( periodCount ), null, null, alarmMsg, audioMsg];\n    }\n}\nelse if ( msg.topic == \"nodes@home/control/ssr/brewery/socket1\" ) {\n    setHeaterOn ( msg.payload == \"ON\" ? true : false );\n    return [createLcdMessage (), createHeaterMessage ( msg.payload )];\n}\nelse if ( msg.topic == \"nodes@home/control/ssr/brewery/socket2\" ) {\n    setStirrerOn ( msg.payload == \"ON\" ? true : false );\n    return [createLcdMessage (), null, createStirrerMessage ( msg.payload )];\n}\nelse if ( msg.topic == \"nodes@home/control/ssr/brewery/valve\" ) {\n    setCoolerOn ( msg.payload == \"ON\" ? true : false );\n    return [createLcdMessage (), null, null, createCoolerMessage ( msg.payload )];\n}\nelse if ( msg.topic == \"lcd\" ) {\n    lcdSparge = !lcdSparge;\n    context.set ( \"lcdSparge\", lcdSparge )\n    return [createLcdMessage ()];\n}\nelse if ( msg.topic == \"nodes@home/sensor/ds18b20/brewery/value/temperature\" ) {\n    context.set ( \"spargeTemp\", msg.payload );\n    return [createLcdMessage ()];\n}\nelse {\n    // temperature received\n    if ( state == STATE_IDLE ) {} // do nothing\n    else {\n        brewTemp = msg.payload;\n        context.set ( \"brewTemp\", brewTemp );\n        if ( state == STATE_PERIOD_FINISHED ) {\n            return [createLcdMessage (), null, null, null, createChartMessage ( brewTemp ), null, createInfluxMessage ()];\n        }\n        else {\n\n            // first temp event after start step            \n            if ( state == STATE_START ) {\n                setState ( STATE_STARTING );\n            }\n\n            var heaterMsg = null;\n            var stirrerMsg = null;\n            var coolerMsg = null;\n            var alarmMsg = null;\n            var audioMsg = null;\n            var newHeaterOn = null;\n            var newStirrerOn = null;\n            var newCoolerOn = null;\n\n            if ( coolingMode == \"off\" ) {\n                if ( brewTemp >= targetTemp ) {\n                    if ( heaterOn && heatingMode != \"full\" ) newHeaterOn = false;\n                    if ( stirrerOn && stirringMode != \"full\" ) newStirrerOn = false;\n                    if ( state == STATE_STARTING ) {\n                        setState ( STATE_PERIOD_STARTED );\n                        audioMsg = createAudioMessage ( \"tweet2x\" );\n                    }\n                }\n            }\n            else {\n                if ( brewTemp <= targetTemp ) {\n                    if ( coolerOn && coolingMode != \"full\" ) newCoolerOn = false;\n                    if ( state == STATE_STARTING ) {\n                        setState ( STATE_PERIOD_STARTED );\n                        audioMsg = createAudioMessage ( \"tweet2x\" );\n                    }\n                }\n            }\n\n            if ( heatingMode == \"off\" ) {\n                if ( heaterOn ) newHeaterOn = false;\n            }\n            else if ( heatingMode == \"one_time\" ) {\n                if ( state == STATE_STARTING ) {\n                    if ( !heaterOn ) newHeaterOn = true;\n                }\n            }\n            else if ( heatingMode == \"control\" ) {\n                if ( brewTemp <= targetTemp - hysteresis ) {\n                    if ( !heaterOn ) newHeaterOn = true;\n                }\n            }\n            else if ( heatingMode == \"full\" ) {\n                if ( !heaterOn ) newHeaterOn = true;\n            }\n\n            if ( newHeaterOn !== null ) {\n                //node.warn ( \"switch heater from \" + heaterOn + \" to \" + newHeaterOn );                    \n                setHeaterOn ( newHeaterOn );\n                heaterMsg = createHeaterMessage ( newHeaterOn ? \"ON\" : \"OFF\" );\n                if ( !audioMsg ) audioMsg = createAudioMessage ( \"tweet\" );\n            }\n            \n            if ( stirringMode == \"off\" ) {\n                if ( stirrerOn ) newStirrerOn = false;\n            }\n            else if ( stirringMode == \"control\" ) {\n                if ( brewTemp <= targetTemp - hysteresis ) {\n                    if ( !stirrerOn ) newStirrerOn = true;\n                }\n            }\n            else if ( stirringMode == \"full\" ) {\n                if ( !stirrerOn ) newStirrerOn = true;\n            }\n\n            if ( newStirrerOn !== null ) {\n                //node.warn ( \"switch stirrer from \" + stirrerOn + \" to \" + newStirrerOn );                    \n                setStirrerOn ( newStirrerOn );\n                stirrerMsg = createStirrerMessage ( newStirrerOn ? \"ON\" : \"OFF\" );\n            }\n\n            if ( coolingMode == \"off\" ) {\n                if ( coolerOn ) newCoolerOn = false;\n            }\n            else if ( coolingMode == \"one_time\" ) {\n                if ( state == STATE_STARTING ) {\n                    if ( !coolerOn ) newCoolerOn = true;\n                }\n            }\n            else if ( coolingMode == \"full\" ) {\n                if ( !coolerOn ) newCoolerOn = true;\n            }\n            \n            if ( newCoolerOn !== null ) {\n                //node.warn ( \"switch cooler from \" + coolerOn + \" to \" + newCoolerOn );                    \n                setCoolerOn ( newCoolerOn );\n                coolerMsg = createCoolerMessage ( newCoolerOn ? \"ON\" : \"OFF\" );\n            }\n\n            //node.warn ( \"[TEMP] heater=\" + heaterOn + \" newHeater=\" + newHeaterOn + \" mode=\" + heatingMode + \" p=\" + periodLength + \" min=\" + periodCount.min + \" sec=\" + periodCount.sec + \" state=\" + state );\n            //node.warn ( \"[TEMP] stirrer=\" + stirrerOn + \" newStirrer=\" + newStirrerOn + \" mode=\" + stirringMode + \" p=\" + periodLength + \" min=\" + periodCount.min + \" sec=\" + periodCount.sec + \" state=\" + state );\n            //node.warn ( \"[TEMP] cooler=\" + coolerOn + \" newCooler=\" + newCoolerOn + \" mode=\" + coolingMode + \" p=\" + periodLength + \" min=\" + periodCount.min + \" sec=\" + periodCount.sec + \" state=\" + state );\n            \n            // on every temp, send target and data fields\n            return [createLcdMessage (), heaterMsg, stirrerMsg, coolerMsg, createChartMessage ( brewTemp, targetTemp ), null, createInfluxMessage (), null, alarmMsg, audioMsg];\n            \n        }\n    }\n}\n",
+        "func": "\n// junand 19.09.2017\n\n//----------------------------------------------------------------\n\nconst DEFAULT_RECIPE_NAME = \"unknown\";\nconst DEFAULT_BREW_START = \"unknown\";\nconst DEFAULT_STEP_DESCIPTION = \"unknown\";\nconst DEFAULT_TEMP = 1;\nconst DEFAULT_HEATING = \"control\";\nconst DEFAULT_STIRRING = \"off\";\nconst DEFAULT_COOLING = \"off\";\nconst DEFAULT_HYSTERESIS = 1;\nconst DEFAULT_DURATION = 1;\nconst DEFAULT_HEATER_ON = false;\nconst DEFAULT_STIRRER_ON = false;\nconst DEFAULT_COOLER_ON = false;\n\nvar recipeName = context.get ( \"recipeName\" );\nvar brewStart = context.get ( \"brewStart\" );\nvar stepDescription = context.get ( \"stepDescription\" );\nvar targetTemp = context.get ( \"targetTemp\" ) || DEFAULT_TEMP;\nvar brewTemp = context.get ( \"brewTemp\" ) || DEFAULT_TEMP;\nvar heatingMode = context.get ( \"heating\" ) || DEFAULT_HEATING;\nvar stirringMode = context.get ( \"stirring\" ) || DEFAULT_STIRRING;\nvar coolingMode = context.get ( \"cooling\" ) || DEFAULT_COOLING;\nvar hysteresis = context.get ( \"hysteresis\" ) || DEFAULT_HYSTERESIS;\nvar periodLength = context.get ( \"periodLength\" ) || DEFAULT_DURATION;\nvar alarm = context.get ( \"alarm\" );\n\nconst PERIOD_INCREMENT = global.get( \"timeScale\" ); // normal -> 1, accelareted -> 30; <- accelerate time in config flow\nconst PERIOD_ZERO = { min: 0, sec: 0 };\nvar periodCount = context.get ( \"periodCount\" ) || PERIOD_ZERO;\nvar heaterOn = context.get ( \"heaterOn\" ) || DEFAULT_HEATER_ON;\nvar stirrerOn = context.get ( \"stirrerOn\" ) || DEFAULT_STIRRER_ON;\nvar coolerOn = context.get ( \"coolerOn\" ) || DEFAULT_COOLER_ON;\n\nconst STATE_IDLE = \"idle\";\nconst STATE_START = \"start\";\nconst STATE_STARTING = \"starting\";\nconst STATE_PERIOD_STARTED = \"started\";\nconst STATE_PERIOD_FINISHED = \"finished\";\n\nconst STATE_COLOR = [];\nSTATE_COLOR [STATE_IDLE] = \"grey\";\nSTATE_COLOR [STATE_START] = \"white\";\nSTATE_COLOR [STATE_STARTING] = \"yellow\";\nSTATE_COLOR [STATE_PERIOD_STARTED] = \"green\";\nSTATE_COLOR [STATE_PERIOD_FINISHED] = \"black\";\n\nconst LCD_ALARM_MSG_DURATION = 5; //sec\nvar lcdAlarmPeriod = context.get ( \"alarmPeriod\" );\nvar lcdAlarmMsg = context.get ( \"alarmMsg\" );\nvar lcdSparge = context.get ( \"lcdSparge\" ) || false;\n\nvar spargeTemp = context.get ( \"spargeTemp\" );\n\n//----------------------------------------------------------------\n\nvar state = context.get ( \"state\" ) || STATE_IDLE;\n\nif ( state == STATE_IDLE ) {\n    node.status ( { fill: STATE_COLOR [state], shape: \"dot\", text: state } );\n}\n\n//----------------------------------------------------------------\n\nfunction incPeriodCount ( cnt ) {\n    cnt.sec += PERIOD_INCREMENT;\n    if ( cnt.sec > 59 ) {\n        cnt.sec = 0;\n        cnt.min++;\n    }\n    return cnt;\n}\n\n//----------------------------------------------------------------\n\nfunction createHeaterMessage ( onOff ) { return { payload: onOff }; }\nfunction createStirrerMessage ( onOff ) { return { payload: onOff }; }\nfunction createCoolerMessage ( onOff ) { return { payload: onOff }; }\n\nfunction createStepMessage () { return { topic: \"next\", payload: \"x\" }; }\n\nfunction createPeriodeMessage ( count ) { return { payload: count.min + \":\" + (\"0\" + count.sec).slice ( -2 ) }; }\n\nfunction createAlarmMessage ( notification ) { return { payload: notification }; }\n\nfunction createAudioMessage ( audio ) { return { payload: audio };\n}\n\nfunction createChartMessage ( temp, target ) { \n    if ( target ) {\n        return [\n            { topic: \"value\", payload: temp },\n            { topic: \"target\", payload: target }\n        ];\n    }\n    else {\n        return { topic: \"value\", payload: temp };\n    }\n}\n\nfunction createInfluxMessage () {\n    return {\n        measurement: \"°C\",\n        payload: [\n            // fields\n            {\n                state: state,\n                step: stepDescription,\n                brewTemp: brewTemp,\n                target: targetTemp,\n                heater: heaterOn ? \"on\" : \"off\",\n                stirrer: stirrerOn ? \"on\" : \"off\",\n                cooler: coolerOn ? \"on\" : \"off\",\n                counterMin: periodCount.min,\n                counterSec: periodCount.sec,\n            },\n            // tags\n            {\n                recipe: recipeName,\n                brewStart: brewStart\n            }\n        ]\n    };\n}\n\nfunction centerLine ( c1, s, c2 ) {\n    \n    var len = 18;\n    \n    if ( s.length > len ) {\n        s = s.slice ( 0, len );\n    }\n\n    var l1 = Math.round ( ( len - s.length - 0.5) / 2 );\n    var l2 = len - s.length - l1;\n    \n    return c1 + \" \".repeat ( l1 ) + s + \" \".repeat ( l2 ) + c2;\n    \n}\n\nfunction createLcdMessage ( step ) {\n    \n    //node.warn ( \"[LCD] topic=\" + msg.topic + \" state=\" + state + \" recipe=\" + recipeName + \" heaterOn=\" + heaterOn + \" stirrerOn=\" + stirrerOn + \" step=\" + step + \" stepDescription=\" + stepDescription + \" brewTemp=\" + brewTemp + \" targetTemp=\" + targetTemp );\n    \n    if ( lcdSparge ) {\n        return {\n            payload: {\n                msgs: [\n                    { msg: \"Nachguss\" },\n                    { msg: \"                   \" },\n                    { msg: \"t1 - blau: \" + (spargeTemp && spargeTemp.temperature1.toFixed ( 1 ) + \"ßC\" || \"--\") },\n                    { msg: \"t2 - gelb: \" + (spargeTemp && spargeTemp.temperature2.toFixed ( 1 ) + \"ßC\" || \"--\") },\n                ]\n            }\n        };\n    }\n    else {\n        if ( state == STATE_IDLE ) {\n            return {\n                payload: {\n                    msgs: [\n                        { msg: \"####################\" },\n                        { msg: \"#   PiBrew Ready   #\" },\n                        { msg: centerLine ( \"#\", recipeName || \"\", \"#\" ) },\n                        { msg: \"####################\" },\n                    ]\n                }\n            };\n        }\n        else if ( lcdAlarmMsg ) {\n            var s1, s2;\n            if ( lcdAlarmMsg.length > 20 ) {\n                s1 = lcdAlarmMsg.slice ( 0, 20 );\n                s2 = lcdAlarmMsg.slice ( 20, 40 );\n            }\n            else {\n                s1 = lcdAlarmMsg;\n                s2 = \" \";\n            }\n            return {\n                payload: {\n                    msgs: [\n                        { msg: \"!!!!!!!!!!!!!!!!!!!!\" },\n                        { msg: s1 },\n                        { msg: s2 },\n                        { msg: periodCount.min + \":\" + (\"0\" + periodCount.sec).slice ( -2 ) + \" min\", center: true }\n                    ]\n                }\n            };\n        }\n        else {\n            return {\n                payload: {\n                    msgs: [\n                        { msg: recipeName || DEFAULT_RECIPE_NAME },\n                        { msg: step ? step : (stepDescription || DEFAULT_STEP_DESCIPTION).slice ( 0, 20 ) },\n                        { msg: centerLine ( heaterOn ? \"+\" : coolerOn ? \"~\" : \" \", brewTemp.toFixed ( 1 ) + \"ßC -> \" + targetTemp.toFixed ( 1 ) + \"ßC\", stirrerOn ? \"*\" : coolerOn ? \"~\" : \" \" ) },\n                        { msg: periodCount.min + \":\" + (\"0\" + periodCount.sec).slice ( -2 ) + \" min\", center: true }\n                    ]\n                }\n            };\n        }\n    }\n}\n\n//----------------------------------------------------------------\n\nfunction setState ( newState ) {\n    state = newState;\n    context.set ( \"state\", state );\n    node.status ( { fill: STATE_COLOR [state], shape: \"dot\", text: state } );\n}\n\nfunction setHeaterOn ( value ) {\n    heaterOn = value;\n    context.set ( \"heaterOn\", heaterOn );\n}\n\nfunction setStirrerOn ( value ) {\n    stirrerOn = value;\n    context.set ( \"stirrerOn\", stirrerOn );\n}\n\nfunction setCoolerOn ( value ) {\n    coolerOn = value;\n    context.set ( \"coolerOn\", coolerOn );\n}\n\n//----------------------------------------------------------------\n\nif ( false && msg.topic != \"tick\" && msg.topic != \"FF2D57A41605\" ) {\n    node.warn ( \"[EVENT] topic=\" + msg.topic + \" state=\" + state + \" min=\" + periodCount.min + \" sec=\" + periodCount.sec );\n}\n\nif ( msg.topic == \"finished\" ) {\n    setState ( STATE_IDLE );\n    setHeaterOn ( false );\n    setStirrerOn ( false );\n    setCoolerOn ( false );\n    return [createLcdMessage (), createHeaterMessage ( \"OFF\" ), createStirrerMessage ( \"OFF\" ), createCoolerMessage ( \"OFF\" )];\n}\nelse if ( msg.topic == \"recipe\" ) {\n    recipeName = msg.recipeName;\n    context.set ( \"recipeName\", recipeName );\n    setState ( STATE_IDLE );\n    setHeaterOn ( false );\n    setStirrerOn ( false );\n    setCoolerOn ( false );\n    return [createLcdMessage (), createHeaterMessage ( \"OFF\" ), createStirrerMessage ( \"OFF\" ), createCoolerMessage ( \"OFF\" )];\n}\nelse if ( msg.topic == \"stop\" ) {\n    setState ( STATE_IDLE );\n    setHeaterOn ( false );\n    setStirrerOn ( false );\n    setCoolerOn ( false );\n    return [createLcdMessage (), createHeaterMessage ( \"OFF\" ), createStirrerMessage ( \"OFF\" ), createCoolerMessage ( \"OFF\" )];\n}\nelse if ( msg.topic == \"start\" ) {\n    \n    recipeName = msg.recipeName || recipeName || DEFAULT_RECIPE_NAME;\n    brewStart = msg.brewStart || brewStart || DEFAULT_BREW_START;\n    stepDescription = msg.step || stepDescription || DEFAULT_STEP_DESCIPTION;\n    \n    var t = msg.temperature || DEFAULT_TEMP; \n    if ( t > 0 && t < 105 ) targetTemp = t;\n    \n    heatingMode = msg.heating || heatingMode || DEFAULT_HEATING;\n    stirringMode = msg.stirring || stirringMode || DEFAULT_STIRRING;\n    coolingMode = msg.cooling || coolingMode || DEFAULT_COOLING;\n    if ( heatingMode != \"off\" ) coolingMode = DEFAULT_COOLING;\n    \n    var h = msg.hysteresis || DEFAULT_HYSTERESIS;\n    if ( h > 0 && h < 10 ) hysteresis = h;\n    var p = msg.duration || DEFAULT_DURATION;\n    if ( p === \"wait\" || p > 0 ) periodLength = p;\n\n    //node.warn ( \"[START] mode=\" + heatingMode + \" stirrer=\" + stirringMode + \" cooler=\" + coolingMode + \" t=\" + targetTemp + \" h=\" + hysteresis + \" p=\" + periodLength );\n    \n    context.set ( \"recipeName\", recipeName );\n    context.set ( \"brewStart\", brewStart );\n    context.set ( \"stepDescription\", stepDescription );\n    context.set ( \"targetTemp\", targetTemp );\n    context.set ( \"heating\", heatingMode );\n    context.set ( \"stirring\", stirringMode );\n    context.set ( \"cooling\", coolingMode );\n    context.set ( \"hysteresis\", hysteresis );\n    context.set ( \"periodLength\", periodLength );\n    context.set ( \"alarm\", msg.alarm );\n    \n    context.set ( \"periodCount\", PERIOD_ZERO );\n\n    setState ( STATE_START );\n    \n    return [createLcdMessage (), null, null, null, null, createPeriodeMessage ( PERIOD_ZERO )];\n\n}\nelse if ( msg.topic == \"hysteresis\" ) {\n    context.set ( \"hysteresis\", hysteresis );\n}\nelse if ( msg.topic == \"tick\" ) { // every sec\n    // check lcd alarm\n    if ( lcdAlarmPeriod && lcdAlarmPeriod > 0 ) {\n        lcdAlarmPeriod--;\n        context.set ( \"alarmPeriod\", lcdAlarmPeriod );\n    }\n    else {\n        lcdAlarmPeriod = null;\n        lcdAlarmMsg = null;\n        context.set ( \"alarmPeriod\", null );\n        context.set ( \"alarmMsg\", null );\n    }\n    // check for period length\n    if ( state == STATE_PERIOD_STARTED ) {\n        context.set ( \"periodCount\", incPeriodCount ( periodCount ) );\n        var alarmMsg = null;\n        var audioMsg = null;\n        if ( alarm ) {\n            for ( var i = 0; i < alarm.length; i++ ) {\n                var alarmtime = null;\n                if ( typeof ( alarm [i] ) === \"number\" ) alarmtime = alarm [i];\n                else alarmtime = alarm [i].time;\n                if ( periodCount.min == alarmtime ) {\n                    if ( periodCount.sec === 0 || alarmtime === 0 && periodCount.sec === PERIOD_INCREMENT ) { // exception for 00:00, 1 sec later\n                        lcdAlarmMsg = alarm [i].text;\n                        context.set ( \"alarmMsg\", lcdAlarmMsg );\n                        lcdAlarmPeriod = LCD_ALARM_MSG_DURATION;\n                        context.set ( \"alarmPeriod\", lcdAlarmPeriod );\n                        alarmMsg = createAlarmMessage ( lcdAlarmMsg );\n                        audioMsg = createAudioMessage ( \"ring\" );\n                        break;\n                    }\n                }\n            }\n        }\n        if ( periodLength == \"wait\" ) {} // do nothing, only tick and maybe ring\n        else {\n            if ( periodCount.min >= periodLength ) {\n                setState ( STATE_PERIOD_FINISHED );\n                context.set ( \"targetTemp\", null );\n                if ( !audioMsg ) audioMsg = createAudioMessage ( \"tweet2x\" );\n                return [createLcdMessage (), null, null, null, null, createPeriodeMessage ( periodCount ), null, createStepMessage (), alarmMsg, audioMsg]; \n            }\n        }\n        \n        //node.warn ( \"[TICK] p=\" + periodLength + \" min=\" + periodCount.min + \" sec=\" + periodCount.sec + \" state=\" + state );\n\n        // tick\n        return [createLcdMessage (), null, null, null, null, createPeriodeMessage ( periodCount ), null, null, alarmMsg, audioMsg];\n    }\n}\nelse if ( msg.topic == \"nodes@home/control/ssr/brewery/socket1\" || msg.topic == \"heater\" ) {\n    setHeaterOn ( msg.payload == \"ON\" ? true : false );\n    return [createLcdMessage (), createHeaterMessage ( msg.payload )];\n}\nelse if (msg.topic == \"nodes@home/control/ssr/brewery/socket2\" || msg.topic == \"stirrer\" ) {\n    setStirrerOn ( msg.payload == \"ON\" ? true : false );\n    return [createLcdMessage (), null, createStirrerMessage ( msg.payload )];\n}\nelse if (msg.topic == \"nodes@home/control/ssr/brewery/valve\" || msg.topic == \"valve\" ) {\n    setCoolerOn ( msg.payload == \"ON\" ? true : false );\n    return [createLcdMessage (), null, null, createCoolerMessage ( msg.payload )];\n}\nelse if ( msg.topic == \"lcd\" ) {\n    lcdSparge = !lcdSparge;\n    context.set ( \"lcdSparge\", lcdSparge )\n    return [createLcdMessage ()];\n}\nelse if ( msg.topic == \"nodes@home/sensor/ds18b20/brewery/value/temperature\" ) {\n    context.set ( \"spargeTemp\", msg.payload );\n    return [createLcdMessage ()];\n}\nelse {\n    // temperature received\n    if ( state == STATE_IDLE ) {} // do nothing\n    else {\n        brewTemp = msg.payload;\n        context.set ( \"brewTemp\", brewTemp );\n        if ( state == STATE_PERIOD_FINISHED ) {\n            return [createLcdMessage (), null, null, null, createChartMessage ( brewTemp ), null, createInfluxMessage ()];\n        }\n        else {\n\n            // first temp event after start step            \n            if ( state == STATE_START ) {\n                setState ( STATE_STARTING );\n            }\n\n            var heaterMsg = null;\n            var stirrerMsg = null;\n            var coolerMsg = null;\n            var alarmMsg = null;\n            var audioMsg = null;\n            var newHeaterOn = null;\n            var newStirrerOn = null;\n            var newCoolerOn = null;\n\n            if ( coolingMode == \"off\" ) {\n                if ( brewTemp >= targetTemp ) {\n                    if ( heaterOn && heatingMode != \"full\" ) newHeaterOn = false;\n                    if ( stirrerOn && stirringMode != \"full\" ) newStirrerOn = false;\n                    if ( state == STATE_STARTING ) {\n                        setState ( STATE_PERIOD_STARTED );\n                        audioMsg = createAudioMessage ( \"tweet2x\" );\n                    }\n                }\n            }\n            else {\n                if ( brewTemp <= targetTemp ) {\n                    if ( coolerOn && coolingMode != \"full\" ) newCoolerOn = false;\n                    if ( state == STATE_STARTING ) {\n                        setState ( STATE_PERIOD_STARTED );\n                        audioMsg = createAudioMessage ( \"tweet2x\" );\n                    }\n                }\n            }\n\n            if ( heatingMode == \"off\" ) {\n                if ( heaterOn ) newHeaterOn = false;\n            }\n            else if ( heatingMode == \"one_time\" ) {\n                if ( state == STATE_STARTING ) {\n                    if ( !heaterOn ) newHeaterOn = true;\n                }\n            }\n            else if ( heatingMode == \"control\" ) {\n                if ( brewTemp <= targetTemp - hysteresis ) {\n                    if ( !heaterOn ) newHeaterOn = true;\n                }\n            }\n            else if ( heatingMode == \"full\" ) {\n                if ( !heaterOn ) newHeaterOn = true;\n            }\n\n            if ( newHeaterOn !== null ) {\n                //node.warn ( \"switch heater from \" + heaterOn + \" to \" + newHeaterOn );                    \n                setHeaterOn ( newHeaterOn );\n                heaterMsg = createHeaterMessage ( newHeaterOn ? \"ON\" : \"OFF\" );\n                if ( !audioMsg ) audioMsg = createAudioMessage ( \"tweet\" );\n            }\n            \n            if ( stirringMode == \"off\" ) {\n                if ( stirrerOn ) newStirrerOn = false;\n            }\n            else if ( stirringMode == \"control\" ) {\n                if ( brewTemp <= targetTemp - hysteresis ) {\n                    if ( !stirrerOn ) newStirrerOn = true;\n                }\n            }\n            else if ( stirringMode == \"full\" ) {\n                if ( !stirrerOn ) newStirrerOn = true;\n            }\n\n            if ( newStirrerOn !== null ) {\n                //node.warn ( \"switch stirrer from \" + stirrerOn + \" to \" + newStirrerOn );                    \n                setStirrerOn ( newStirrerOn );\n                stirrerMsg = createStirrerMessage ( newStirrerOn ? \"ON\" : \"OFF\" );\n            }\n\n            if ( coolingMode == \"off\" ) {\n                if ( coolerOn ) newCoolerOn = false;\n            }\n            else if ( coolingMode == \"one_time\" ) {\n                if ( state == STATE_STARTING ) {\n                    if ( !coolerOn ) newCoolerOn = true;\n                }\n            }\n            else if ( coolingMode == \"full\" ) {\n                if ( !coolerOn ) newCoolerOn = true;\n            }\n            \n            if ( newCoolerOn !== null ) {\n                //node.warn ( \"switch cooler from \" + coolerOn + \" to \" + newCoolerOn );                    \n                setCoolerOn ( newCoolerOn );\n                coolerMsg = createCoolerMessage ( newCoolerOn ? \"ON\" : \"OFF\" );\n            }\n\n            //node.warn ( \"[TEMP] heater=\" + heaterOn + \" newHeater=\" + newHeaterOn + \" mode=\" + heatingMode + \" p=\" + periodLength + \" min=\" + periodCount.min + \" sec=\" + periodCount.sec + \" state=\" + state );\n            //node.warn ( \"[TEMP] stirrer=\" + stirrerOn + \" newStirrer=\" + newStirrerOn + \" mode=\" + stirringMode + \" p=\" + periodLength + \" min=\" + periodCount.min + \" sec=\" + periodCount.sec + \" state=\" + state );\n            //node.warn ( \"[TEMP] cooler=\" + coolerOn + \" newCooler=\" + newCoolerOn + \" mode=\" + coolingMode + \" p=\" + periodLength + \" min=\" + periodCount.min + \" sec=\" + periodCount.sec + \" state=\" + state );\n            \n            // on every temp, send target and data fields\n            return [createLcdMessage (), heaterMsg, stirrerMsg, coolerMsg, createChartMessage ( brewTemp, targetTemp ), null, createInfluxMessage (), null, alarmMsg, audioMsg];\n            \n        }\n    }\n}\n",
         "outputs": 10,
+        "timeout": "",
         "noerr": 0,
         "initialize": "",
         "finalize": "",
+        "libs": [],
         "x": 670,
         "y": 380,
         "wires": [
@@ -382,19 +446,13 @@
                 "2b6a65b9.d15eea"
             ],
             [
-                "ca3d5412.fd1b98",
-                "729f1b67.d8f124",
-                "94234899.310498"
+                "f1028c6beee38d13"
             ],
             [
-                "601b2343.750a7c",
-                "6d46d128.01aaf",
-                "8fd440ad.53f9e"
+                "b7c9b241fe1894cd"
             ],
             [
-                "81ee5d3.eafaaa",
-                "391143b8.3c01fc",
-                "be65350d.ef0288"
+                "0a168466b5ca2a09"
             ],
             [
                 "d2dc225.23641e"
@@ -453,7 +511,7 @@
         "payload": "",
         "payloadType": "date",
         "x": 110,
-        "y": 420,
+        "y": 230,
         "wires": [
             [
                 "e72e0a4e.b17428"
@@ -632,10 +690,10 @@
         "broker": "faf25434.0c0ff8",
         "inputs": 0,
         "x": 110,
-        "y": 231,
+        "y": 319,
         "wires": [
             [
-                "e72e0a4e.b17428"
+                "c08772fc4b78da89"
             ]
         ]
     },
@@ -646,7 +704,7 @@
         "name": "Manuelle Steuerung",
         "info": "",
         "x": 150,
-        "y": 191,
+        "y": 280,
         "wires": []
     },
     {
@@ -722,10 +780,10 @@
         "broker": "faf25434.0c0ff8",
         "inputs": 0,
         "x": 110,
-        "y": 280,
+        "y": 369,
         "wires": [
             [
-                "e72e0a4e.b17428"
+                "9155308a2a23e2cf"
             ]
         ]
     },
@@ -996,6 +1054,18 @@
         "type": "inject",
         "z": "4018cef4.755f3",
         "name": "read",
+        "props": [
+            {
+                "p": "payload",
+                "v": "",
+                "vt": "date"
+            },
+            {
+                "p": "topic",
+                "v": "",
+                "vt": "str"
+            }
+        ],
         "repeat": "5",
         "crontab": "",
         "once": false,
@@ -1452,8 +1522,8 @@
             "a7d78432.8834f8",
             "2f3afbb1.9e58e4"
         ],
-        "x": 755,
-        "y": 660,
+        "x": 795,
+        "y": 210,
         "wires": [
             [
                 "dab737b.a3dc5c8"
@@ -1522,8 +1592,8 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 850,
-        "y": 660,
+        "x": 890,
+        "y": 210,
         "wires": [
             [
                 "d2dc225.23641e"
@@ -1534,30 +1604,16 @@
         "id": "58b705f4.c0ec8c",
         "type": "mqtt in",
         "z": "4018cef4.755f3",
-        "name": "mqtt",
+        "name": "sparge",
         "topic": "nodes@home/sensor/ds18b20/brewery/value/temperature",
         "qos": "0",
         "datatype": "json",
         "broker": "faf25434.0c0ff8",
+        "nl": false,
+        "rap": false,
         "inputs": 0,
         "x": 110,
-        "y": 742,
-        "wires": [
-            [
-                "e72e0a4e.b17428"
-            ]
-        ]
-    },
-    {
-        "id": "d8176565.66c988",
-        "type": "link in",
-        "z": "4018cef4.755f3",
-        "name": "switch lcd",
-        "links": [
-            "3c0cf97f.b39aa6"
-        ],
-        "x": 135,
-        "y": 702,
+        "y": 700,
         "wires": [
             [
                 "e72e0a4e.b17428"
@@ -1640,10 +1696,10 @@
         "broker": "faf25434.0c0ff8",
         "inputs": 0,
         "x": 110,
-        "y": 330,
+        "y": 419,
         "wires": [
             [
-                "e72e0a4e.b17428"
+                "6c545f08757d3ce4"
             ]
         ]
     },
@@ -1681,6 +1737,7 @@
         "type": "link out",
         "z": "4018cef4.755f3",
         "name": "temperature",
+        "mode": "link",
         "links": [
             "89fdf163.e2ca1",
             "cd0f36a7.59c118"
@@ -1710,16 +1767,254 @@
         "id": "cd0f36a7.59c118",
         "type": "link in",
         "z": "4018cef4.755f3",
-        "name": "termperature",
+        "name": "controller_input",
         "links": [
             "5f1bfba8.0d9ce4",
-            "c082b6f9.325738"
+            "c082b6f9.325738",
+            "c08772fc4b78da89",
+            "9155308a2a23e2cf",
+            "6c545f08757d3ce4",
+            "3c0cf97f.b39aa6",
+            "cb6d81066ef73ad0",
+            "6da738d43524eaa5",
+            "64539bace0dca9f9"
         ],
         "x": 435,
-        "y": 420,
+        "y": 380,
         "wires": [
             [
                 "e72e0a4e.b17428"
+            ]
+        ]
+    },
+    {
+        "id": "c08772fc4b78da89",
+        "type": "link out",
+        "z": "4018cef4.755f3",
+        "name": "heater_mqtt",
+        "mode": "link",
+        "links": [
+            "cd0f36a7.59c118"
+        ],
+        "x": 235,
+        "y": 319,
+        "wires": []
+    },
+    {
+        "id": "9155308a2a23e2cf",
+        "type": "link out",
+        "z": "4018cef4.755f3",
+        "name": "stirrer_mqtt",
+        "mode": "link",
+        "links": [
+            "cd0f36a7.59c118"
+        ],
+        "x": 235,
+        "y": 369,
+        "wires": []
+    },
+    {
+        "id": "6c545f08757d3ce4",
+        "type": "link out",
+        "z": "4018cef4.755f3",
+        "name": "valve_mqtt",
+        "mode": "link",
+        "links": [
+            "cd0f36a7.59c118"
+        ],
+        "x": 235,
+        "y": 419,
+        "wires": []
+    },
+    {
+        "id": "f1028c6beee38d13",
+        "type": "link out",
+        "z": "4018cef4.755f3",
+        "name": "heater_controller",
+        "mode": "link",
+        "links": [
+            "82a0c642a1636e9a",
+            "c676c9b8342dff6d",
+            "cd27ae42f61877e8",
+            "aa213ef4a5126949"
+        ],
+        "x": 835,
+        "y": 310,
+        "wires": []
+    },
+    {
+        "id": "b7c9b241fe1894cd",
+        "type": "link out",
+        "z": "4018cef4.755f3",
+        "name": "stirrer_controller",
+        "mode": "link",
+        "links": [
+            "0acfe6480b38e138",
+            "a6aed7ab1a4bf561",
+            "1a6f201a2c90f52f",
+            "f34161dcd6349170"
+        ],
+        "x": 835,
+        "y": 350,
+        "wires": []
+    },
+    {
+        "id": "0a168466b5ca2a09",
+        "type": "link out",
+        "z": "4018cef4.755f3",
+        "name": "valve_controller",
+        "mode": "link",
+        "links": [
+            "a38ee0bd570d30a7",
+            "e6c4a2877591477c",
+            "78ac7a5a5411bb85",
+            "40bacfe612362a36"
+        ],
+        "x": 835,
+        "y": 390,
+        "wires": []
+    },
+    {
+        "id": "82a0c642a1636e9a",
+        "type": "link in",
+        "z": "4018cef4.755f3",
+        "name": "heater_display_switch",
+        "links": [
+            "f1028c6beee38d13"
+        ],
+        "x": 1015,
+        "y": 120,
+        "wires": [
+            [
+                "ca3d5412.fd1b98"
+            ]
+        ]
+    },
+    {
+        "id": "0acfe6480b38e138",
+        "type": "link in",
+        "z": "4018cef4.755f3",
+        "name": "stirrer_display_switch",
+        "links": [
+            "b7c9b241fe1894cd"
+        ],
+        "x": 1015,
+        "y": 160,
+        "wires": [
+            [
+                "601b2343.750a7c"
+            ]
+        ]
+    },
+    {
+        "id": "a38ee0bd570d30a7",
+        "type": "link in",
+        "z": "4018cef4.755f3",
+        "name": "valve_display_switch",
+        "links": [
+            "0a168466b5ca2a09"
+        ],
+        "x": 1015,
+        "y": 200,
+        "wires": [
+            [
+                "81ee5d3.eafaaa"
+            ]
+        ]
+    },
+    {
+        "id": "c676c9b8342dff6d",
+        "type": "link in",
+        "z": "4018cef4.755f3",
+        "name": "heater_gpio",
+        "links": [
+            "f1028c6beee38d13"
+        ],
+        "x": 1015,
+        "y": 360,
+        "wires": [
+            [
+                "729f1b67.d8f124"
+            ]
+        ]
+    },
+    {
+        "id": "a6aed7ab1a4bf561",
+        "type": "link in",
+        "z": "4018cef4.755f3",
+        "name": "stirrer_gpio",
+        "links": [
+            "b7c9b241fe1894cd"
+        ],
+        "x": 1015,
+        "y": 400,
+        "wires": [
+            [
+                "6d46d128.01aaf"
+            ]
+        ]
+    },
+    {
+        "id": "e6c4a2877591477c",
+        "type": "link in",
+        "z": "4018cef4.755f3",
+        "name": "valve_gpio",
+        "links": [
+            "0a168466b5ca2a09"
+        ],
+        "x": 1015,
+        "y": 440,
+        "wires": [
+            [
+                "391143b8.3c01fc"
+            ]
+        ]
+    },
+    {
+        "id": "cd27ae42f61877e8",
+        "type": "link in",
+        "z": "4018cef4.755f3",
+        "name": "heater_mqtt",
+        "links": [
+            "f1028c6beee38d13"
+        ],
+        "x": 1015,
+        "y": 480,
+        "wires": [
+            [
+                "94234899.310498"
+            ]
+        ]
+    },
+    {
+        "id": "1a6f201a2c90f52f",
+        "type": "link in",
+        "z": "4018cef4.755f3",
+        "name": "stirrer_mqtt",
+        "links": [
+            "b7c9b241fe1894cd"
+        ],
+        "x": 1015,
+        "y": 520,
+        "wires": [
+            [
+                "8fd440ad.53f9e"
+            ]
+        ]
+    },
+    {
+        "id": "78ac7a5a5411bb85",
+        "type": "link in",
+        "z": "4018cef4.755f3",
+        "name": "valve_mqtt",
+        "links": [
+            "0a168466b5ca2a09"
+        ],
+        "x": 1015,
+        "y": 560,
+        "wires": [
+            [
+                "be65350d.ef0288"
             ]
         ]
     },
@@ -2760,8 +3055,9 @@
         "type": "link out",
         "z": "d0c185b8.08bb48",
         "name": "switch lcd",
+        "mode": "link",
         "links": [
-            "d8176565.66c988"
+            "cd0f36a7.59c118"
         ],
         "x": 435,
         "y": 960,
@@ -4461,24 +4757,104 @@
         ]
     },
     {
+        "id": "44486b61.511914",
+        "type": "ui_numeric",
+        "z": "c90df323.c6ed6",
+        "name": "",
+        "label": "time scale",
+        "tooltip": "",
+        "group": "9edf9c6c.1f6d2",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "wrap": false,
+        "passthru": false,
+        "topic": "",
+        "topicType": "str",
+        "format": "{{global.timeScale}}",
+        "min": "1",
+        "max": "60",
+        "step": "1",
+        "className": "",
+        "x": 340,
+        "y": 140,
+        "wires": [
+            [
+                "a66abade.e67b28"
+            ]
+        ]
+    },
+    {
+        "id": "d61c8090.56f04",
+        "type": "inject",
+        "z": "c90df323.c6ed6",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": true,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "timeScale",
+        "payloadType": "global",
+        "x": 170,
+        "y": 140,
+        "wires": [
+            [
+                "44486b61.511914"
+            ]
+        ]
+    },
+    {
+        "id": "a66abade.e67b28",
+        "type": "change",
+        "z": "c90df323.c6ed6",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "timeScale",
+                "pt": "global",
+                "to": "payload",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 520,
+        "y": 140,
+        "wires": [
+            []
+        ]
+    },
+    {
         "id": "b0c59940.8ae458",
         "type": "ui_button",
         "z": "acc8977e.fd0588",
         "name": "",
         "group": "4a318d10.c590e4",
-        "order": 1,
-        "width": 0,
-        "height": 0,
+        "order": 2,
+        "width": "6",
+        "height": "1",
         "passthru": false,
         "label": "shutdown",
         "tooltip": "",
         "color": "",
         "bgcolor": "",
+        "className": "",
         "icon": "",
         "payload": "",
         "payloadType": "str",
         "topic": "",
-        "x": 170,
+        "topicType": "str",
+        "x": 370,
         "y": 120,
         "wires": [
             [
@@ -4497,7 +4873,7 @@
         "timer": "",
         "oldrc": false,
         "name": "",
-        "x": 400,
+        "x": 610,
         "y": 120,
         "wires": [
             [],
@@ -4511,73 +4887,153 @@
         "z": "acc8977e.fd0588",
         "name": "shutdown",
         "info": "",
-        "x": 160,
+        "x": 370,
         "y": 80,
         "wires": []
     },
     {
-        "id": "44486b61.511914",
-        "type": "ui_numeric",
+        "id": "9ab62b61db890da1",
+        "type": "ui_button",
         "z": "acc8977e.fd0588",
         "name": "",
-        "label": "time scale",
-        "tooltip": "",
-        "group": "9edf9c6c.1f6d2",
-        "order": 1,
-        "width": 0,
-        "height": 0,
-        "wrap": false,
+        "group": "4a318d10.c590e4",
+        "order": 5,
+        "width": "6",
+        "height": "1",
         "passthru": false,
+        "label": "reboot",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "className": "",
+        "icon": "",
+        "payload": "",
+        "payloadType": "str",
         "topic": "",
-        "format": "{{global.timeScale}}",
-        "min": "1",
-        "max": "60",
-        "step": "5",
-        "x": 380,
-        "y": 240,
+        "topicType": "str",
+        "x": 360,
+        "y": 220,
         "wires": [
             [
-                "a66abade.e67b28"
+                "49249ab6311aba0a"
             ]
         ]
     },
     {
-        "id": "d61c8090.56f04",
-        "type": "inject",
+        "id": "49249ab6311aba0a",
+        "type": "exec",
+        "z": "acc8977e.fd0588",
+        "command": "sudo reboot",
+        "addpay": "payload",
+        "append": "",
+        "useSpawn": "false",
+        "timer": "",
+        "winHide": false,
+        "oldrc": false,
+        "name": "",
+        "x": 580,
+        "y": 220,
+        "wires": [
+            [],
+            [],
+            []
+        ]
+    },
+    {
+        "id": "254c61154e46721b",
+        "type": "comment",
+        "z": "acc8977e.fd0588",
+        "name": "reboot",
+        "info": "",
+        "x": 360,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "88ce10f90f63f3b0",
+        "type": "ui_switch",
         "z": "acc8977e.fd0588",
         "name": "",
-        "props": [
-            {
-                "p": "payload"
-            }
-        ],
-        "repeat": "",
-        "crontab": "",
-        "once": true,
-        "onceDelay": 0.1,
-        "topic": "",
-        "payload": "timeScale",
-        "payloadType": "global",
-        "x": 210,
-        "y": 240,
+        "label": "heater",
+        "tooltip": "",
+        "group": "21613e521c04ebd0",
+        "order": 1,
+        "width": "6",
+        "height": "1",
+        "passthru": false,
+        "decouple": "true",
+        "topic": "payload",
+        "topicType": "msg",
+        "style": "",
+        "onvalue": "ON",
+        "onvalueType": "str",
+        "onicon": "",
+        "oncolor": "",
+        "offvalue": "OFF",
+        "offvalueType": "str",
+        "officon": "",
+        "offcolor": "",
+        "animate": false,
+        "className": "",
+        "x": 360,
+        "y": 360,
         "wires": [
             [
-                "44486b61.511914"
+                "b3a094aef183f3fe"
             ]
         ]
     },
     {
-        "id": "a66abade.e67b28",
+        "id": "647583706d309956",
+        "type": "comment",
+        "z": "acc8977e.fd0588",
+        "name": "heater",
+        "info": "",
+        "x": 360,
+        "y": 320,
+        "wires": []
+    },
+    {
+        "id": "cb6d81066ef73ad0",
+        "type": "link out",
+        "z": "acc8977e.fd0588",
+        "name": "heater_system_switch",
+        "mode": "link",
+        "links": [
+            "cd0f36a7.59c118"
+        ],
+        "x": 595,
+        "y": 360,
+        "wires": []
+    },
+    {
+        "id": "aa213ef4a5126949",
+        "type": "link in",
+        "z": "acc8977e.fd0588",
+        "name": "heater_system_switch",
+        "links": [
+            "f1028c6beee38d13"
+        ],
+        "x": 235,
+        "y": 360,
+        "wires": [
+            [
+                "88ce10f90f63f3b0"
+            ]
+        ]
+    },
+    {
+        "id": "b3a094aef183f3fe",
         "type": "change",
         "z": "acc8977e.fd0588",
-        "name": "",
+        "name": "topic",
         "rules": [
             {
                 "t": "set",
-                "p": "timeScale",
-                "pt": "global",
-                "to": "payload",
-                "tot": "msg"
+                "p": "topic",
+                "pt": "msg",
+                "to": "heater",
+                "tot": "str"
             }
         ],
         "action": "",
@@ -4585,10 +5041,212 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 560,
-        "y": 240,
+        "x": 500,
+        "y": 360,
         "wires": [
-            []
+            [
+                "cb6d81066ef73ad0"
+            ]
+        ]
+    },
+    {
+        "id": "5ac233bc40386a4e",
+        "type": "ui_switch",
+        "z": "acc8977e.fd0588",
+        "name": "",
+        "label": "stirrer",
+        "tooltip": "",
+        "group": "21613e521c04ebd0",
+        "order": 3,
+        "width": "6",
+        "height": "1",
+        "passthru": false,
+        "decouple": "true",
+        "topic": "payload",
+        "topicType": "msg",
+        "style": "",
+        "onvalue": "ON",
+        "onvalueType": "str",
+        "onicon": "",
+        "oncolor": "",
+        "offvalue": "OFF",
+        "offvalueType": "str",
+        "officon": "",
+        "offcolor": "",
+        "animate": false,
+        "className": "",
+        "x": 360,
+        "y": 450,
+        "wires": [
+            [
+                "1564aeef890901e3"
+            ]
+        ]
+    },
+    {
+        "id": "d2dfbdd7d2ec9d31",
+        "type": "comment",
+        "z": "acc8977e.fd0588",
+        "name": "stirrer",
+        "info": "",
+        "x": 360,
+        "y": 410,
+        "wires": []
+    },
+    {
+        "id": "6da738d43524eaa5",
+        "type": "link out",
+        "z": "acc8977e.fd0588",
+        "name": "heater_system_switch",
+        "mode": "link",
+        "links": [
+            "cd0f36a7.59c118"
+        ],
+        "x": 595,
+        "y": 450,
+        "wires": []
+    },
+    {
+        "id": "f34161dcd6349170",
+        "type": "link in",
+        "z": "acc8977e.fd0588",
+        "name": "heater_system_switch",
+        "links": [
+            "b7c9b241fe1894cd"
+        ],
+        "x": 235,
+        "y": 450,
+        "wires": [
+            [
+                "5ac233bc40386a4e"
+            ]
+        ]
+    },
+    {
+        "id": "1564aeef890901e3",
+        "type": "change",
+        "z": "acc8977e.fd0588",
+        "name": "topic",
+        "rules": [
+            {
+                "t": "set",
+                "p": "topic",
+                "pt": "msg",
+                "to": "stirrer",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 500,
+        "y": 450,
+        "wires": [
+            [
+                "6da738d43524eaa5"
+            ]
+        ]
+    },
+    {
+        "id": "973e1eb96a225647",
+        "type": "ui_switch",
+        "z": "acc8977e.fd0588",
+        "name": "",
+        "label": "valve",
+        "tooltip": "",
+        "group": "21613e521c04ebd0",
+        "order": 5,
+        "width": "6",
+        "height": "1",
+        "passthru": false,
+        "decouple": "true",
+        "topic": "payload",
+        "topicType": "msg",
+        "style": "",
+        "onvalue": "ON",
+        "onvalueType": "str",
+        "onicon": "",
+        "oncolor": "",
+        "offvalue": "OFF",
+        "offvalueType": "str",
+        "officon": "",
+        "offcolor": "",
+        "animate": false,
+        "className": "",
+        "x": 360,
+        "y": 540,
+        "wires": [
+            [
+                "5445c905096ae58f"
+            ]
+        ]
+    },
+    {
+        "id": "a03d599af5778faf",
+        "type": "comment",
+        "z": "acc8977e.fd0588",
+        "name": "valve",
+        "info": "",
+        "x": 360,
+        "y": 500,
+        "wires": []
+    },
+    {
+        "id": "64539bace0dca9f9",
+        "type": "link out",
+        "z": "acc8977e.fd0588",
+        "name": "heater_system_switch",
+        "mode": "link",
+        "links": [
+            "cd0f36a7.59c118"
+        ],
+        "x": 595,
+        "y": 540,
+        "wires": []
+    },
+    {
+        "id": "40bacfe612362a36",
+        "type": "link in",
+        "z": "acc8977e.fd0588",
+        "name": "heater_system_switch",
+        "links": [
+            "0a168466b5ca2a09"
+        ],
+        "x": 235,
+        "y": 540,
+        "wires": [
+            [
+                "973e1eb96a225647"
+            ]
+        ]
+    },
+    {
+        "id": "5445c905096ae58f",
+        "type": "change",
+        "z": "acc8977e.fd0588",
+        "name": "topic",
+        "rules": [
+            {
+                "t": "set",
+                "p": "topic",
+                "pt": "msg",
+                "to": "valve",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 500,
+        "y": 540,
+        "wires": [
+            [
+                "64539bace0dca9f9"
+            ]
         ]
     },
     {
@@ -4596,9 +5254,14 @@
         "type": "mqtt out",
         "z": "65c332df.78c18c",
         "name": "",
-        "topic": "nodes@home/control/ssr/brewery/valve",
+        "topic": "nodes@home/control/ssr/brewery/socket1",
         "qos": "0",
         "retain": "false",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
         "broker": "faf25434.0c0ff8",
         "x": 420,
         "y": 120,
@@ -4672,7 +5335,7 @@
         "payload": "10",
         "payloadType": "num",
         "x": 130,
-        "y": 240,
+        "y": 580,
         "wires": [
             [
                 "c082b6f9.325738"
@@ -4697,7 +5360,7 @@
         "payload": "100",
         "payloadType": "num",
         "x": 130,
-        "y": 280,
+        "y": 620,
         "wires": [
             [
                 "c082b6f9.325738"
@@ -4714,7 +5377,168 @@
             "cd0f36a7.59c118"
         ],
         "x": 275,
-        "y": 260,
+        "y": 600,
+        "wires": []
+    },
+    {
+        "id": "dd0a125d28aa62d7",
+        "type": "mqtt out",
+        "z": "65c332df.78c18c",
+        "name": "",
+        "topic": "nodes@home/control/ssr/brewery/socket2",
+        "qos": "0",
+        "retain": "false",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "faf25434.0c0ff8",
+        "x": 420,
+        "y": 280,
+        "wires": []
+    },
+    {
+        "id": "8bd7ef6952ddf8f2",
+        "type": "inject",
+        "z": "65c332df.78c18c",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "ON",
+        "payloadType": "str",
+        "x": 130,
+        "y": 240,
+        "wires": [
+            [
+                "dd0a125d28aa62d7"
+            ]
+        ]
+    },
+    {
+        "id": "a8791c281c9431b8",
+        "type": "inject",
+        "z": "65c332df.78c18c",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "OFF",
+        "payloadType": "str",
+        "x": 130,
+        "y": 300,
+        "wires": [
+            [
+                "dd0a125d28aa62d7"
+            ]
+        ]
+    },
+    {
+        "id": "175b277e5e41c356",
+        "type": "mqtt out",
+        "z": "65c332df.78c18c",
+        "name": "",
+        "topic": "nodes@home/control/ssr/brewery/valve",
+        "qos": "0",
+        "retain": "false",
+        "broker": "faf25434.0c0ff8",
+        "x": 420,
+        "y": 440,
+        "wires": []
+    },
+    {
+        "id": "603550fcd8ff570c",
+        "type": "inject",
+        "z": "65c332df.78c18c",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "ON",
+        "payloadType": "str",
+        "x": 130,
+        "y": 400,
+        "wires": [
+            [
+                "175b277e5e41c356"
+            ]
+        ]
+    },
+    {
+        "id": "c9c60ff1d54cd7f6",
+        "type": "inject",
+        "z": "65c332df.78c18c",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "OFF",
+        "payloadType": "str",
+        "x": 130,
+        "y": 460,
+        "wires": [
+            [
+                "175b277e5e41c356"
+            ]
+        ]
+    },
+    {
+        "id": "c8ba7784cbe00301",
+        "type": "comment",
+        "z": "65c332df.78c18c",
+        "name": "heater",
+        "info": "",
+        "x": 110,
+        "y": 40,
+        "wires": []
+    },
+    {
+        "id": "23ba85e333f0034a",
+        "type": "comment",
+        "z": "65c332df.78c18c",
+        "name": "mixer / stirrer",
+        "info": "",
+        "x": 130,
+        "y": 200,
+        "wires": []
+    },
+    {
+        "id": "9ae250b4f8ad8b3a",
+        "type": "comment",
+        "z": "65c332df.78c18c",
+        "name": "valve",
+        "info": "",
+        "x": 110,
+        "y": 360,
         "wires": []
     }
 ]
